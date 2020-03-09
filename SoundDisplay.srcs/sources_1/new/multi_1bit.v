@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 03/09/2020 02:44:07 PM
+// Create Date: 03/09/2020 03:20:13 PM
 // Design Name: 
-// Module Name: clk_voice
+// Module Name: multi_1bit
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -19,16 +19,11 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-// 20 kHz clock
-// m = (fclk/(2*fdesired)) -1
-module clk_voice(
-    input CLOCK,
-    output reg clk20k = 0
+
+module multi_1bit(
+    input E,
+    input [11:0] mic_in,
+    output [11:0] led
     );
-    reg [11:0] count = 0;
-    
-    always @ (posedge CLOCK) begin
-        count <= (count == 12'd2499) ? 0 : count + 1;
-        clk20k <= (count == 0) ? ~clk20k : clk20k;
-    end
+    assign led = E ? mic_in : 0;
 endmodule
