@@ -26,7 +26,7 @@ module clk_voice_sim(
     reg CLOCK;
     wire clk20k;
     
-    clk_voice c0(CLOCK, clk20k);
+    clk_voice c0(CLOCK, 12'd2499, clk20k);
     
     initial begin
         CLOCK = 0;

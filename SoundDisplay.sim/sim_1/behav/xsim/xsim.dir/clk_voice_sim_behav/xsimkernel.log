@@ -1,4 +1,0 @@
-Running: xsim.dir/clk_voice_sim_behav/xsimk.exe -simmode gui -wdb clk_voice_sim_behav.wdb -simrunnum 0 -socket 56652
-Design successfully loaded
-Design Loading Memory Usage: 5612 KB (Peak: 5612 KB)
-Design Loading CPU Usage: 15 ms

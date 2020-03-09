@@ -74,8 +74,8 @@ set_property PACKAGE_PIN U3 [get_ports {led[11]}]
 	#set_property IOSTANDARD LVCMOS33 [get_ports {led[13]}]
 #set_property PACKAGE_PIN P1 [get_ports {led[14]}]					
 	#set_property IOSTANDARD LVCMOS33 [get_ports {led[14]}]
-#set_property PACKAGE_PIN L1 [get_ports {led[15]}]					
-	#set_property IOSTANDARD LVCMOS33 [get_ports {led[15]}]
+set_property PACKAGE_PIN L1 [get_ports {led15}]					
+	set_property IOSTANDARD LVCMOS33 [get_ports {led15}]
 	
 	
 ##7 segment display
@@ -179,17 +179,17 @@ set_property PACKAGE_PIN U3 [get_ports {led[11]}]
 
 ##Pmod Header JC
 ##Sch name = JC1
-#set_property PACKAGE_PIN K17 [get_ports {JC[0]}]					
-	#set_property IOSTANDARD LVCMOS33 [get_ports {JC[0]}]
+set_property PACKAGE_PIN K17 [get_ports {J_MIC3_Pin1}]					
+	set_property IOSTANDARD LVCMOS33 [get_ports {J_MIC3_Pin1}]
 ##Sch name = JC2
 #set_property PACKAGE_PIN M18 [get_ports {JC[1]}]					
-	#set_property IOSTANDARD LVCMOS33 [get_ports {JC[1]}]
+#	set_property IOSTANDARD LVCMOS33 [get_ports {JC[1]}]
 ##Sch name = JC3
-#set_property PACKAGE_PIN N17 [get_ports {JC[2]}]					
-	#set_property IOSTANDARD LVCMOS33 [get_ports {JC[2]}]
+set_property PACKAGE_PIN N17 [get_ports {J_MIC3_Pin3}]					
+	set_property IOSTANDARD LVCMOS33 [get_ports {J_MIC3_Pin3}]
 ##Sch name = JC4
-#set_property PACKAGE_PIN P18 [get_ports {JC[3]}]					
-	#set_property IOSTANDARD LVCMOS33 [get_ports {JC[3]}]
+set_property PACKAGE_PIN P18 [get_ports {J_MIC3_Pin4}]					
+	set_property IOSTANDARD LVCMOS33 [get_ports {J_MIC3_Pin4}]
 ##Sch name = JC7
 #set_property PACKAGE_PIN L17 [get_ports {JC[4]}]					
 	#set_property IOSTANDARD LVCMOS33 [get_ports {JC[4]}]
