@@ -110,3 +110,22 @@ source clk_voice_sim.tcl
 close_sim
 launch_simulation
 source clk_voice_sim.tcl
+close_sim
+launch_simulation
+source clk_voice_sim.tcl
+close_sim
+launch_simulation
+source clk_voice_sim.tcl
+run 100 us
+relaunch_sim
+run 100 us
+run 100 us
+update_compile_order -fileset sources_1
+reset_run synth_1
+launch_runs impl_1 -to_step write_bitstream -jobs 4
+wait_on_run impl_1
+set_property PROBES.FILE {} [get_hw_devices xc7a35t_0]
+set_property FULL_PROBES.FILE {} [get_hw_devices xc7a35t_0]
+set_property PROGRAM.FILE {C:/Users/wiraa/Documents/School/EE2026/Verilog/SoundDisplay/SoundDisplay/SoundDisplay.runs/impl_1/Top_Student.bit} [get_hw_devices xc7a35t_0]
+program_hw_devices [get_hw_devices xc7a35t_0]
+refresh_hw_device [lindex [get_hw_devices xc7a35t_0] 0]
