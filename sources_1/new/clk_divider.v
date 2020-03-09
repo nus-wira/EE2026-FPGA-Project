@@ -19,17 +19,17 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-// 20 kHz clock
+
 // m = (fclk/(2*fdesired)) -1
-module clk_voice(
+module clk_divider(
     input CLOCK, 
     input [31:0] m,
-    output reg clk20k = 0
+    output reg slowclk = 0
     );
     reg [31:0] count = 0;
     
     always @ (posedge CLOCK) begin
         count <= (count == m) ? 0 : count + 1;
-        clk20k <= (count == 0) ? ~clk20k : clk20k;
+        slowclk <= (count == 0) ? ~slowclk : slowclk;
     end
 endmodule
