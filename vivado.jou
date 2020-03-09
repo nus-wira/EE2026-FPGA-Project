@@ -11,3 +11,13 @@
 #-----------------------------------------------------------
 start_gui
 open_project {C:/Users/raman/Desktop/EE Project/EE2026-FPGA-Project/SoundDisplay.xpr}
+update_compile_order -fileset sources_1
+close [ open {C:/Users/raman/Desktop/EE Project/EE2026-FPGA-Project/SoundDisplay.srcs/sources_1/new/clk_oled.v} w ]
+add_files {{C:/Users/raman/Desktop/EE Project/EE2026-FPGA-Project/SoundDisplay.srcs/sources_1/new/clk_oled.v}}
+update_compile_order -fileset sources_1
+close [ open {C:/Users/raman/Desktop/EE Project/EE2026-FPGA-Project/SoundDisplay.srcs/sources_1/new/debounce_single_pulse.v} w ]
+add_files {{C:/Users/raman/Desktop/EE Project/EE2026-FPGA-Project/SoundDisplay.srcs/sources_1/new/debounce_single_pulse.v}}
+update_compile_order -fileset sources_1
+close [ open {C:/Users/raman/Desktop/EE Project/EE2026-FPGA-Project/SoundDisplay.srcs/sources_1/new/dff.v} w ]
+add_files {{C:/Users/raman/Desktop/EE Project/EE2026-FPGA-Project/SoundDisplay.srcs/sources_1/new/dff.v}}
+update_compile_order -fileset sources_1
