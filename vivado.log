@@ -21,3 +21,4 @@ update_compile_order -fileset sources_1
 close [ open C:/Users/wiraa/Documents/School/EE2026/Verilog/SoundDisplay/SoundDisplay/SoundDisplay.srcs/sources_1/new/clk_voice.v w ]
 add_files C:/Users/wiraa/Documents/School/EE2026/Verilog/SoundDisplay/SoundDisplay/SoundDisplay.srcs/sources_1/new/clk_voice.v
 update_compile_order -fileset sources_1
+update_compile_order -fileset sources_1
