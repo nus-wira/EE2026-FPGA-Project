@@ -20,8 +20,9 @@ module Top_Student (
     output J_MIC3_Pin1,   // Connect to this signal from Audio_Capture.v
     output J_MIC3_Pin4,    // Connect to this signal from Audio_Capture.v
     input CLK100MHZ, sw, btnC,
-    output [11:0] led,
-    output [7:0] JB
+    output [15:0] led,
+    output [7:0] JB, seg,
+    output [3:0] an
     );
     wire clk20k, clk6p25m ,reset; // Clocks and reset
     wire frame_begin, sending_pixels, sample_pixel, pixel_index, teststate;
@@ -34,15 +35,15 @@ module Top_Student (
     
     // Audio capture
     Audio_Capture ac0(
-        .CLK(CLK100MHZ),                  // 100MHz clock
-        .cs(clk20k),                   // sampling clock, 20kHz
-        .MISO(J_MIC3_Pin3),                 // J_MIC3_Pin3, serial mic input
-        .clk_samp(J_MIC3_Pin1),            // J_MIC3_Pin1
-        .sclk(J_MIC3_Pin4),            // J_MIC3_Pin4, MIC3 serial clock
-        .sample(mic_in)     // 12-bit audio sample data
+        .CLK(CLK100MHZ),        // 100MHz clock
+        .cs(clk20k),            // sampling clock, 20kHz
+        .MISO(J_MIC3_Pin3),     // J_MIC3_Pin3, serial mic input
+        .clk_samp(J_MIC3_Pin1), // J_MIC3_Pin1
+        .sclk(J_MIC3_Pin4),     // J_MIC3_Pin4, MIC3 serial clock
+        .sample(mic_in)         // 12-bit audio sample data
         );
-    // Multiplexer for audio to led
-    multi_1bit m0 (sw, mic_in, led);
+    // Multiplexer for audio to led/7seg
+    intensity m0 (.clk(CLK100MHZ), .E(sw), .mic_in(mic_in), .led(led), .an(an), .seg(seg));
     
     // Reset LED button
     debounce_single_pulse dsp0 (btnC, clk6p25m, reset);
@@ -54,6 +55,7 @@ module Top_Student (
     
     // Empty bit
     assign JB[2] = 0;
+    assign seg[7] = 1; // dp
     assign oled_data = {5'b0, mic_in[11:6], 5'b0}; 
     
     
