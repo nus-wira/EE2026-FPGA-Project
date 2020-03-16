@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 03/09/2020 03:20:13 PM
+// Create Date: 16.03.2020 14:57:29
 // Design Name: 
-// Module Name: multi_1bit
+// Module Name: convertXY
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,10 +20,14 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module multi_1bit(
-    input E,
-    input [15:0] mic_in, led_peak,
-    output [15:0] led
+module convertXY(
+    input pixel_index, twoHzclk,
+    output reg x, y
     );
-    assign led = E ? mic_in : led_peak;
+    
+    always @ (posedge twoHzclk) begin
+        assign x = pixel_index % 96;
+        assign y = pixel_index / 96;
+    end
+    
 endmodule
