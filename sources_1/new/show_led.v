@@ -21,13 +21,13 @@
 
 
 module show_led(
-    input clk2,
+    input clk,
     input [3:0] num,
     output reg [15:0] led = 0
     );
     // i.e. num == 1, assign led[1] = 1
     // num == 5, assign led[5] = 1;
-    always @ (posedge clk2) begin
+    always @ (posedge clk) begin
         case (num)
         4'd0: led <= 16'h0000;
         4'd1: led <= 16'h0001;

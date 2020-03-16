@@ -21,13 +21,12 @@
 
 
 module convertXY(
-    input pixel_index, twoHzclk,
-    output reg x, y
+//    input clk,
+    input [12:0] pixel_index,
+    output [6:0] x, y
     );
     
-    always @ (posedge twoHzclk) begin
-        assign x = pixel_index % 96;
-        assign y = pixel_index / 96;
-    end
+    assign x = pixel_index % 96;
+    assign y = pixel_index / 96;
     
 endmodule
