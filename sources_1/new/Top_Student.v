@@ -63,5 +63,5 @@ module Top_Student (
     assign seg[7] = 1; // dp
 //    assign oled_data = {5'b0, mic_in[11:6], 5'b0}; 
     
-    vol_bar v0(clk2, sw[1], sw[2], num, pixel_index, oled_data);
+    vol_display v0(clk2, sw[1], sw[2], num, pixel_index, oled_data);
 endmodule
