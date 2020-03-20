@@ -19,7 +19,7 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 module vol_bar(
-    input sw1, sw2,
+//    input sw1, sw2,
     input [3:0] num,
     input [6:0] x, y,
     output reg [15:0] oled_data
@@ -72,9 +72,12 @@ module vol_bar(
     // Assigning volume bar oled_data
     always @ (*) begin
         if (x_range && num > 0 && v) begin
-            if (v[5:1])     oled_data = GREEN;
-            if (v[10:6])    oled_data = YELLOW;
-            if (v[15:11])   oled_data = RED; 
+            if (v[5:1])
+                oled_data = GREEN;
+            if (v[10:6])
+                oled_data = YELLOW;
+            if (v[15:11])   
+                oled_data = RED; 
         end else 
             oled_data = BLACK;
     end
