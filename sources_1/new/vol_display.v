@@ -37,7 +37,7 @@ module vol_display (
     convertXY xy0(pixel_index, x, y);
     // Border and volume bar
     border b0(bor_wid, x, y, oled_border);
-    vol_bar v0(num, x, y, oled_vol);
+    vol_bar v0(sw1, sw2, num, x, y, oled_vol);
     // Mux to choose oled to display
     oled_mux m0(x, y, oled_border, oled_vol, oled_data);
 
