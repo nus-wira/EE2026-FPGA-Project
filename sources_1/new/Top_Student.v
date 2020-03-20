@@ -20,7 +20,7 @@ module Top_Student (
     output J_MIC3_Pin1,   // Connect to this signal from Audio_Capture.v
     output J_MIC3_Pin4,    // Connect to this signal from Audio_Capture.v
     input CLK100MHZ, btnC,
-    input [2:0] sw,
+    input [4:0] sw,
     output [15:0] led,
     output [7:0] JB, seg,
     output [3:0] an

@@ -40,22 +40,27 @@ module colour_mux(
             volCol_top = RED;
             volCol_mid = GREEN;
             volCol_bot = WHITE;
-        end
-        
+        end  
         else if(sw3 && sw4) begin
-            bor_col = BLACK;
+            bor_col = RED;
             bg_col = WHITE;
             volCol_top = MAGENTA;
             volCol_mid = YELLOW;
             volCol_bot = CYAN;
-        end
-        
+        end        
         else if (!sw3 && !sw4) begin
             bor_col = WHITE;
             bg_col = BLACK;
             volCol_top = RED;
             volCol_mid = YELLOW;
             volCol_bot = GREEN;
+        end        
+        else begin
+            bor_col = BLACK;
+            bg_col = BLACK;
+            volCol_top = BLACK;
+            volCol_mid = BLACK;
+            volCol_bot = BLACK;
         end
     end
     

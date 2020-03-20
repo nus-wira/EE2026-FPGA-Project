@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module vol_display (
-    input [2:0] sw,
+    input [4:0] sw,
     input [3:0] num,
     input [12:0] pixel_index,
     output [15:0] oled_data
