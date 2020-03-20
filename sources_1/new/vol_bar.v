@@ -19,16 +19,11 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 module vol_bar(
-    input sw1, sw2,
+    input [15:0] bg_col, volCol_top, volCol_mid, volCol_bot,
     input [3:0] num,
     input [6:0] x, y,
     output reg [15:0] oled_data
     );
-    parameter [15:0] GREEN = 16'b00000_111111_00000;
-    parameter [15:0] YELLOW = 16'b11111_111111_00000;
-    parameter [15:0] RED = 16'b11111_000000_00000;
-    parameter [15:0] BLACK = 16'b0;
-    parameter [15:0] WHITE = ~BLACK;
     parameter [2:0] LVLD = 4;
     parameter [1:0] LVLH = 2;
     parameter [6:0] LVL1 = 7'd60;
@@ -73,13 +68,13 @@ module vol_bar(
     always @ (*) begin
         if (x_range && num > 0 && v) begin
             if (v[5:1])
-                oled_data = GREEN;
+                oled_data = volCol_bot;
             if (v[10:6])
-                oled_data = YELLOW;
-            if (v[15:11])   
-                oled_data = RED; 
+                oled_data = volCol_mid;
+            if (v[15:11]) 
+                oled_data = volCol_top; 
         end else 
-            oled_data = BLACK;
+            oled_data = bg_col;
     end
     
 endmodule
