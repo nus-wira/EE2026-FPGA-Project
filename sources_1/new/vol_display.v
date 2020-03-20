@@ -19,32 +19,26 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-// TO CHANGE TO VOL_DISP LATER
 module vol_display (
-    input clk2, sw1, sw2,
+    input sw1, sw2,
     input [3:0] num,
     input [12:0] pixel_index,
     output [15:0] oled_data
     );
-    localparam Width = 96;
-    localparam Height = 64;
-    localparam PixelCount = Width * Height;
-    parameter [15:0] GREEN = 16'b00000_111111_00000;
-    parameter [15:0] YELLOW = 16'b11111_111111_00000;
-    parameter [15:0] RED = 16'b11111_111111_00000;
-    parameter [15:0] BLACK = 16'b0;
-    parameter [15:0] WHITE = ~BLACK;
     
     wire [6:0] x,y;
-//    wire [1:0] bor_wid;
+    wire [1:0] bor_wid;
+    wire [15:0] oled_vol, oled_border;
     
+    // Border width using switches
+    assign bor_wid = sw1 ? 1 : (sw2 ? 3 : 0);
+    
+    // Convert pixel_index to x , y values
     convertXY xy0(pixel_index, x, y);
-
-//    assign bor_wid = sw1 ? 1 : (sw2 ? 3 : 0);
-    
-    // TO ADD vol_bar MODULE LATER
-    vol_bar v0(clk2, sw1, sw2, num, x, y, oled_data);
-    
-//    border b0(bor_wid, x, y, oled_data); // to change oled_data to a wire to be put into mux later
+    // Border and volume bar
+    border b0(bor_wid, x, y, oled_border);
+    vol_bar v0(sw1, sw2, num, x, y, oled_vol);
+    // Mux to choose oled to display
+    oled_mux m0(x, y, oled_border, oled_vol, oled_data);
 
 endmodule

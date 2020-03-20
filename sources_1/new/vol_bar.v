@@ -19,14 +19,11 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 module vol_bar(
-    input clk2, sw1, sw2,
+    input sw1, sw2,
     input [3:0] num,
     input [6:0] x, y,
     output reg [15:0] oled_data
     );
-    localparam Width = 96;
-    localparam Height = 64;
-    localparam PixelCount = Width * Height;
     parameter [15:0] GREEN = 16'b00000_111111_00000;
     parameter [15:0] YELLOW = 16'b11111_111111_00000;
     parameter [15:0] RED = 16'b11111_000000_00000;
@@ -50,9 +47,11 @@ module vol_bar(
     parameter [6:0] LVL14 = LVL13 - LVLD;
     parameter [6:0] LVL15 = LVL14 - LVLD;
     
+    // Booleans 
     wire x_range;
     wire [15:0] v;
     assign x_range = x >= 38 && x <= 57;
+    // Boolean value at each level
     assign v[0] = 0;
     assign v[1] = (num >= 1 && (y <= LVL1 && y >= LVL1 - LVLH));
     assign v[2] = (num >= 2 && (y <= LVL2 && y >= LVL2 - LVLH));
@@ -70,15 +69,14 @@ module vol_bar(
     assign v[14] = (num >= 14 && (y <= LVL14 && y >= LVL14 - LVLH));
     assign v[15] = (num >= 15 && (y <= LVL15 && y >= LVL15 - 1));
     
+    // Assigning volume bar oled_data
     always @ (*) begin
         if (x_range && num > 0 && v) begin
-            if (v[5:1])
-               oled_data = GREEN;
-            if (v[10:6])
-                oled_data = YELLOW;
-            if (v[15:11])
-                oled_data = RED; 
+            if (v[5:1])     oled_data = GREEN;
+            if (v[10:6])    oled_data = YELLOW;
+            if (v[15:11])   oled_data = RED; 
         end else 
             oled_data = BLACK;
     end
+    
 endmodule
