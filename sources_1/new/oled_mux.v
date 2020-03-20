@@ -21,7 +21,7 @@
 
 
 module oled_mux(
-    input x,y,
+    input [6:0] x,y,
     input [15:0] oled_border, oled_vol,
     output [15:0] oled_data
     );
