@@ -21,6 +21,7 @@
 
 module vol_display (
     input [5:0] sw,
+    input clk,
     input [3:0] num,
     input [12:0] pixel_index,
     output [15:0] oled_data
@@ -37,7 +38,7 @@ module vol_display (
     assign bor_wid = sw[1] ? 1 : (sw[2] ? 3 : 0);
     
     // Freezing screen
-    always @ * begin
+    always @ (posedge clk) begin
         freezeNum = sw[5] ? freezeNum : num;
     end
     // Convert pixel_index to x , y values

@@ -61,5 +61,5 @@ module Top_Student (
     assign JB[2] = 0;
     assign seg[7] = 1; // dp
     
-    vol_display v0(sw, num, pixel_index, oled_data);
+    vol_display v0(sw, clk20k, num, pixel_index, oled_data);
 endmodule
