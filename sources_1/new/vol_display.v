@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module vol_display (
-    input [4:0] sw,
+    input [5:0] sw,
     input [3:0] num,
     input [12:0] pixel_index,
     output [15:0] oled_data
@@ -31,18 +31,24 @@ module vol_display (
     wire [1:0] volDisp_col;
     wire [15:0] oled_vol, oled_border;
     wire [15:0] bor_col, bg_col, volCol_top, volCol_mid, volCol_bot;
+    reg [3:0] freezeNum = 0;
     
     // Border width using switches
     assign bor_wid = sw[1] ? 1 : (sw[2] ? 3 : 0);
- 
+    
+    // Freezing screen
+    always @ * begin
+        freezeNum = sw[5] ? freezeNum : num;
+    end
     // Convert pixel_index to x , y values
     convertXY xy0(pixel_index, x, y);
     // Mux to choose vol_bar colour
     colour_mux m1(sw[3], sw[4], bor_col, bg_col, volCol_top, volCol_mid, volCol_bot);
     // Border and volume bar
     border b0(bor_col, bg_col, bor_wid, x, y, oled_border);
-    vol_bar v0(bg_col, volCol_top, volCol_mid, volCol_bot, num, x, y, oled_vol);
+    vol_bar v0(bg_col, volCol_top, volCol_mid, volCol_bot, freezeNum, x, y, oled_vol);
     // Mux to choose oled to display
     oled_mux m0(x, y, oled_border, oled_vol, oled_data);
-
+    
+    
 endmodule

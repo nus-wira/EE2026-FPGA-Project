@@ -20,12 +20,12 @@ module Top_Student (
     output J_MIC3_Pin1,   // Connect to this signal from Audio_Capture.v
     output J_MIC3_Pin4,    // Connect to this signal from Audio_Capture.v
     input CLK100MHZ, btnC,
-    input [4:0] sw,
+    input [5:0] sw,
     output [15:0] led,
     output [7:0] JB, seg,
     output [3:0] an
     );
-    wire clk20k, clk6p25m, clk2, reset; // Clocks and reset
+    wire clk20k, clk6p25m, reset; // Clocks and reset
     wire frame_begin, sending_pixels, sample_pixel, teststate;
     wire [12:0] pixel_index;
     wire [11:0] mic_in;
@@ -36,7 +36,6 @@ module Top_Student (
     // Clocks
     clk_divider c0(CLK100MHZ, 12'd2499, clk20k); // 20 kHz
     clk_divider c1 (CLK100MHZ, 7, clk6p25m); // 6.25 MHz
-    clk_divider c2 (CLK100MHZ, 25'd24999999, clk2); // 2 Hz
     
     // Audio capture
     Audio_Capture ac0(

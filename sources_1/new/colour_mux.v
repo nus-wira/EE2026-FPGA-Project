@@ -56,7 +56,7 @@ module colour_mux(
             volCol_bot = GREEN;
         end        
         else begin
-            bor_col = BLACK;
+            bor_col = WHITE;
             bg_col = BLACK;
             volCol_top = BLACK;
             volCol_mid = BLACK;
