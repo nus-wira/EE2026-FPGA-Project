@@ -40,6 +40,9 @@ module airHockeyPaddles(
     parameter [15:0] RED = 16'b11111_000000_00000;
     parameter [15:0] BLUE = 16'b00000_000000_11111;
     
+    //assign initial position of audioPaddle
+    wire audioPaddleInitial = Height - paddleHeight/2;
+    
     //Booleans
     wire [3:0] UP;
     wire [3:0] AP;
@@ -77,12 +80,26 @@ module airHockeyPaddles(
             audioPaddleX <= Width - border;
             audioPaddleY <= Height/2;
         end
-        else if (audioPaddleY - (paddleHeight/2) > 0)
-            audioPaddleY <= audioPaddleY - pixelMove;
-        else if (audioPaddleY + (paddleHeight/2) < Height)
-            audioPaddleY <= audioPaddleY + pixelMove;
-        else 
-            audioPaddleY <= audioPaddleY;
+        else begin
+            case (num)
+            0: audioPaddleY <= audioPaddleInitial;
+            1: audioPaddleY <= audioPaddleInitial - pixelMove;
+            2: audioPaddleY <= audioPaddleInitial - (pixelMove * 2);
+            3: audioPaddleY <= audioPaddleInitial - (pixelMove * 3);
+            4: audioPaddleY <= audioPaddleInitial - (pixelMove * 4);
+            5: audioPaddleY <= audioPaddleInitial - (pixelMove * 5);
+            6: audioPaddleY <= audioPaddleInitial - (pixelMove * 6);
+            7: audioPaddleY <= audioPaddleInitial - (pixelMove * 7);
+            8: audioPaddleY <= audioPaddleInitial - (pixelMove * 8);
+            9: audioPaddleY <= audioPaddleInitial - (pixelMove * 9);
+            10: audioPaddleY <= audioPaddleInitial - (pixelMove * 10);
+            11: audioPaddleY <= audioPaddleInitial - (pixelMove * 11);
+            12: audioPaddleY <= audioPaddleInitial - (pixelMove * 12);
+            13: audioPaddleY <= audioPaddleInitial - (pixelMove * 13);
+            14: audioPaddleY <= audioPaddleInitial - (pixelMove * 14);
+            15: audioPaddleY <= audioPaddleInitial - (pixelMove * 15);
+            endcase
+        end
     end
     
     // Turning on the audio paddle
