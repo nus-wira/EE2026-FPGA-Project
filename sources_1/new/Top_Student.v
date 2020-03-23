@@ -20,10 +20,11 @@ module Top_Student (
     output J_MIC3_Pin1,   // Connect to this signal from Audio_Capture.v
     output J_MIC3_Pin4,    // Connect to this signal from Audio_Capture.v
     input CLK100MHZ, btnC,
-    input [5:0] sw,
+    input [15:0] sw,
     output [15:0] led,
     output [7:0] JB, seg,
-    output [3:0] an
+    output [3:0] an,
+    input btnU, btnD
     );
     wire clk20k, clk6p25m, reset; // Clocks and reset
     wire frame_begin, sending_pixels, sample_pixel, teststate;
@@ -61,5 +62,27 @@ module Top_Student (
     assign JB[2] = 0;
     assign seg[7] = 1; // dp
     
-    vol_display v0(sw, clk20k, num, pixel_index, oled_data);
+
+    wire [6:0] x,y,userPaddleX, userPaddleY, audioPaddleX, audioPaddleY;
+    wire userPaddleAppear,audioPaddleAppear;
+    wire [15:0] userPaddle_col, audioPaddle_col;
+    wire ball_on, clk50, pulU,pulD;
+//    vol_display v0(sw, clk20k, num, pixel_index, oled_data);
+
+    clk_divider c3(CLK100MHZ, 23'd999999, clk50);
+    convertXY xy0(pixel_index, x, y);
+    debounce_single_pulse dsp1 (btnU, clk6p25m, pulU);
+    debounce_single_pulse dsp2 (btnD, clk6p25m, pulD);
+    airHockeyPaddles a0(.btnU(pulU), .btnD(pulD), .clkPaddle(clk50), .sw15(sw[15]), 
+                        .x(x), .y(y),.num(num),
+                        .userPaddleAppear(userPaddleAppear), .audioPaddleAppear(audioPaddleAppear),  
+                        .userPaddleX(userPaddleX), .userPaddleY(userPaddleY), 
+                        .audioPaddleX(audioPaddleX), .audioPaddleY(audioPaddleY),
+                        .userPaddle_col(userPaddle_col), .audioPaddle_col(audioPaddle_col));
+    ball b0 (.clk(clk50), .x(x),.y(y),
+             .ypad_left(userPaddleY),.ypad_right(userPaddleX),
+             .ball_on(ball_on));
+    assign oled_data = userPaddleAppear ? userPaddle_col :
+                       audioPaddleAppear ? audioPaddle_col :
+                       ball_on ? ~16'b0 : 0;
 endmodule
