@@ -45,14 +45,15 @@ module ball(
     wire p1_pt, p2_pt;
     
     // Collision Booleans to be used to change direction
-    assign col_top = y_ball + ballSize == Height;
-    assign col_bot = y_ball == ballSize;
-    assign col_2_x = x_ball + ballSize == xpad_right;
+    assign col_top = ~dy && y_ball + ballSize + 1 == Height;
+    assign col_bot = dy && y_ball == ballSize;
+    assign col_2_x = x_ball + ballSize + 1 == xpad_right;
     assign col_2_y = y_ball < ypad_right + padHeight/2 && // within bar
                      y_ball > ypad_right - padHeight/2;
-    assign col_1_x = x_ball - ballSize == xpad_left;
+    assign col_1_x = x_ball - ballSize - 1 == xpad_left;
     assign col_1_y = y_ball < ypad_left + padHeight/2 && 
                      y_ball > ypad_right - padHeight/2;
+    // determine ball pass either side
     assign p1_pt = x_ball > xpad_right + padWidth;
     assign p2_pt = x_ball < xpad_left - padWidth;
     

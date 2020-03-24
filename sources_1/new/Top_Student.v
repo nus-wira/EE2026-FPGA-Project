@@ -71,18 +71,19 @@ module Top_Student (
 
     clk_divider c3(CLK100MHZ, 23'd999999, clk50);
     convertXY xy0(pixel_index, x, y);
-    debounce_single_pulse dsp1 (btnU, clk6p25m, pulU);
-    debounce_single_pulse dsp2 (btnD, clk6p25m, pulD);
-    airHockeyPaddles a0(.btnU(pulU), .btnD(pulD), .clkPaddle(clk50), .sw15(sw[15]), 
-                        .x(x), .y(y),.num(num),
-                        .userPaddleAppear(userPaddleAppear), .audioPaddleAppear(audioPaddleAppear),  
-                        .userPaddleX(userPaddleX), .userPaddleY(userPaddleY), 
-                        .audioPaddleX(audioPaddleX), .audioPaddleY(audioPaddleY),
-                        .userPaddle_col(userPaddle_col), .audioPaddle_col(audioPaddle_col));
-    ball b0 (.clk(clk50), .x(x),.y(y),
-             .ypad_left(userPaddleY),.ypad_right(userPaddleX),
-             .ball_on(ball_on));
-    assign oled_data = userPaddleAppear ? userPaddle_col :
-                       audioPaddleAppear ? audioPaddle_col :
-                       ball_on ? ~16'b0 : 0;
+//    debounce_single_pulse dsp1 (btnU, clk6p25m, pulU);
+//    debounce_single_pulse dsp2 (btnD, clk6p25m, pulD);
+//    airHockeyPaddles a0(.btnU(pulU), .btnD(pulD), .clkPaddle(clk50), .sw15(sw[15]), 
+//                        .x(x), .y(y),.num(num),
+//                        .userPaddleAppear(userPaddleAppear), .audioPaddleAppear(audioPaddleAppear),  
+//                        .userPaddleX(userPaddleX), .userPaddleY(userPaddleY), 
+//                        .audioPaddleX(audioPaddleX), .audioPaddleY(audioPaddleY),
+//                        .userPaddle_col(userPaddle_col), .audioPaddle_col(audioPaddle_col));
+//    ball b0 (.clk(clk50), .x(x),.y(y),
+//             .ypad_left(userPaddleY),.ypad_right(userPaddleX),
+//             .ball_on(ball_on));
+//    assign oled_data = userPaddleAppear ? userPaddle_col :
+//                       audioPaddleAppear ? audioPaddle_col :
+//                       ball_on ? ~16'b0 : 0;
+    wave w0 (.clk(CLK100MHZ), .mic_in(mic_in),.x(x), .y(y),.oled_data(oled_data));
 endmodule
