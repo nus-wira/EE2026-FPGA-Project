@@ -85,7 +85,7 @@ module Top_Student (
 //    assign oled_data = userPaddleAppear ? userPaddle_col :
 //                       audioPaddleAppear ? audioPaddle_col :
 //                       ball_on ? ~16'b0 : 0;
-//    wave w0 (.clk(CLK100MHZ), .mic_in(mic_in),.x(x), .y(y),.oled_data(oled_data));
+//    wave w0 (.clk(clk20k), .mic_in(mic_in),.x(x), .y(y),.oled_data(oled_data));
       
       menuGUI menu0 (.x(x), .y(y), .oled_data(oled_data));
 
