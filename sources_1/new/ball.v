@@ -21,9 +21,9 @@
 
 
 module ball(
-    input clk,
+    input clk, rst,
     input [6:0] x,y,ypad_left,ypad_right,
-    output ball_on // boolean to have ball on
+    output ball_on, p1_pt, p2_pt
     );
     localparam Width = 96;
     localparam Height = 64;
@@ -42,7 +42,6 @@ module ball(
     // To store booleans
     wire col_top, col_bot;
     wire col_1_x, col_1_y, col_2_x, col_2_y;
-    wire p1_pt, p2_pt;
     
     // Collision Booleans to be used to change direction
     assign col_bot = dy && y_ball + ballSize + 1 == Height;
@@ -67,7 +66,7 @@ module ball(
         // toggle x direction when hitting paddles
         dx <= col_2_x && col_2_y || col_1_x && col_1_y ? ~dx : dx;
         
-        if (p1_pt || p2_pt) begin
+        if (p1_pt || p2_pt || rst) begin
             x_ball <= Width/2;
             y_ball <= Height/2;
         end else begin

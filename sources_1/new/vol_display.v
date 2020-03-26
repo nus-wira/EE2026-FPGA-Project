@@ -23,11 +23,10 @@ module vol_display (
     input [5:0] sw,
     input clk,
     input [3:0] num,
-    input [12:0] pixel_index,
+    input [6:0] x,y,
     output [15:0] oled_data
     );
     
-    wire [6:0] x,y;
     wire [1:0] bor_wid;
     wire [1:0] volDisp_col;
     wire [15:0] oled_vol, oled_border;
@@ -41,8 +40,7 @@ module vol_display (
     always @ (posedge clk) begin
         freezeNum = sw[5] ? freezeNum : num;
     end
-    // Convert pixel_index to x , y values
-    convertXY xy0(pixel_index, x, y);
+    
     // Mux to choose vol_bar colour
     colour_mux m1(sw[3], sw[4], bor_col, bg_col, volCol_top, volCol_mid, volCol_bot);
     // Border and volume bar

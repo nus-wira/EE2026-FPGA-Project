@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module airHockeyPaddles(
-    input btnU, btnD, clkPaddle, sw15, 
+    input btnU, btnD, clkPaddle, sw15, rst,
     input [6:0] x, y,
     input [3:0] num,
     output userPaddleAppear, audioPaddleAppear,  
@@ -62,9 +62,20 @@ module airHockeyPaddles(
         audioPaddleX = Width - border - 1;
         audioPaddleY = Height/2;
     end
+    
+    // Audio Paddle positioning
+    wire [6:0] nextAudioY;
+    assign nextAudioY = audioPaddleInitial - audioMove * num;
+    
     // User's Paddle
     always @ (posedge clkPaddle) begin
-        if (sw15) begin
+        if (rst || !sw15) begin
+            userPaddleY <= Height/2;
+            audioPaddleY <= Height/2;
+        end else begin
+            // Audio Paddle
+            audioPaddleY <= nextAudioY >= paddleHeight/2 ? nextAudioY : paddleHeight/2;
+            // User Paddle
             if (btnU)
                 //prevent from going out of bounds
                 userPaddleY <= userPaddleY - paddleHeight/2 < pixelMove ? paddleHeight/2 : userPaddleY - pixelMove;
@@ -75,24 +86,14 @@ module airHockeyPaddles(
     end
     
     // Turning on the user's paddle
-    // equivalent to !(~UP) - only true when all bits of UP are 1
+    // only true when all bits of UP are 1
     assign userPaddleAppear = !(~UP);
-//    assign userPaddleAppear = (UP[0] && UP[1] && UP[2] && UP[3]);
     // assigning colour to user's paddle
     assign userPaddle_col = RED; 
     
-    // Audio Paddle
-    wire [6:0] nextAudioY;
-    assign nextAudioY = audioPaddleInitial - audioMove * num;
-    
-    always @ (posedge clkPaddle) begin
-        audioPaddleY <= nextAudioY >= paddleHeight/2 ? nextAudioY : paddleHeight/2;
-    end
-    
     // Turning on the audio paddle
-    // equivalent to !(~AP) - only true when all bits of AP are 1
+    // only true when all bits of AP are 1
     assign audioPaddleAppear = !(~AP);
-//    assign audioPaddleAppear = (AP[0] && AP[1] && AP[2] && AP[3]);
     // assigning colour to audio paddle
     assign audioPaddle_col = BLUE;    
     
