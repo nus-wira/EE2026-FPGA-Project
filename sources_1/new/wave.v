@@ -24,11 +24,15 @@ module wave(
     input clk,
     input [11:0] mic_in,
     input [6:0] x, y,
-    output reg [15:0] oled_data = 0
+    output [15:0] oled_data
     );
-    localparam Width = 64;
-    parameter [15:0] BLACK = ~16'b0;
+    localparam Width = 96;
+    localparam Height = 64;
+    parameter [15:0] BLACK = 16'b0;
     parameter [15:0] WHITE = ~BLACK;
+    parameter [15:0] GREEN = 16'b00000_111111_00000;
+    parameter [15:0] YELLOW = 16'b11111_111111_00000;
+    parameter [15:0] RED = 16'b11111_000000_00000;
     
     reg [11:0] mic_data [Width-1:0];
     integer i;
@@ -38,24 +42,29 @@ module wave(
         end
     end
     
-    reg [5:0] num = 0; // value from 0 to 63
-//    reg [6:0] countx = 0; // 0 to 95
+    wire [5:0] num; // value from 0 to 63
+    reg [6:0] countx = 0; // 0 to 95
     
-    wire clk4;
-    clk_divider c0 (clk, 24'd12499999, clk4); //4Hz
     
-
-    always @ (posedge clk4) begin
-        // replace values with the next one
-        for (i = 0; i < Width - 1; i = i + 1) begin
-            mic_data[i] <= mic_data[i+1];
-        end
+    always @ (posedge clk) begin
+        countx <= countx == Width - 1 ? 0 : countx + 1;
         // get new mic_in value
-        mic_data[Width - 1] <= mic_in;
-        // convert to a volume level
-        num <= mic_data[x][11] ? mic_data[x][10:5] : 0;
-        oled_data <= num == y ? WHITE : BLACK;
+        mic_data[countx] <= countx < Width - 1 ? mic_data[countx+1] : mic_in;
     end
+    
+    
+    wire ygre, yyel, yred;
+    wire [6:0] yreflect;
+    parameter [6:0] barRange = 21;
+    
+    assign num = mic_data[x][11] ? mic_data[x][10:5] : 0;
+    assign yreflect = Height - 1 - y;
+    assign ygre = (yreflect < num && num >= 1 && num <= barRange);
+    assign yyel = (yreflect < num && num >= 1+barRange && num <= 2*barRange);
+    assign yred = (yreflect < num && num >= 1+2*barRange);
+    
+    assign oled_data = ygre ? GREEN : yyel ? YELLOW : yred ? RED :
+                       !num && !yreflect ? WHITE : BLACK;
     
     
 endmodule
