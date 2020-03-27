@@ -30,9 +30,9 @@ module menuGUI(
     
     wire menuLength;
     wire [6:0] menuX;
-    wire v, o, l, u, e, b, a, a1, r, E;
-    wire p, p1, g, arrow1, arrow2;
-    wire menu, volbar, pingpong;
+    wire v, o, l, u, e, b, a, a1, r, w, Wa, Wa1, Wa2, Wv, We, E;
+    wire p, p1, g, arrow1, arrow2, arrow3, arrow4;
+    wire menu, volbar, pingpong, wave;
     
     // Booleans
     assign menuLength = (y >= 3 && y <= 16);
@@ -57,10 +57,18 @@ module menuGUI(
     assign p = (y >= 32 && y <= 38);
     assign p1 = (x == 13 || x == 14);
     assign g = (y == 32 || y == 38);
+    assign w = (y >= 42 && y <= 47);
+    assign Wa = (y >= 45 && y <= 48);
+    assign Wa1 = (x >= 21 && x <= 23);
+    assign Wa2 = (y >= 42 && y <= 48);
+    assign Wv = (y >= 42 && y <= 46);
+    assign We = (x >= 33 && x <= 35);
     
     // ARROWS
     assign arrow1 = (((y >= 23 && y <= 27) && x == 3) || (x == 4 && (y == 23 || y == 27))  || (x == 5 && (y == 24 || y == 26)) || (x == 6 && y == 25));
     assign arrow2 = (((y >= 33 && y <= 37) && x == 3) || (x == 4 && (y == 33 || y == 37))  || (x == 5 && (y == 34 || y == 36)) || (x == 6 && y == 35));
+    assign arrow3 = (((y >= 43 && y <= 47) && x == 3) || (x == 4 && (y == 43 || y == 47))  || (x == 5 && (y == 44 || y == 46)) || (x == 6 && y == 45));
+    assign arrow4 = (((y >= 53 && y <= 57) && x == 3) || (x == 4 && (y == 53 || y == 57))  || (x == 5 && (y == 54 || y == 56)) || (x == 6 && y == 55));
     
     // MENU
     assign menu = ((menuX[4:0] && menuLength) // Straight lines for 7 pixels (M, E, N)
@@ -80,7 +88,7 @@ module menuGUI(
                 || ((x == 56 && l) || (x == 52 && a) || (a1 && y == 26) || (x == 55 && y == 22) || (x == 54 && y == 23) || (x == 53 && y == 24)) // a
                 || ((x == 58 && l) || ((y == 25 || y == 22) && r) || ((y == 23 || y == 24) && x == 61) || (x == 60 && y == 26) || (x == 61 && y == 27) || (x == 62 && y == 28))); //r
     // PING PONG
-    assign pingpong = ((p && x == 12) || (p1 && (y == 32 || y ==35)) || ((y == 33 || y == 34) && x == 15) // P
+    assign pingpong = ((p && x == 12) || (p1 && (y == 32 || y == 35)) || ((y == 33 || y == 34) && x == 15) // P
                        || (x == 17 && p) // I
                        || (((x == 19 || x == 23) && p) || (y == 34 && x == 20) || (y == 35 && x == 21) || (y == 36 && x == 22)) // N
                        || ((x == 25 && (y >= 33 && y <= 37)) || (g && (x == 26 || x == 27)) || ((y == 33 || y == 37) && x == 28) || (x == 29 && (y == 37 || y == 38))) // G
@@ -89,8 +97,15 @@ module menuGUI(
                        || (((x == 44 || x == 48) && p) || (y == 34 && x == 45) || (y == 35 && x == 46) || (y == 36 && x == 47)) // N
                        || ((x == 50 && (y >= 33 && y <= 37)) || (g && (x == 51 || x == 52)) || ((y == 33 || y == 37) && x == 53) || (x == 54 && (y == 37 || y == 38)))); // G
     
+    // WAVE
+    assign wave = ((w && (x == 12 || x == 15 || x == 18)) || ((x == 13 || x == 14 || x == 16 || x == 17) && y == 48) // w
+                    || ((x == 24 && Wa2) || (x == 20 && Wa) || (Wa1 && y == 45) || (x == 23 && y == 42) || (x == 22 && y == 43) || (x == 21 && y == 44)) // a
+                    || ((Wv && (x == 26 || x == 30)) || (x == 27 && y == 47) || (x == 28 && y == 48) || (x == 29 && y == 47)) // v
+                    || (Wa2 && x == 32) || (We && (y == 42 || y == 45 || y == 48))); // e
+    
+    
     always @ (*) begin
-        if (menu || volbar || pingpong || arrow1 || arrow2)
+        if (menu || volbar || pingpong || wave || arrow1 || arrow2 || arrow3 || arrow4)
             oled_data = WHITE;
        else 
             oled_data = BLACK;
