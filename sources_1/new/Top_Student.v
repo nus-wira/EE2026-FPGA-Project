@@ -28,7 +28,7 @@ module Top_Student (
     );
     // Clocks and buttons
     wire clk20k, clk6p25m, clk50, pulU,pulD, pulR, reset; 
-    wire frame_begin, sending_pixels, sample_pixel, teststate;
+    wire frame_begin, sending_pixels, sample_pixel;
     wire [4:0] teststate;
 
     // Volume data from Audio_capture
@@ -97,7 +97,7 @@ module Top_Student (
     assign state = sw[14:12];
     
     // 0: menu, 1: peak detector, 2: pong, 3: wave
-    final_mux mux00(.state(state), .an_vol(an_vol), .an_pong(an_pong), .seg_vol(seg_vol), .seg_pong(seg_pong),
+    final_mux mux00(.clk(CLK100MHZ), .state(state), .an_vol(an_vol), .an_pong(an_pong), .seg_vol(seg_vol), .seg_pong(seg_pong),
                     .oled_menu(oled_menu), .oled_pong(oled_pong), .oled_wave(oled_wave), .oled_vol(oled_vol), 
                     .led_vol(led_vol), .an(an), .seg(seg),.oled_data(oled_data), .led(led));
 
