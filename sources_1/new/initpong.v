@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 03/26/2020 05:32:18 PM
+// Create Date: 03/28/2020 03:06:40 PM
 // Design Name: 
-// Module Name: score
+// Module Name: initpong
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,34 +20,21 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module score(
-    input clk, clkseg, p1_pt, p2_pt, rst,
+module initpong(
+    input clkseg,
     output reg [3:0] an = ~4'b0,
     output reg [7:0] seg = ~8'b0
     );
-    reg [6:0] p1 = 0, p2 = 0;
     reg [1:0] count = 0;
-    
-    wire [6:0] seg0, seg1, seg2, seg3;
-
-    
-    always @ (posedge clk) begin
-        p1 <= rst ? 0 : p1_pt ? p1 + 1 : p1;
-        p2 <= rst ? 0 : p2_pt ? p2 + 1 : p2;
-    end
-    
-    pt7seg ps0(clk, p1, seg3, seg2);
-    pt7seg ps1(clk, p2, seg1, seg0);
     
     always @ (posedge clkseg) begin
         count <= count + 1;
         an <= ~(1 << count);
-        seg[7] <= count != 2;
         case (count)
-            0: seg[6:0] <= seg0;
-            1: seg[6:0] <= seg1;
-            2: seg[6:0] <= seg2;
-            3: seg[6:0] <= seg3;
+            3: seg[6:0] <= 7'b0001100; //P
+            2: seg[6:0] <= 7'b1000000; //O
+            1: seg[6:0] <= 7'b0101011; //n
+            0: seg[6:0] <= 7'b0010000; //g
         endcase
     end
 endmodule

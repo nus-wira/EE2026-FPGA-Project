@@ -27,7 +27,7 @@ module Top_Student (
     input btnU, btnD, btnR
     );
     // Clocks and buttons
-    wire clk20k, clk6p25m, clk50, pulU,pulD, pulR, reset; 
+    wire clk20k, clk6p25m, clk50, clk381, pulU,pulD, pulR, reset; 
     wire frame_begin, sending_pixels, sample_pixel;
     wire [4:0] teststate;
 
@@ -49,6 +49,7 @@ module Top_Student (
     clk_divider c0(CLK100MHZ, 12'd2499, clk20k); // 20 kHz
     clk_divider c1 (CLK100MHZ, 7, clk6p25m); // 6.25 MHz
     clk_divider c2(CLK100MHZ, 23'd999999, clk50); // 50 Hz
+    clk_divider c3(CLK100MHZ, 14'd13122, clk381); // 381 Hz for 7 seg
     
     // Buttons
     debounce_single_pulse dsp0 (btnC, clk6p25m, reset); // To change to be menu button
@@ -75,12 +76,12 @@ module Top_Student (
     convertXY xy0(pixel_index, x, y);
     
     // Peak Detector
-    intensity i0 (.clk(CLK100MHZ), .E(sw[0]), .mic_in(mic_in), .led(led_vol), .an(an_vol), .seg(seg_vol), .num(num));  
+    intensity i0 (.clk(CLK100MHZ), .clkseg(clk381), .E(sw[0]), .mic_in(mic_in), .led(led_vol), .an(an_vol), .seg(seg_vol), .num(num));  
     // Oled display peak detector
     vol_display v0(sw, clk20k, num, x,y, oled_vol);
     
     // Pong
-    pong p0(.clk(clk50), .sw(sw[2:0]), .btnU(pulU), .btnD(pulD), .btnR(pulR), .x(x), .y(y),
+    pong p0(.clk(clk50), .clkseg(clk381), .sw(sw[2:0]), .btnU(pulU), .btnD(pulD), .btnR(pulR), .x(x), .y(y),
             .num(num), .oled_data(oled_pong),.an(an_pong),.seg(seg_pong));
     
     // Wave
