@@ -21,7 +21,7 @@
 
 
 module score(
-    input clk, clkseg, p1_pt, p2_pt, rst,
+    input clk, clkseg, p1_pt, p2_pt, E, rst,
     output reg [3:0] an = ~4'b0,
     output reg [7:0] seg = ~8'b0
     );
@@ -32,8 +32,8 @@ module score(
 
     
     always @ (posedge clk) begin
-        p1 <= rst ? 0 : p1_pt ? p1 + 1 : p1;
-        p2 <= rst ? 0 : p2_pt ? p2 + 1 : p2;
+        p1 <= !E || rst ? 0 : p1_pt ? p1 + 1 : p1;
+        p2 <= !E || rst ? 0 : p2_pt ? p2 + 1 : p2;
     end
     
     pt7seg ps0(clk, p1, seg3, seg2);

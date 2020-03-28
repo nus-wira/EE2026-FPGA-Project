@@ -26,8 +26,11 @@ module Top_Student (
     output [3:0] an,
     input btnU, btnD, btnR
     );
-    // Clocks and buttons
-    wire clk20k, clk6p25m, clk50, clk381, pulU,pulD, pulR, reset; 
+    // Clocks, buttons,states
+    wire clk20k, clk6p25m, clk50, clk381;
+    wire pulU,pulD, pulR, pulC, reset, pongE; 
+    wire [2:0] state;
+    // Unused Oled_Display wires
     wire frame_begin, sending_pixels, sample_pixel;
     wire [4:0] teststate;
 
@@ -47,7 +50,7 @@ module Top_Student (
 
     // Clocks
     clk_divider c0(CLK100MHZ, 12'd2499, clk20k); // 20 kHz
-    clk_divider c1 (CLK100MHZ, 7, clk6p25m); // 6.25 MHz
+    clk_divider c1(CLK100MHZ, 7, clk6p25m); // 6.25 MHz
     clk_divider c2(CLK100MHZ, 23'd999999, clk50); // 50 Hz
     clk_divider c3(CLK100MHZ, 14'd13122, clk381); // 381 Hz for 7 seg
     
@@ -56,6 +59,7 @@ module Top_Student (
     debounce_single_pulse dsp1 (btnU, clk50, pulU);
     debounce_single_pulse dsp2 (btnD, clk50, pulD);
     debounce_single_pulse dsp3 (btnR, clk50, pulR);
+    debounce_single_pulse dsp4 (btnC, clk50, pulC);
     
     // Audio capture
     Audio_Capture ac0(
@@ -81,8 +85,8 @@ module Top_Student (
     vol_display v0(sw, clk20k, num, x,y, oled_vol);
     
     // Pong
-    pong p0(.clk(clk50), .clkseg(clk381), .sw(sw[2:0]), .btnU(pulU), .btnD(pulD), .btnR(pulR), .x(x), .y(y),
-            .num(num), .oled_data(oled_pong),.an(an_pong),.seg(seg_pong));
+    pong p0(.clk(clk50), .clkseg(clk381), .sw(sw[2:0]), .btnU(pulU), .btnD(pulD), .btnR(pulR), .flag(pongE),
+            .x(x), .y(y), .num(num), .oled_data(oled_pong),.an(an_pong),.seg(seg_pong));
     
     // Wave
     wave w0 (.clk(clk20k), .mic_in(mic_in),.x(x), .y(y),.oled_data(oled_wave));
@@ -92,10 +96,13 @@ module Top_Student (
     
     // Empty bit
     assign JB[2] = 0;
+    // Enable pong if in correct state
+    assign pongE = state == 2;
     
-    // for testing
-    wire [2:0] state;
+    // for testing state changes
     assign state = sw[14:12];
+    // Final change state for when menu_state change is setup
+    // changestate cs0(clk50, pulC, menu_flag, state);
     
     // 0: menu, 1: peak detector, 2: pong, 3: wave
     final_mux mux00(.clk(CLK100MHZ), .state(state), .an_vol(an_vol), .an_pong(an_pong), .seg_vol(seg_vol), .seg_pong(seg_pong),
