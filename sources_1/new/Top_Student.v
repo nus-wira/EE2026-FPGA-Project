@@ -80,7 +80,7 @@ module Top_Student (
     vol_display v0(sw, clk20k, num, x,y, oled_vol);
     
     // Pong
-    pong p0(.clk(clk50), .sw(sw[15]), .btnU(pulU), .btnD(pulD), .btnR(pulR), .x(x), .y(y),
+    pong p0(.clk(clk50), .sw(sw[2:0]), .btnU(pulU), .btnD(pulD), .btnR(pulR), .x(x), .y(y),
             .num(num), .oled_data(oled_pong),.an(an_pong),.seg(seg_pong));
     
     // Wave

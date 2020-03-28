@@ -21,7 +21,8 @@
 
 
 module pong(
-    input clk, sw, btnU, btnD, btnR,
+    input clk, btnU, btnD, btnR,
+    input [2:0] sw,
     input [6:0] x, y,
     input [3:0] num,
     output [15:0] oled_data,
@@ -37,13 +38,13 @@ module pong(
     // Paddle colours
     wire [15:0] userPaddle_col, audioPaddle_col;
     
-    airHockeyPaddles a0(.btnU(btnU), .btnD(btnD), .clkPaddle(clk), .sw15(sw), .rst(btnR),
+    airHockeyPaddles a0(.btnU(btnU), .btnD(btnD), .clkPaddle(clk), .sw(sw[0]), .rst(btnR),
                         .x(x), .y(y),.num(num),
                         .userPaddleAppear(userPaddleAppear), .audioPaddleAppear(audioPaddleAppear),  
                         .userPaddleX(userPaddleX), .userPaddleY(userPaddleY), 
                         .audioPaddleX(audioPaddleX), .audioPaddleY(audioPaddleY),
                         .userPaddle_col(userPaddle_col), .audioPaddle_col(audioPaddle_col));
-    ball b0 (.clk(clk), .rst(btnR), .x(x),.y(y), .ypad_left(userPaddleY),.ypad_right(userPaddleX), 
+    ball b0 (.clk(clk), .E(sw[0]), .rst(btnR), .diff(sw[2:1]), .x(x),.y(y), .ypad_left(userPaddleY),.ypad_right(audioPaddleY), 
              .ball_on(ball_on), .p1_pt(p1_pt), .p2_pt(p2_pt) );
     score s0 (.clk(clk), .p1_pt(p1_pt), .p2_pt(p2_pt), .rst(btnR), .an(an), .seg(seg));
     

@@ -21,7 +21,8 @@
 
 
 module ball(
-    input clk, rst,
+    input clk, E, rst,
+    input [1:0] diff, //difficulty, change x velocity of ball
     input [6:0] x,y,ypad_left,ypad_right,
     output ball_on, p1_pt, p2_pt
     );
@@ -38,18 +39,23 @@ module ball(
     reg dx = 1,dy = 1;
     //  ball position
     reg [6:0] x_ball = Width/2, y_ball = Height/2;
+    // ball velocity
+    wire [1:0] xvel;
     
     // To store booleans
     wire col_top, col_bot;
     wire col_1_x, col_1_y, col_2_x, col_2_y;
     
+    // x velocity of ball
+    assign xvel = 1 + diff;
+    
     // Collision Booleans to be used to change direction
     assign col_bot = dy && y_ball + ballSize + 1 == Height;
     assign col_top = ~dy && y_ball == ballSize;
-    assign col_2_x = dx && x_ball + ballSize + 1 == xpad_right;
+    assign col_2_x = dx && x_ball + ballSize + xvel == xpad_right;
     assign col_2_y = y_ball <= ypad_right + padHeight/2 && // within bar
                      y_ball >= ypad_right - padHeight/2;
-    assign col_1_x = ~dx && x_ball - ballSize - 1 == xpad_left;
+    assign col_1_x = ~dx && x_ball - ballSize - xvel == xpad_left;
     assign col_1_y = y_ball <= ypad_left + padHeight/2 && 
                      y_ball >= ypad_left - padHeight/2;
     // determine ball pass either side
@@ -66,11 +72,11 @@ module ball(
         // toggle x direction when hitting paddles
         dx <= col_2_x && col_2_y || col_1_x && col_1_y ? ~dx : dx;
         
-        if (p1_pt || p2_pt || rst) begin
+        if (p1_pt || p2_pt || rst || !E) begin
             x_ball <= Width/2;
             y_ball <= Height/2;
         end else begin
-            x_ball <= dx ? x_ball + 1 : x_ball - 1;
+            x_ball <= dx ? x_ball + xvel : x_ball - xvel;
             y_ball <= dy ? y_ball + 1 : y_ball - 1;
         end
         

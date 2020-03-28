@@ -40,7 +40,7 @@ module score(
     pt7seg ps1(clk, p2, seg1, seg0);
     
     always @ (posedge clk381) begin
-        count <= count == 3 ? 0 : count + 1;
+        count <= count + 1;
         an <= ~(1 << count);
         seg[7] <= count != 2;
         case (count)
@@ -49,23 +49,5 @@ module score(
             2: seg[6:0] <= seg2;
             3: seg[6:0] <= seg3;
         endcase
-//        case (count)
-//        0: begin
-//            an <= 4'b1110;
-//            seg <= seg0;
-//        end
-//        1: begin
-//            an <= 4'b1101;
-//            seg <= seg1;
-//        end
-//        2: begin
-//            an <= 4'b1011;
-//            seg <= seg1;
-//        end
-//        3: begin
-//            an <= 4'b0111;
-//            seg <= seg1;
-//        end
-//        endcase
     end
 endmodule

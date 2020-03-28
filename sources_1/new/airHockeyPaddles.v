@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module airHockeyPaddles(
-    input btnU, btnD, clkPaddle, sw15, rst,
+    input btnU, btnD, clkPaddle, sw, rst,
     input [6:0] x, y,
     input [3:0] num,
     output userPaddleAppear, audioPaddleAppear,  
@@ -69,7 +69,7 @@ module airHockeyPaddles(
     
     // User's Paddle
     always @ (posedge clkPaddle) begin
-        if (rst || !sw15) begin
+        if (rst || !sw) begin
             userPaddleY <= Height/2;
             audioPaddleY <= Height/2;
         end else begin
