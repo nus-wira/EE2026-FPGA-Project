@@ -21,9 +21,9 @@
 
 
 module menuGUI(
-    input [6:0] x, y, 
-//    input [2:0] state,
-    output reg [15:0] oled_data
+    input clk, btnU, btnD,
+    input [6:0] x, y,
+    output [15:0] oled_data
     );
     parameter [15:0] BLACK = 16'b0;
     parameter [15:0] WHITE = ~BLACK;
@@ -33,6 +33,11 @@ module menuGUI(
     wire v, o, l, u, e, b, a, a1, r, w, Wa, Wa1, Wa2, Wv, We, E;
     wire p, p1, g, arrow1, arrow2, arrow3, arrow4;
     wire menu, volbar, pingpong, wave;
+    
+    // state
+    wire boxwidth, box1, box2, box3, box4;
+    wire [15:0] menudisp [4:0];
+    reg [3:0] state;
     
     // Booleans
     assign menuLength = (y >= 3 && y <= 16);
@@ -103,12 +108,24 @@ module menuGUI(
                     || ((Wv && (x == 26 || x == 30)) || (x == 27 && y == 47) || (x == 28 && y == 48) || (x == 29 && y == 47)) // v
                     || (Wa2 && x == 32) || (We && (y == 42 || y == 45 || y == 48))); // e
     
+    //border widths & boxes for selections
+    assign boxwidth = (x >= 0 && x <= 95);
+    assign box1 = (y >= 21 && y <= 29) && boxwidth && ~volbar && ~arrow1;
+    assign box2 = (y >= 31 && y <= 39) && boxwidth && ~pingpong && ~arrow2;
+    assign box3 = (y >= 41 && y <= 49) && boxwidth && ~wave && ~arrow3;
+    assign box4 = (y >= 51 && y <= 59) && boxwidth && ~arrow4;
     
-    always @ (*) begin
-        if (menu || volbar || pingpong || wave || arrow1 || arrow2 || arrow3 || arrow4)
-            oled_data = WHITE;
-       else 
-            oled_data = BLACK;
+    //MENU display for respective states
+    assign menudisp[0] = (menu || volbar || pingpong || wave);
+    assign menudisp[1] = (menu || pingpong || wave || box1);
+    assign menudisp[2] = (menu || volbar || wave || box2); 
+    assign menudisp[3] = (menu || volbar || pingpong || box3); 
+//    assign menudisp[4] = (menu || pingpong || wave || box4); 
+
+    always @ (posedge clk) begin
+        state <= btnU && state != 0 ? state - 1 : btnD && state != 3 ? state + 1 : state;
     end
     
+    assign oled_data = menudisp[state] ? WHITE : BLACK;
+
 endmodule
