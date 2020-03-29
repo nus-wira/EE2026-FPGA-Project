@@ -82,7 +82,7 @@ module Top_Student (
     // Peak Detector
     intensity i0 (.clk(CLK100MHZ), .clkseg(clk381), .E(sw[0]), .mic_in(mic_in), .led(led_vol), .an(an_vol), .seg(seg_vol), .num(num));  
     // Oled display peak detector
-    vol_display v0(sw, clk20k, num, x,y, oled_vol);
+    vol_display v0(sw[5:0], clk20k, num, x,y, oled_vol);
     
     // Pong
     pong p0(.clk(clk50), .clkseg(clk381), .sw(sw[2:0]), .btnU(pulU), .btnD(pulD), .btnR(pulR), .flag(pongE),

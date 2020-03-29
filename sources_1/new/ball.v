@@ -37,13 +37,14 @@ module ball(
     // dx = 1 -> right, dx = 0 -> left
     // dy = 1 -> down, dy = 0 -> up
     reg dx = 1,dy = 1;
+    reg [1:0] st_state = 0;
     //  ball position
     reg [6:0] x_ball = Width/2, y_ball = Height/2;
-    // ball velocity
+    // ball velocity, start state
     wire [1:0] xvel;
     
     // To store booleans
-    wire col_top, col_bot;
+    wire col_top, col_bot, restart;
     wire col_1_x, col_1_y, col_2_x, col_2_y;
     
     // x velocity of ball
@@ -66,16 +67,23 @@ module ball(
     assign ball_on = x > x_ball - ballSize && x < x_ball + ballSize &&
                      y > y_ball - ballSize && y < y_ball + ballSize;
     
+    // Restart in the middle
+    assign restart = p1_pt || p2_pt || rst || !E;
+    
     always @ (posedge clk) begin
-        // toggle y direction when at top or bottom
-        dy <= col_top || col_bot ? ~dy : dy;
-        // toggle x direction when hitting paddles
-        dx <= col_2_x && col_2_y || col_1_x && col_1_y ? ~dx : dx;
-        
-        if (p1_pt || p2_pt || rst || !E) begin
+        if (restart) begin
+            // Start state 0 - 4. 0:up+right, 1: down+right, 2: up+left, 3:down+left
+            // Sets direction of ball when restart
+            st_state <= st_state + 1;
             x_ball <= Width/2;
             y_ball <= Height/2;
+            dx <= st_state[0];
+            dy <= st_state[1];
         end else begin
+            // toggle y direction when at top or bottom
+            dy <= col_top || col_bot ? ~dy : dy;
+            // toggle x direction when hitting paddles
+            dx <= col_2_x && col_2_y || col_1_x && col_1_y ? ~dx : dx;
             x_ball <= dx ? x_ball + xvel : x_ball - xvel;
             y_ball <= dy ? y_ball + 1 : y_ball - 1;
         end
