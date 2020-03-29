@@ -92,7 +92,7 @@ module Top_Student (
     wave w0 (.clk(clk20k), .mic_in(mic_in),.x(x), .y(y),.oled_data(oled_wave));
     
     // Menu
-    menuGUI menu0 (.x(x), .y(y), .clk(clk50), .btnU(pulU), .btnD(pulD), .oled_data(oled_menu));
+    menuGUI menu0 (.x(x), .y(y), .clk(clk50), .btnU(pulU), .btnD(pulD), .sw0(sw[0]), .oled_data(oled_menu));
     
     // Empty bit
     assign JB[2] = 0;

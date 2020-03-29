@@ -21,9 +21,9 @@
 
 
 module menuGUI(
-    input clk, btnU, btnD,
+    input clk, btnU, btnD, sw0,
     input [6:0] x, y,
-    output [15:0] oled_data
+    output reg [15:0] oled_data
     );
     parameter [15:0] BLACK = 16'b0;
     parameter [15:0] WHITE = ~BLACK;
@@ -126,6 +126,11 @@ module menuGUI(
         state <= btnU && state != 0 ? state - 1 : btnD && state != 3 ? state + 1 : state;
     end
     
-    assign oled_data = menudisp[state] ? WHITE : BLACK;
+    always @ (*) begin
+        if(sw0)
+           oled_data = menudisp[state] ? BLACK : WHITE;
+        else
+           oled_data = menudisp[state] ? WHITE : BLACK; 
+    end 
 
 endmodule
