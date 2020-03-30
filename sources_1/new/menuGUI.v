@@ -23,7 +23,8 @@
 module menuGUI(
     input clk, btnU, btnD, sw0,
     input [6:0] x, y,
-    output reg [15:0] oled_data
+    output reg [15:0] oled_data, 
+    output reg [2:0] state
     );
     parameter [15:0] BLACK = 16'b0;
     parameter [15:0] WHITE = ~BLACK;
@@ -37,7 +38,7 @@ module menuGUI(
     // state
     wire boxwidth, box1, box2, box3, box4;
     wire [15:0] menudisp [4:0];
-    reg [3:0] state;
+    
     
     // Booleans
     assign menuLength = (y >= 3 && y <= 16);

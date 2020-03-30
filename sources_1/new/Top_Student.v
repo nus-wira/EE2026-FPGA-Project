@@ -29,7 +29,7 @@ module Top_Student (
     // Clocks, buttons,states
     wire clk20k, clk6p25m, clk50, clk381;
     wire pulU,pulD, pulR, pulC, reset, pongE; 
-    wire [2:0] state;
+    wire [2:0] state, menu_flag;
     // Unused Oled_Display wires
     wire frame_begin, sending_pixels, sample_pixel;
     wire [4:0] teststate;
@@ -92,7 +92,8 @@ module Top_Student (
     wave w0 (.clk(clk20k), .mic_in(mic_in),.x(x), .y(y),.oled_data(oled_wave));
     
     // Menu
-    menuGUI menu0 (.x(x), .y(y), .clk(clk50), .btnU(pulU), .btnD(pulD), .sw0(sw[0]), .oled_data(oled_menu));
+    menuGUI menu0 (.x(x), .y(y), .clk(clk50), .btnU(pulU), .btnD(pulD), 
+                   .sw0(sw[0]), .oled_data(oled_menu), .state(menu_flag));
     
     // Empty bit
     assign JB[2] = 0;
@@ -100,9 +101,9 @@ module Top_Student (
     assign pongE = state == 2;
     
     // for testing state changes
-    assign state = sw[14:12];
+//    assign state = sw[14:12];
     // Final change state for when menu_state change is setup
-    // changestate cs0(clk50, pulC, menu_flag, state);
+     changestate cs0(clk50, pulC, menu_flag, state);
     
     // 0: menu, 1: peak detector, 2: pong, 3: wave
     final_mux mux00(.clk(CLK100MHZ), .state(state), .an_vol(an_vol), .an_pong(an_pong), .seg_vol(seg_vol), .seg_pong(seg_pong),
