@@ -24,11 +24,11 @@ module Top_Student (
     output [15:0] led,
     output [7:0] JB, seg,
     output [3:0] an,
-    input btnU, btnD, btnR
+    input btnU, btnD, btnR, btnL
     );
     // Clocks, buttons,states
     wire clk20k, clk6p25m, clk50, clk381;
-    wire pulU,pulD, pulR, pulC, reset, pongE; 
+    wire pulU,pulD, pulR, pulC, pulL, reset, pongE; 
     wire [2:0] state, menu_flag;
     // Unused Oled_Display wires
     wire frame_begin, sending_pixels, sample_pixel;
@@ -60,6 +60,7 @@ module Top_Student (
     debounce_single_pulse dsp2 (btnD, clk50, pulD);
     debounce_single_pulse dsp3 (btnR, clk50, pulR);
     debounce_single_pulse dsp4 (btnC, clk50, pulC);
+    debounce_single_pulse dsp5 (btnL, clk50, pulL);
     
     // Audio capture
     Audio_Capture ac0(
@@ -94,6 +95,9 @@ module Top_Student (
     // Menu
     menuGUI menu0 (.x(x), .y(y), .clk(clk50), .btnU(pulU), .btnD(pulD), 
                    .sw0(sw[0]), .oled_data(oled_menu), .state(menu_flag));
+                   
+    // Passcode
+    passcode pc0 (.btnU(pulU), .btnD(pulD), .btnL(pulL), .btnR(pulR), .clk(clk50), .state(state));               
     
     // Empty bit
     assign JB[2] = 0;
