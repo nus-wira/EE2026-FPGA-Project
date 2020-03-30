@@ -11,8 +11,8 @@
 `define XPADLEFT 4
 `define XPADRIGHT 91
 
-//// How many pixels wide/high each block is
-//`define BLOCK_SIZE 20
+// How many pixels wide/high each block is
+`define BLOCKSIZE 4
 
 //// How many blocks wide the game board is
 //`define BLOCKS_WIDE 10

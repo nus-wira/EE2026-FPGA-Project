@@ -22,11 +22,10 @@
 
 module convertTetris_xy(
     input [4:0] tetrisX, tetrisY,
-    input [199:0] board,
+    input [6:0] x, y,
     output [15:0] oled_data
     );
     
-    reg [6:0] x, y;
     reg [15:0] oled_dataX, oled_dataY;
 
     
@@ -70,10 +69,6 @@ module convertTetris_xy(
        endcase        
     end
     
-    always @ (*) begin
-       if (board[i] == 0)
-           
-    end
     
     assign oled_data = (oled_dataX && oled_dataY) ? `WHITE : `BLACK;
 endmodule
