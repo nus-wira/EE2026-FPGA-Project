@@ -29,13 +29,10 @@ module pong(
     output [3:0] an,
     output [7:0] seg
     );
-    parameter [15:0] BLACK = 16'b0;
-    parameter [15:0] WHITE = ~BLACK;
     // Paddle positions (centre)
     wire [6:0] userPaddleX, userPaddleY, audioPaddleX, audioPaddleY;
     // Paddle/ball appear booleans                    player point add
     wire userPaddleAppear, audioPaddleAppear, ball_on, p1_pt, p2_pt;
-    // Paddle colours
     wire [15:0] userPaddle_col, audioPaddle_col;
     wire [3:0] an_init, an_score;
     wire [7:0] seg_init, seg_score;
@@ -60,5 +57,5 @@ module pong(
     
     // oled_data using booleans (determined with x and y inputs)
     assign oled_data = userPaddleAppear ? userPaddle_col : audioPaddleAppear ? audioPaddle_col :
-                       ball_on ? WHITE : BLACK;
+                       ball_on ? `WHITE : `BLACK;
 endmodule

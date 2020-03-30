@@ -28,11 +28,7 @@ module airHockeyPaddles(
     output reg [6:0] userPaddleX, userPaddleY, audioPaddleX, audioPaddleY,
     output [15:0] userPaddle_col, audioPaddle_col
     );
-    
-    localparam border = 3; // distance from edge
-    localparam pixelMove = 6; // each button press/in(de)crease in vol corresponds to the paddles moving by 3 pixels
-    localparam audioMove = 3; // pixel distance each volume level (0-15)
-    
+     
     //assign initial position of audioPaddle
     reg [6:0] audioPaddleInitial = `HEIGHT - `PADDLEHEIGHT/2;
     
@@ -49,15 +45,15 @@ module airHockeyPaddles(
     assign AP[3] = y <= audioPaddleY + (`PADDLEHEIGHT/2);
     
     initial begin
-        userPaddleX = border;
+        userPaddleX = `BORDER;
         userPaddleY = `HEIGHT/2;
-        audioPaddleX = `WIDTH - border - 1;
+        audioPaddleX = `WIDTH - `BORDER - 1;
         audioPaddleY = `HEIGHT/2;
     end
     
     // Audio Paddle positioning
     wire [6:0] nextAudioY;
-    assign nextAudioY = audioPaddleInitial - audioMove * num;
+    assign nextAudioY = audioPaddleInitial - `AUDIOMOVE * num;
     
     // User's Paddle
     always @ (posedge clkPaddle) begin
@@ -70,10 +66,10 @@ module airHockeyPaddles(
             // User Paddle
             if (btnU)
                 //prevent from going out of bounds
-                userPaddleY <= userPaddleY - `PADDLEHEIGHT/2 < pixelMove ? `PADDLEHEIGHT/2 : userPaddleY - pixelMove;
+                userPaddleY <= userPaddleY - `PADDLEHEIGHT/2 < `PIXELMOVE ? `PADDLEHEIGHT/2 : userPaddleY - `PIXELMOVE;
             else if (btnD)
-                userPaddleY <= userPaddleY + `PADDLEHEIGHT/2 + pixelMove >= `HEIGHT ? 
-                               `HEIGHT - 1 - `PADDLEHEIGHT/2 : userPaddleY + pixelMove;
+                userPaddleY <= userPaddleY + `PADDLEHEIGHT/2 + `PIXELMOVE >= `HEIGHT ? 
+                               `HEIGHT - 1 - `PADDLEHEIGHT/2 : userPaddleY + `PIXELMOVE;
         end
     end
     

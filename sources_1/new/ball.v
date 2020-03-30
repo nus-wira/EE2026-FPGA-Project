@@ -26,7 +26,6 @@ module ball(
     input [6:0] x,y,ypad_left,ypad_right,
     output ball_on, p1_pt, p2_pt
     );
-    localparam padWidth = 2;
     //  ball movement direction
     // dx = 1 -> right, dx = 0 -> left
     // dy = 1 -> down, dy = 0 -> up
@@ -54,8 +53,8 @@ module ball(
     assign col_1_y = y_ball <= ypad_left + `PADDLEHEIGHT/2 && 
                      y_ball >= ypad_left - `PADDLEHEIGHT/2;
     // determine ball pass either side
-    assign p1_pt = x_ball > `XPADRIGHT + padWidth;
-    assign p2_pt = x_ball < `XPADLEFT - padWidth;
+    assign p1_pt = x_ball > `XPADRIGHT + `PADWIDTH;
+    assign p2_pt = x_ball < `XPADLEFT - `PADWIDTH;
     
     // Output boolean to render ball
     assign ball_on = x > x_ball - `BALLSIZE && x < x_ball + `BALLSIZE &&
