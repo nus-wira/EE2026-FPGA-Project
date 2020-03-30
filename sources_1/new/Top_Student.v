@@ -47,7 +47,8 @@ module Top_Student (
     wire [15:0] led_peak, led_vol;
     wire [3:0] an_vol, an_pong;
     wire [7:0] seg_vol, seg_pong;
-
+    wire pw_flag;
+    
     // Clocks
     clk_divider c0(CLK100MHZ, 12'd2499, clk20k); // 20 kHz
     clk_divider c1(CLK100MHZ, 7, clk6p25m); // 6.25 MHz
@@ -95,9 +96,10 @@ module Top_Student (
     // Menu
     menuGUI menu0 (.x(x), .y(y), .clk(clk50), .btnU(pulU), .btnD(pulD), 
                    .sw0(sw[0]), .oled_data(oled_menu), .state(menu_flag));
-                   
+    
+    
     // Passcode
-    passcode pc0 (.btnU(pulU), .btnD(pulD), .btnL(pulL), .btnR(pulR), .clk(clk50), .state(state));               
+    passcode pc0 (.E(!state), .btnU(pulU), .btnD(pulD), .btnL(pulL), .btnR(pulR), .clk(clk50), .pw_flag(pw_flag));               
     
     // Empty bit
     assign JB[2] = 0;
@@ -107,7 +109,7 @@ module Top_Student (
     // for testing state changes
 //    assign state = sw[14:12];
     // Final change state for when menu_state change is setup
-     changestate cs0(clk50, pulC, menu_flag, state);
+     changestate cs0(.clk(clk50), .btnC(pulC), .pw_flag(pw_flag), .menu_flag(menu_flag), .state(state));
     
     // 0: menu, 1: peak detector, 2: pong, 3: wave
     final_mux mux00(.clk(CLK100MHZ), .state(state), .an_vol(an_vol), .an_pong(an_pong), .seg_vol(seg_vol), .seg_pong(seg_pong),

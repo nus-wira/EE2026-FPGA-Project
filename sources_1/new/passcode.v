@@ -21,16 +21,21 @@
 
 
 module passcode(
-    input btnU, btnD, btnL, btnR, clk,
-    output reg [2:0] state = 0
+    input E, btnU, btnD, btnL, btnR, clk,
+    output pw_flag
     );
     
+    reg [2:0] state = 0;
+    assign pw_flag = (state == 4) ? 1 : 0;
+    
     always @ (clk) begin
+        if (E) begin
         case (state)
         0: state <= btnU ? 1 : state;
         1: state <= btnD ? 2 : (btnU || btnL || btnR) ? 0 : state;
         2: state <= btnL ? 3 : (btnU || btnD || btnR) ? 0 : state;
         3: state <= btnR ? 4 : (btnU || btnL || btnD) ? 0 : state;
         endcase
+        end
     end
 endmodule
