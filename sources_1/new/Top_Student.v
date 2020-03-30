@@ -82,7 +82,8 @@ module Top_Student (
     convertXY xy0(pixel_index, x, y);
     
     // Peak Detector
-    intensity i0 (.clk(CLK100MHZ), .clkseg(clk381), .E(sw[0]), .mic_in(mic_in), .led(led_vol), .an(an_vol), .seg(seg_vol), .num(num));  
+    intensity i0 (.clk(CLK100MHZ), .clkseg(clk381), .E(sw[0]), .mic_in(mic_in), 
+                  .led(led_vol), .an(an_vol), .seg(seg_vol), .num(num));  
     // Oled display peak detector
     vol_display v0(sw[5:0], clk20k, num, x,y, oled_vol);
     
@@ -109,12 +110,14 @@ module Top_Student (
     // for testing state changes
 //    assign state = sw[14:12];
     // Final change state for when menu_state change is setup
-     changestate cs0(.clk(clk50), .btnC(pulC), .pw_flag(pw_flag), .menu_flag(menu_flag), .state(state));
+//     changestate cs0(.clk(clk50), .btnC(pulC), .pw_flag(pw_flag), .menu_flag(menu_flag), .state(state));
     
     // 0: menu, 1: peak detector, 2: pong, 3: wave
-    final_mux mux00(.clk(CLK100MHZ), .state(state), .an_vol(an_vol), .an_pong(an_pong), .seg_vol(seg_vol), .seg_pong(seg_pong),
-                    .oled_menu(oled_menu), .oled_pong(oled_pong), .oled_wave(oled_wave), .oled_vol(oled_vol), 
-                    .led_vol(led_vol), .an(an), .seg(seg),.oled_data(oled_data), .led(led));
-
+//    final_mux mux00(.clk(CLK100MHZ), .state(state), .an_vol(an_vol), .an_pong(an_pong), .seg_vol(seg_vol), .seg_pong(seg_pong),
+//                    .oled_menu(oled_menu), .oled_pong(oled_pong), .oled_wave(oled_wave), .oled_vol(oled_vol), 
+//                    .led_vol(led_vol), .an(an), .seg(seg),.oled_data(oled_data), .led(led));
+    tetris t0(.clk(CLK100MHZ), .btnCLK(clk50), .rst(pulC), 
+              .btnD(pulR), .btnL(pulD), .btnR(pulU), .btnU(pulL), 
+              .x(x),.y(y), .oled_data(oled_data));
 
 endmodule

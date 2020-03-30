@@ -39,7 +39,8 @@ module tetris_logic(clk,btnCLK,rst,mvD,mvL, mvR, mvRot, board, cur_blk1, cur_blk
     output [8:0] cur_blk1, cur_blk2, cur_blk3;
     
     wire gameCLK;
-    clk_divider c0(btnCLK, 6'd49, gameCLK);
+//    clk_divider c0(btnCLK, 6'd49, gameCLK);
+    game_clock c0(btnCLK, gameCLK);
     
     reg [1:0] mode = 0;
     
@@ -81,6 +82,8 @@ module tetris_logic(clk,btnCLK,rst,mvD,mvL, mvR, mvRot, board, cur_blk1, cur_blk
     assign game_over = cur_y == Height - 1 && (board[cur_blk1] || board[cur_blk2] || board[cur_blk3]);
     
     always @ (posedge btnCLK) begin
+        if (rst) mode <= 0;
+        else
         case (mode)
         0: begin
 //        if (rst) begin
@@ -90,32 +93,33 @@ module tetris_logic(clk,btnCLK,rst,mvD,mvL, mvR, mvRot, board, cur_blk1, cur_blk
             mode <= 1;
         end 
         1: begin
-            if (game_over)
-                mode <= 3;
-            else if (mvL && cur_x > 0 && !check_intersect)
+//            if (game_over)
+//                mode <= 3;
+            if (mvL && cur_x > 0 && !check_intersect)
                 // Move left
                 cur_x <= cur_x - 1;
             else if (mvR && cur_x + cur_width < Width && !check_intersect)
                 // Move right
                 cur_x <= cur_x + 1;
             else if (mvRot && cur_x + test_width < Width &&
-                     cur_y - test_height > 0 && !check_intersect)
+                     cur_y >= test_height && !check_intersect)
                 // Rotate
                 cur_rot <= cur_rot + 1;
-            else if (mvD && cur_y - test_height > 0 && !check_intersect || gameCLK)
+            else if ((mvD || gameCLK) && cur_y >= cur_height && !check_intersect)
                 // Move down
                 cur_y <= cur_y - 1;
-//            else begin 
-//                // Intersects with next move so add to board
-//                board[cur_blk1] <= 1;
-//                board[cur_blk2] <= 1;
-//                board[cur_blk2] <= 1;
-//                // add next block
+            else if (check_intersect || cur_y < cur_height) begin 
+                // Intersects with next move so add to board
+                board[cur_blk1] <= 1;
+                board[cur_blk2] <= 1;
+                board[cur_blk3] <= 1;
+                // add next block
 //                cur_blk <= cur_blk + 1;
 //                cur_rot <= 0;
-//                cur_x <= Width/2;
+//                cur_x <= 2;
 //                cur_y <= Height - 1;
-//            end
+                
+            end
         end
         2: begin // When deleting full row must shift all down
             if (remove_row == Height - 1) begin

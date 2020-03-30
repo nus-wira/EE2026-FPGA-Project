@@ -29,7 +29,7 @@ module calc_cur_blk(
     );
     localparam Width = 10;
     
-    wire cur_pos;
+    wire [8:0] cur_pos;
     assign cur_pos = cur_x + cur_y*Width;
     always @ (*) begin
         case (cur_blk)

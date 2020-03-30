@@ -28,7 +28,7 @@ module tetris(
     localparam Width = 10;
     localparam Height = 20;
     
-    wire [199:0] board;
+    wire [Width*Height-1:0] board;
 //    wire [2:0] cur_blk;
 //    wire [1:0] cur_rot;
 //    wire [4:0] cur_x, cur_y;
@@ -49,6 +49,6 @@ module tetris(
     convertTetris_xy xy3( x3,y3, x, y, oled_blk3);
     boardXYconversion b0(board, x, y,oled_board);
     assign oled_data = //oled_board ? oled_board : 
-                       oled_blk1 ? oled_blk1 : 
-                       oled_blk2 ? oled_blk2 :  `BLACK;
+                       oled_blk1 ? oled_blk1 : oled_blk2 ? oled_blk2 :  
+                       oled_blk3 ? oled_blk3 : `BLACK;
 endmodule
