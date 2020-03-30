@@ -18,6 +18,7 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
+
 module vol_bar(
     input [15:0] bg_col, volCol_top, volCol_mid, volCol_bot,
     input [3:0] num,

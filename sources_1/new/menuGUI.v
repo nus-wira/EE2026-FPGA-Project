@@ -18,7 +18,7 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-
+`include "definitions.vh"
 
 module menuGUI(
     input clk, btnU, btnD, sw0,
@@ -26,8 +26,6 @@ module menuGUI(
     output reg [15:0] oled_data, 
     output reg [2:0] state
     );
-    parameter [15:0] BLACK = 16'b0;
-    parameter [15:0] WHITE = ~BLACK;
     
     wire menuLength;
     wire [6:0] menuX;
@@ -129,9 +127,9 @@ module menuGUI(
     
     always @ (*) begin
         if(sw0)
-           oled_data = menudisp[state] ? BLACK : WHITE;
+           oled_data = menudisp[state] ? `BLACK : `WHITE;
         else
-           oled_data = menudisp[state] ? WHITE : BLACK; 
+           oled_data = menudisp[state] ? `WHITE : `BLACK; 
     end 
 
 endmodule

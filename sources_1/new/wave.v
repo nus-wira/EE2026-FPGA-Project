@@ -18,7 +18,7 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-
+`include "definitions.vh"
 
 module wave(
     input clk,
@@ -26,18 +26,11 @@ module wave(
     input [6:0] x, y,
     output [15:0] oled_data
     );
-    localparam Width = 96;
-    localparam Height = 64;
-    parameter [15:0] BLACK = 16'b0;
-    parameter [15:0] WHITE = ~BLACK;
-    parameter [15:0] GREEN = 16'b00000_111111_00000;
-    parameter [15:0] YELLOW = 16'b11111_111111_00000;
-    parameter [15:0] RED = 16'b11111_000000_00000;
     
-    reg [11:0] mic_data [Width-1:0];
+    reg [11:0] mic_data [`WIDTH-1:0];
     integer i;
     initial begin
-        for (i = 0; i < Width; i = i+1) begin
+        for (i = 0; i < `WIDTH; i = i+1) begin
             mic_data[i] = 0;
         end
     end
@@ -47,9 +40,9 @@ module wave(
     
     
     always @ (posedge clk) begin
-        countx <= countx == Width - 1 ? 0 : countx + 1;
+        countx <= countx == `WIDTH - 1 ? 0 : countx + 1;
         // get new mic_in value
-        mic_data[countx] <= countx < Width - 1 ? mic_data[countx+1] : mic_in;
+        mic_data[countx] <= countx < `WIDTH - 1 ? mic_data[countx+1] : mic_in;
     end
     
     
@@ -58,13 +51,13 @@ module wave(
     parameter [6:0] barRange = 21;
     
     assign num = mic_data[x][11] ? mic_data[x][10:5] : 0;
-    assign yreflect = Height - 1 - y;
+    assign yreflect = `HEIGHT - 1 - y;
     assign ygre = (yreflect < num && num >= 1 && num <= barRange);
     assign yyel = (yreflect < num && num >= 1+barRange && num <= 2*barRange);
     assign yred = (yreflect < num && num >= 1+2*barRange);
     
-    assign oled_data = ygre ? GREEN : yyel ? YELLOW : yred ? RED :
-                       !num && !yreflect ? WHITE : BLACK;
+    assign oled_data = ygre ? `GREEN : yyel ? `YELLOW : yred ? `RED :
+                       !num && !yreflect ? `WHITE : `BLACK;
     
     
 endmodule

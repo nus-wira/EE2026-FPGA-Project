@@ -18,7 +18,7 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-
+`include "definitions.vh"
 
 module ball(
     input clk, E, rst,
@@ -26,20 +26,14 @@ module ball(
     input [6:0] x,y,ypad_left,ypad_right,
     output ball_on, p1_pt, p2_pt
     );
-    localparam Width = 96;
-    localparam Height = 64;
-    localparam ballSize = 2;
     localparam padWidth = 2;
-    localparam padHeight = 20;
-    localparam xpad_left = 4;
-    localparam xpad_right = 91;
     //  ball movement direction
     // dx = 1 -> right, dx = 0 -> left
     // dy = 1 -> down, dy = 0 -> up
     reg dx = 1,dy = 1;
     reg [1:0] st_state = 0;
     //  ball position
-    reg [6:0] x_ball = Width/2, y_ball = Height/2;
+    reg [6:0] x_ball = `WIDTH/2, y_ball = `HEIGHT/2;
     // ball velocity, start state
     wire [1:0] xvel;
     
@@ -51,21 +45,21 @@ module ball(
     assign xvel = 1 + diff;
     
     // Collision Booleans to be used to change direction
-    assign col_bot = dy && y_ball + ballSize + 1 == Height;
-    assign col_top = ~dy && y_ball == ballSize;
-    assign col_2_x = dx && x_ball + ballSize + xvel == xpad_right;
-    assign col_2_y = y_ball <= ypad_right + padHeight/2 && // within bar
-                     y_ball >= ypad_right - padHeight/2;
-    assign col_1_x = ~dx && x_ball - ballSize - xvel == xpad_left;
-    assign col_1_y = y_ball <= ypad_left + padHeight/2 && 
-                     y_ball >= ypad_left - padHeight/2;
+    assign col_bot = dy && y_ball + `BALLSIZE + 1 == `HEIGHT;
+    assign col_top = ~dy && y_ball == `BALLSIZE;
+    assign col_2_x = dx && x_ball + `BALLSIZE + xvel == `XPADRIGHT;
+    assign col_2_y = y_ball <= ypad_right + `PADDLEHEIGHT/2 && // within bar
+                     y_ball >= ypad_right - `PADDLEHEIGHT/2;
+    assign col_1_x = ~dx && x_ball - `BALLSIZE - xvel == `XPADLEFT;
+    assign col_1_y = y_ball <= ypad_left + `PADDLEHEIGHT/2 && 
+                     y_ball >= ypad_left - `PADDLEHEIGHT/2;
     // determine ball pass either side
-    assign p1_pt = x_ball > xpad_right + padWidth;
-    assign p2_pt = x_ball < xpad_left - padWidth;
+    assign p1_pt = x_ball > `XPADRIGHT + padWidth;
+    assign p2_pt = x_ball < `XPADLEFT - padWidth;
     
     // Output boolean to render ball
-    assign ball_on = x > x_ball - ballSize && x < x_ball + ballSize &&
-                     y > y_ball - ballSize && y < y_ball + ballSize;
+    assign ball_on = x > x_ball - `BALLSIZE && x < x_ball + `BALLSIZE &&
+                     y > y_ball - `BALLSIZE && y < y_ball + `BALLSIZE;
     
     // Restart in the middle
     assign restart = p1_pt || p2_pt || rst || !E;
@@ -75,8 +69,8 @@ module ball(
             // Start state 0 - 4. 0:up+right, 1: down+right, 2: up+left, 3:down+left
             // Sets direction of ball when restart
             st_state <= st_state + 1;
-            x_ball <= Width/2;
-            y_ball <= Height/2;
+            x_ball <= `WIDTH/2;
+            y_ball <= `HEIGHT/2;
             dx <= st_state[0];
             dy <= st_state[1];
         end else begin

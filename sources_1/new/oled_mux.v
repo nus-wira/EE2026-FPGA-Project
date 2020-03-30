@@ -18,19 +18,18 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-
+`include "definitions.vh"
 
 module oled_mux(
     input [6:0] x,y,
     input [15:0] oled_border, oled_vol,
     output [15:0] oled_data
     );
-    localparam Width = 96;
-    localparam Height = 64;
+    
     parameter [1:0] bor_wid = 3; // max border width
     
     // If at border, assign border else volume bar
-    assign oled_data = (x < bor_wid || x >= Width - bor_wid || y < bor_wid || y >= Height - bor_wid) ?
+    assign oled_data = (x < bor_wid || x >= `WIDTH - bor_wid || y < bor_wid || y >= `HEIGHT - bor_wid) ?
                         oled_border : oled_vol;
     
 endmodule
