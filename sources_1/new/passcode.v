@@ -26,7 +26,6 @@ module passcode(
     );
     
     reg [2:0] state = 0;
-    assign pw_flag = (state == 4) ? 1 : 0;
  
     always @ (clk) begin
         if (E) begin
@@ -38,4 +37,6 @@ module passcode(
         endcase
         end
     end
+    
+    assign pw_flag = (state == 4) ? 1 : 0;
 endmodule
