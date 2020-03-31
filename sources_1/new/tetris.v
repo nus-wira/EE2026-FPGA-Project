@@ -48,7 +48,7 @@ module tetris(
     convertTetris_xy xy2( x2,y2, x, y, oled_blk2);
     convertTetris_xy xy3( x3,y3, x, y, oled_blk3);
     boardXYconversion b0(board, x, y,oled_board);
-    assign oled_data = //oled_board ? oled_board : 
+    assign oled_data = oled_board ? oled_board : 
                        oled_blk1 ? oled_blk1 : oled_blk2 ? oled_blk2 :  
                        oled_blk3 ? oled_blk3 : `BLACK;
 endmodule

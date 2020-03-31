@@ -105,22 +105,25 @@ module tetris_logic(clk,btnCLK,rst,mvD,mvL, mvR, mvRot, board, cur_blk1, cur_blk
                      cur_y >= test_height && !check_intersect)
                 // Rotate
                 cur_rot <= cur_rot + 1;
-            else if ((mvD || gameCLK) && cur_y >= cur_height && !check_intersect)
-                // Move down
-                cur_y <= cur_y - 1;
-            else if (check_intersect || cur_y < cur_height) begin 
-                // Intersects with next move so add to board
-                board[cur_blk1] <= 1;
-                board[cur_blk2] <= 1;
-                board[cur_blk3] <= 1;
-                // add next block
-//                cur_blk <= cur_blk + 1;
-//                cur_rot <= 0;
-//                cur_x <= 2;
-//                cur_y <= Height - 1;
-                
-            end
+            else if (mvD || gameCLK) begin
+                if (cur_y >= cur_height && !check_intersect)
+                    // Move down
+                    cur_y <= cur_y - 1;
+                else begin
+                    // Intersects with next move so add to board
+                    board[cur_blk1] <= 1;
+                    board[cur_blk2] <= 1;
+                    board[cur_blk3] <= 1;
+                    // add next block
+                    cur_blk <= cur_blk + 1;
+                    cur_rot <= 0;
+                    cur_x <= Width/2;
+                    cur_y <= Height - 1;
+                end
+            end else if (remove_en)
+                mode <= 2;
         end
+
         2: begin // When deleting full row must shift all down
             if (remove_row == Height - 1) begin
                 board[remove_row*Width +: Width] <= 0;

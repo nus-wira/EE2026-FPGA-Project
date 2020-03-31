@@ -48,7 +48,7 @@ module calc_cur_blk(
             0: begin // L
                 blk1 = cur_pos;
                 blk2 = cur_pos - Width;
-                blk3 = cur_pos - Width;
+                blk3 = cur_pos - Width + 1;
             end
             1: begin // L clockwise 90
                 blk1 = cur_pos;

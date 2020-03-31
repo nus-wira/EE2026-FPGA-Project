@@ -60,9 +60,6 @@ module final_mux(
             seg <= seg_vol;
             oled_data <= oled_wave;
         end
-        4: begin
-            oled_data <= `BLACK;
-        end
         endcase
     end
             

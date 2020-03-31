@@ -38,9 +38,9 @@ module calc_test_blk(
             test_x <= cur_x + 1;
         else if (mvRot)
             test_rot <= cur_rot + 1;
-        else begin
+        else begin // else gameclk moves it down
             test_x <= cur_x;
-            test_y <= cur_y;
+            test_y <= cur_y - 1;
             test_rot <= cur_rot;
         end
     end
