@@ -60,11 +60,18 @@ module final_mux(
             seg <= seg_vol;
             oled_data <= oled_wave;
         end
+        // Tetris
         4: begin
             led <= 0;
             an <= ~4'b0;
             seg <= ~8'b0;
             oled_data <= oled_tetris;
+        end
+        5: begin
+            led <= 0;
+            an <= ~4'b0;
+            seg <= ~8'b0;
+            oled_data <= `BLACK;
         end
         endcase
     end
