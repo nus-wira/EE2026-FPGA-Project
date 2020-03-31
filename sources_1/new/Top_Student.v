@@ -28,7 +28,7 @@ module Top_Student (
     );
     // Clocks, buttons,states
     wire clk20k, clk6p25m, clk50, clk381;
-    wire pulU,pulD, pulR, pulC, pulL, reset, pongE; 
+    wire pulU,pulD, pulR, pulC, pulL, reset, pongE, tetrisE; 
     wire [2:0] state, menu_flag;
     // Unused Oled_Display wires
     wire frame_begin, sending_pixels, sample_pixel;
@@ -43,7 +43,7 @@ module Top_Student (
     wire [6:0] x,y;
     
     // Wires to store data from various modules
-    wire [15:0] oled_data, oled_menu, oled_pong, oled_wave, oled_vol;
+    wire [15:0] oled_data, oled_menu, oled_pong, oled_wave, oled_vol, oled_tetris;
     wire [15:0] led_peak, led_vol;
     wire [3:0] an_vol, an_pong;
     wire [7:0] seg_vol, seg_pong;
@@ -100,24 +100,27 @@ module Top_Student (
     
     
     // Passcode
-    passcode pc0 (.E(!state), .btnU(pulU), .btnD(pulD), .btnL(pulL), .btnR(pulR), .clk(clk50), .pw_flag(pw_flag));               
+    passcode pc0 (.E(!state), .btnU(pulU), .btnD(pulD), .btnL(pulL), .btnR(pulR), .clk(clk50), .pw_flag(pw_flag));        
+    
+    tetris t0(.E(tetrisE), .clk(CLK100MHZ), .btnCLK(clk50), .rst(pulC), 
+              .btnD(pulR), .btnL(pulD), .btnR(pulU), .btnU(pulL), .Edrop(sw[0]),
+              .x(x),.y(y), .oled_data(oled_tetris));       
     
     // Empty bit
     assign JB[2] = 0;
     // Enable pong if in correct state
     assign pongE = state == 2;
-    
+    assign tetrisE = state == 4;
     // for testing state changes
 //    assign state = sw[14:12];
     // Final change state for when menu_state change is setup
-//     changestate cs0(.clk(clk50), .btnC(pulC), .pw_flag(pw_flag), .menu_flag(menu_flag), .state(state));
+     changestate cs0(.clk(clk50), .btnC(pulC), .pw_flag(pw_flag), .menu_flag(menu_flag), .state(state));
     
     // 0: menu, 1: peak detector, 2: pong, 3: wave
-//    final_mux mux00(.clk(CLK100MHZ), .state(state), .an_vol(an_vol), .an_pong(an_pong), .seg_vol(seg_vol), .seg_pong(seg_pong),
-//                    .oled_menu(oled_menu), .oled_pong(oled_pong), .oled_wave(oled_wave), .oled_vol(oled_vol), 
-//                    .led_vol(led_vol), .an(an), .seg(seg),.oled_data(oled_data), .led(led));
-    tetris t0(.clk(CLK100MHZ), .btnCLK(clk50), .rst(pulC), 
-              .btnD(pulR), .btnL(pulD), .btnR(pulU), .btnU(pulL), 
-              .x(x),.y(y), .oled_data(oled_data));
+    final_mux mux00(.clk(CLK100MHZ), .state(state), .an_vol(an_vol), .an_pong(an_pong), .seg_vol(seg_vol), .seg_pong(seg_pong),
+                    .oled_menu(oled_menu), .oled_pong(oled_pong), .oled_wave(oled_wave), 
+                    .oled_vol(oled_vol), .oled_tetris(oled_tetris),
+                    .led_vol(led_vol), .an(an), .seg(seg),.oled_data(oled_data), .led(led));
+    
 
 endmodule

@@ -25,7 +25,7 @@ module final_mux(
     input [2:0] state,
     input [3:0] an_vol, an_pong,
     input [7:0] seg_vol, seg_pong,
-    input [15:0] oled_menu, oled_pong, oled_wave, oled_vol, led_vol,
+    input [15:0] oled_menu, oled_pong, oled_wave, oled_vol, oled_tetris, led_vol,
     output reg [3:0] an,
     output reg [7:0] seg,
     output reg [15:0] oled_data, led
@@ -59,6 +59,12 @@ module final_mux(
             an <= an_vol;
             seg <= seg_vol;
             oled_data <= oled_wave;
+        end
+        4: begin
+            led <= 0;
+            an <= ~4'b0;
+            seg <= ~8'b0;
+            oled_data <= oled_tetris;
         end
         endcase
     end

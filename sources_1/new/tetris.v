@@ -21,7 +21,7 @@
 
 
 module tetris(
-    input clk, btnCLK, rst, btnD, btnL, btnR, btnU,
+    input E, clk, btnCLK, rst, btnD, btnL, btnR, btnU, Edrop,
     input [6:0] x,y,
     output [15:0] oled_data
     );
@@ -36,8 +36,10 @@ module tetris(
     wire [4:0] x1,y1,x2,y2,x3,y3;
     wire [15:0] oled_blk1, oled_blk2, oled_blk3, oled_board;
     
-    tetris_logic tet0(.clk(clk),.btnCLK(btnCLK),.rst(rst),.mvD(btnD),.mvL(btnL), .mvR(btnR), .mvRot(btnU), 
-                 .board(board), .cur_blk1(cur_blk1), .cur_blk2(cur_blk2), .cur_blk3(cur_blk3));
+    tetris_logic tet0(
+        .E(E), .clk(clk),.btnCLK(btnCLK),.rst(rst),
+        .mvD(btnD),.mvDrop(Edrop), .mvL(btnL), .mvR(btnR), .mvRot(btnU), 
+        .board(board), .cur_blk1(cur_blk1), .cur_blk2(cur_blk2), .cur_blk3(cur_blk3));
     assign x1 = cur_blk1 % Width;
     assign y1 = cur_blk1 / Width;
     assign x2 = cur_blk2 % Width;
@@ -50,5 +52,5 @@ module tetris(
     boardXYconversion b0(board, x, y,oled_board);
     assign oled_data = oled_board ? oled_board : 
                        oled_blk1 ? oled_blk1 : oled_blk2 ? oled_blk2 :  
-                       oled_blk3 ? oled_blk3 : `BLACK;
+                       oled_blk3 ? oled_blk3 : (x < 16 || y < 24) ? `BLUE : `BLACK;
 endmodule

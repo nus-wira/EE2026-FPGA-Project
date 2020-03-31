@@ -30,9 +30,9 @@ module full_row(
     localparam Width = 10;
     
     // If all 1s in a row
-    assign remove = &board[(row+1)*Width - 1 +: Width];
+    assign remove = &board[row*Width +: Width];
     
     always @ (posedge clk) begin
-        row <= row == Height - 1 ? 0 : row + 1;
+        row <= !remove ? row == Height - 1 ? 0 : row + 1 : row;
     end
 endmodule

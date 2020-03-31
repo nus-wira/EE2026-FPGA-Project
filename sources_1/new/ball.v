@@ -26,10 +26,14 @@ module ball(
     input [6:0] x,y,ypad_left,ypad_right,
     output ball_on, p1_pt, p2_pt
     );
+    
+    // used to slow down clock for different angle ball
+    reg [1:0] count = 0;
     //  ball movement direction
     // dx = 1 -> right, dx = 0 -> left
     // dy = 1 -> down, dy = 0 -> up
     reg dx = 1,dy = 1;
+    // Start state 0 - 4. 0:up+right, 1: down+right, 2: up+left, 3:down+left
     reg [1:0] st_state = 0;
     //  ball position
     reg [6:0] x_ball = `WIDTH/2, y_ball = `HEIGHT/2;
@@ -46,10 +50,10 @@ module ball(
     // Collision Booleans to be used to change direction
     assign col_bot = dy && y_ball + `BALLSIZE + 1 == `HEIGHT;
     assign col_top = ~dy && y_ball == `BALLSIZE;
-    assign col_2_x = dx && x_ball + `BALLSIZE + xvel == `XPADRIGHT;
+    assign col_2_x = dx && x_ball + `BALLSIZE + xvel >= `XPADRIGHT;
     assign col_2_y = y_ball <= ypad_right + `PADDLEHEIGHT/2 && // within bar
                      y_ball >= ypad_right - `PADDLEHEIGHT/2;
-    assign col_1_x = ~dx && x_ball - `BALLSIZE - xvel == `XPADLEFT;
+    assign col_1_x = ~dx && x_ball - `BALLSIZE - xvel <= `XPADLEFT;
     assign col_1_y = y_ball <= ypad_left + `PADDLEHEIGHT/2 && 
                      y_ball >= ypad_left - `PADDLEHEIGHT/2;
     // determine ball pass either side
@@ -64,6 +68,7 @@ module ball(
     assign restart = p1_pt || p2_pt || rst || !E;
     
     always @ (posedge clk) begin
+        count <= count == diff ? 0 : count + 1; 
         if (restart) begin
             // Start state 0 - 4. 0:up+right, 1: down+right, 2: up+left, 3:down+left
             // Sets direction of ball when restart
@@ -72,7 +77,7 @@ module ball(
             y_ball <= `HEIGHT/2;
             dx <= st_state[0];
             dy <= st_state[1];
-        end else begin
+        end else if (!count) begin
             // toggle y direction when at top or bottom
             dy <= col_top || col_bot ? ~dy : dy;
             // toggle x direction when hitting paddles
