@@ -26,15 +26,15 @@ module passcode(
     );
     
     reg [2:0] state = 0;
-    assign pw_flag = (state == 1) ? 1 : 0;
-//    assign pw_flag = 1;    
+    assign pw_flag = (state == 4) ? 1 : 0;
+ 
     always @ (clk) begin
         if (E) begin
         case (state)
         0: state <= btnL ? 1 : state;
         1: state <= btnR ? 2 : (btnU || btnL || btnR) ? 0 : state;
-//        2: state <= btnL ? 3 : (btnU || btnD || btnR) ? 0 : state;
-//        3: state <= btnR ? 4 : (btnU || btnL || btnD) ? 0 : state;
+        2: state <= btnL ? 3 : (btnU || btnD || btnR) ? 0 : state;
+        3: state <= btnR ? 4 : (btnU || btnL || btnD) ? 0 : state;
         endcase
         end
     end

@@ -30,8 +30,8 @@ module menuGUI(
     wire menuLength;
     wire [6:0] menuX;
     wire v, o, l, u, e, b, a, a1, r, w, Wa, Wa1, Wa2, Wv, We, E;
-    wire p, p1, g, arrow1, arrow2, arrow3, arrow4;
-    wire menu, volbar, pingpong, wave;
+    wire p, p1, g, t, t1, Te, Te1, Tr, s, arrow1, arrow2, arrow3, arrow4;
+    wire menu, volbar, pingpong, wave, tetris;
     
     // state
     wire boxwidth, box1, box2, box3, box4;
@@ -67,6 +67,12 @@ module menuGUI(
     assign Wa2 = (y >= 42 && y <= 48);
     assign Wv = (y >= 42 && y <= 46);
     assign We = (x >= 33 && x <= 35);
+    assign t = (x >= 12 && x <= 16);
+    assign t1 = (y >= 52 && y <= 58);
+    assign Te = (x >= 18 && x <= 21);
+    assign Te1 = (x >= 23 && x <= 27);
+    assign Tr = (x == 29 || x == 30 || x == 31);
+    assign s = (x >= 36 && x <= 39);
     
     // ARROWS
     assign arrow1 = (((y >= 23 && y <= 27) && x == 3) || (x == 4 && (y == 23 || y == 27))  || (x == 5 && (y == 24 || y == 26)) || (x == 6 && y == 25));
@@ -106,23 +112,31 @@ module menuGUI(
                     || ((x == 24 && Wa2) || (x == 20 && Wa) || (Wa1 && y == 45) || (x == 23 && y == 42) || (x == 22 && y == 43) || (x == 21 && y == 44)) // a
                     || ((Wv && (x == 26 || x == 30)) || (x == 27 && y == 47) || (x == 28 && y == 48) || (x == 29 && y == 47)) // v
                     || (Wa2 && x == 32) || (We && (y == 42 || y == 45 || y == 48))); // e
-    
+                    
+    // TETRIS
+    assign tetris = ((t && (t1 && x == 14)) // t
+                    || (((t1 && x == 18) || (Te && (y == 52 || y == 55 || y == 58))))   // e
+                    || (t && (t1 && x == 25)) // t
+                    || ((x == 29 && t1) || ((y == 55 || y == 52) && Tr) || ((y == 53 || y == 54) && x == 31) || (x == 30 && y == 56) || (x == 31 && y == 57) || (x == 32 && y == 58))// r
+                    || (x == 34 && t1)// i
+                    || (((y == 52 || y == 55 || y == 58) && s) || ((y == 53 || y == 54) && x == 36)) || ((y == 56 || y == 57) && x == 39)); // s
+                    
     //border widths & boxes for selections
     assign boxwidth = (x >= 0 && x <= 95);
     assign box1 = (y >= 21 && y <= 29) && boxwidth && ~volbar && ~arrow1;
     assign box2 = (y >= 31 && y <= 39) && boxwidth && ~pingpong && ~arrow2;
     assign box3 = (y >= 41 && y <= 49) && boxwidth && ~wave && ~arrow3;
-    assign box4 = (y >= 51 && y <= 59) && boxwidth && ~arrow4;
+    assign box4 = (y >= 51 && y <= 59) && boxwidth && ~tetris && ~arrow4;
     
     //MENU display for respective states
-    assign menudisp[0] = (menu || volbar || pingpong || wave);
-    assign menudisp[1] = (menu || pingpong || wave || box1);
-    assign menudisp[2] = (menu || volbar || wave || box2); 
-    assign menudisp[3] = (menu || volbar || pingpong || box3); 
-//    assign menudisp[4] = (menu || pingpong || wave || box4); 
+    assign menudisp[0] = (menu || volbar || pingpong || wave || tetris);
+    assign menudisp[1] = (menu || pingpong || wave || tetris || box1);
+    assign menudisp[2] = (menu || volbar || wave || tetris || box2); 
+    assign menudisp[3] = (menu || volbar || pingpong || tetris || box3); 
+    assign menudisp[4] = (menu || pingpong || wave || box4); 
 
     always @ (posedge clk) begin
-        state <= btnU && state != 0 ? state - 1 : btnD && state != 3 ? state + 1 : state;
+        state <= btnU && state != 0 ? state - 1 : btnD && state != 4 ? state + 1 : state;
     end
     
     always @ (*) begin

@@ -29,6 +29,6 @@ module changestate(
     always @ (posedge clk) begin
         // If in menu when pw_flag received, change to state 4
         // If btnC is pressed, and in menu, change to menu flag, else change to menu.
-        state <= (pw_flag && !state) ? 4 : btnC ? (!state ? menu_flag : 0) : state;
+        state <= (pw_flag && !state) ? 5 : btnC ? (!state ? menu_flag : 0) : state;
     end
 endmodule
