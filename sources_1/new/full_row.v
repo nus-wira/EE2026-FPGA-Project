@@ -22,7 +22,7 @@
 
 module full_row(
     input clk,
-    input [`TRIS_SIZE:0] board,
+    input [`TRIS_SIZE-1:0] board,
     output reg [4:0] row = 0,
     output remove
     );
