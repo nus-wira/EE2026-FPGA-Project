@@ -15,6 +15,7 @@
 `define RED 16'b11111_000000_00000
 `define BLUE 16'b00000_000000_11111
 `define ORANGE 16'b11110_111100_00000
+`define GREY 16'b01100_001100_01100
 
 // Bit numbers for various
 `define LDBIT       15
@@ -130,24 +131,16 @@
 //`define BITS_PER_BLOCK 3
 
 // Tetris block type
-`define NIL 2'b00
 `define I 0
 `define L 1
-//`define J 3'b011
-//`define O 3'b100
-//`define S 3'b101
-//`define T 3'b110
-//`define Z 3'b111
+`define J 2
+`define O 3
+`define S 4
+`define T 5
+`define Z 6
 
-//// Error value
-//`define ERR_BLK_POS 8'b11111111
 //// Modes
-//`define MODE_BITS 3
 `define MODE_INIT 0
 `define MODE_PLAY 1
-//`define MODE_PAUSE 2
-`define MODE_IDLE 3
 `define MODE_SHIFT 2
-
-//// The maximum value of the drop timer
-//`define DROP_TIMER_MAX 10000
+`define MODE_IDLE 3

@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 // Modified clock divider where only a single pulse at every gameclk
-//0.5Hz
+//1Hz
 
 module game_clock(
     input clk,

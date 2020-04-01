@@ -22,12 +22,12 @@
 
 module full_row(
     input clk,
-    input [`TRIS_SIZE:0] board,
+    input [`TRIS_SIZE-1:0] board,
     output reg [4:0] row = 0,
     output remove
     );
     
-    // If all 1s in a row
+    // If all 1s in a row: same as &x[3:0] -> x[3]&x[2]&x[1]&x[0] && +: adds that number to the front number!
     assign remove = &board[row*`TRIS_WIDTH +: `TRIS_WIDTH];
     
     always @ (posedge clk) begin

@@ -20,20 +20,20 @@
 //////////////////////////////////////////////////////////////////////////////////
 `include "definitions.vh"
 
-module tetris_logic(E, clk,btnCLK,rst,mvD,mvDrop, mvL, mvR, mvRot, board, cur_blk1, cur_blk2, cur_blk3, blk_col);
-    
+module tetris_logic(
     // Clock, movement buttons, rotation clockwise
-    input E, clk, btnCLK, rst, mvD, mvDrop, mvL, mvR, mvRot;
+    input E, clk, btnCLK, rst, mvD, mvDrop, mvL, mvR, mvRot,
     // Keeps track of board's fallen pieces
-    output reg [`TRIS_SIZE-1:0] board = 0;
+    output reg [`TRIS_SIZE-1:0] board = 0,
     // Each square of a block as a position on the board (pos = x+y*10)
-    output [8:0] cur_blk1, cur_blk2, cur_blk3;
+    output [8:0] cur_blk1, cur_blk2, cur_blk3, cur_blk4,
     // Block colour
-    output [`COLBIT:0] blk_col;
+    output reg [`COLBIT:0] blk_col
+    );
     
     // Current falling block type
-    reg cur_blk = 0;
-    wire rand_blk; // random new block to assign cur_blk to
+    reg [2:0] cur_blkType = 0;
+    wire [2:0] rand_blk; // random new block to assign cur_blk to
     
     // Rotation direction of block - 0: 0 deg, 1: 90 deg etc.
     reg [1:0] cur_rot = 0;
@@ -52,9 +52,19 @@ module tetris_logic(E, clk,btnCLK,rst,mvD,mvDrop, mvL, mvR, mvRot, board, cur_bl
     reg [1:0] mode = `MODE_INIT;
         
     // Using block type, rotation, position, calculate block locations + width/height
-    calc_cur_blk calc_cur0 (cur_blk, cur_rot, cur_x, cur_y, cur_blk1, cur_blk2, cur_blk3, cur_width, cur_height);
+    calc_cur_blk calc_cur0 (cur_blkType, cur_rot, cur_x, cur_y, cur_blk1, cur_blk2, cur_blk3, cur_blk4, cur_width, cur_height);
     // Assign block colour according to block type
-    assign blk_col = cur_blk ? `RED : `GREEN;
+    always @ (*) begin
+        case (cur_blkType)
+        `I: blk_col = `RED;
+        `L: blk_col = `BLUE;
+        `J: blk_col = `ORANGE;
+        `O: blk_col = `GREEN;
+        `S: blk_col = `CYAN;
+        `T: blk_col = `YELLOW;
+        `Z: blk_col = `MAGENTA;
+        endcase
+    end
     
     // Wires to test a next state of block
     wire [1:0] test_rot;
@@ -67,13 +77,13 @@ module tetris_logic(E, clk,btnCLK,rst,mvD,mvDrop, mvL, mvR, mvRot, board, cur_bl
     );
     
     // Get test data into similar wires to get block locations + width/height
-    wire [8:0] test_blk1, test_blk2, test_blk3;
+    wire [8:0] test_blk1, test_blk2, test_blk3, test_blk4;
     wire [2:0] test_width, test_height;
-    calc_cur_blk calc_test1 (cur_blk, test_rot, test_x, test_y, test_blk1, test_blk2,test_blk3, test_width, test_height);
+    calc_cur_blk calc_test1 (cur_blkType, test_rot, test_x, test_y, test_blk1, test_blk2,test_blk3, test_blk4, test_width, test_height);
     
     // Check whether test_blk above intersects with current fallen blocks
     wire check_intersect;
-    assign check_intersect = board[test_blk1] || board[test_blk2] || board[test_blk3];
+    assign check_intersect = board[test_blk1] || board[test_blk2] || board[test_blk3] || board[test_blk4];
     
     // Check which row is full
     wire [4:0] remove_row; // row to remove
@@ -93,7 +103,7 @@ module tetris_logic(E, clk,btnCLK,rst,mvD,mvDrop, mvL, mvR, mvRot, board, cur_bl
     
     // game is over if new block intersects
     wire game_over;
-    assign game_over = cur_y == `TRIS_HEIGHT - 1 && (board[cur_blk1] || board[cur_blk2] || board[cur_blk3]);
+    assign game_over = cur_y == `TRIS_HEIGHT - 1 && (board[cur_blk1] || board[cur_blk2] || board[cur_blk3] || board[cur_blk4]);
 
  
     always @ (posedge btnCLK) begin
@@ -126,8 +136,9 @@ module tetris_logic(E, clk,btnCLK,rst,mvD,mvDrop, mvL, mvR, mvRot, board, cur_bl
                     board[cur_blk1] <= 1;
                     board[cur_blk2] <= 1;
                     board[cur_blk3] <= 1;
+                    board[cur_blk4] <= 1;
                     // add next block
-                    cur_blk <= rand_blk;
+                    cur_blkType <= rand_blk;
                     cur_rot <= 0;
                     cur_x <= `TRIS_WIDTH/2;
                     cur_y <= `TRIS_HEIGHT - 1;
