@@ -18,12 +18,12 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-
+`include "definitions.vh"
 
 module initpong(
     input clkseg,
-    output reg [3:0] an = ~4'b0,
-    output reg [7:0] seg = ~8'b0
+    output reg [`ANBIT:0] an = `CLR_AN,
+    output reg [`SEGDPBIT:0] seg = `CLR_SEG
     );
     reg [1:0] count = 0;
     
@@ -31,10 +31,10 @@ module initpong(
         count <= count + 1;
         an <= ~(1 << count);
         case (count)
-            3: seg[6:0] <= 7'b0001100; //P
-            2: seg[6:0] <= 7'b1000000; //O
-            1: seg[6:0] <= 7'b0101011; //n
-            0: seg[6:0] <= 7'b0010000; //g
+            3: seg[`SEGBIT:0] <= `CHAR_P; //P
+            2: seg[`SEGBIT:0] <= `CHAR_O; //O
+            1: seg[`SEGBIT:0] <= `CHAR_N; //n
+            0: seg[`SEGBIT:0] <= `CHAR_G; //g
         endcase
     end
 endmodule

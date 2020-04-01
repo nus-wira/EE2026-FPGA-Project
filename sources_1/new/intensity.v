@@ -23,18 +23,18 @@
 module intensity(
     input clk, clkseg, E,
     input [11:0] mic_in,
-    output [15:0] led,
-    output [3:0] an,
-    output [7:0] seg,
+    output [`LDBIT:0] led,
+    output [`ANBIT:0] an,
+    output [`SEGDPBIT:0] seg,
     output reg [3:0] num = 0
     );
     
     reg [13:0] count = 0;
     reg [11:0] max_vol = 0;
     wire clk20k;
-    wire [15:0] led_peak;
+    wire [`LDBIT:0] led_peak;
     
-    assign seg[7] = 1; //dp
+    assign seg[`SEGDPBIT] = 1; //dp
     
     // Convert mic to decimal digit from 0 to 15
     // Updates num every 5000 samples.
@@ -47,7 +47,7 @@ module intensity(
     clk_divider c1(clk, 25'd2499, clk20k); //20kHz
 //    clk_divider c0(clk, 25'd833332, clk60); //60 Hz
     // can possibly remove clk60 and update using num directly
-    show_digit s0(clkseg, num, an, seg[6:0]);
+    show_digit s0(clkseg, num, an, seg[`SEGBIT:0]);
     show_led s1(num, led_peak);
     
     // Multiplexer for audio to led/7seg

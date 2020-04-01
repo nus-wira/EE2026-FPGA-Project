@@ -28,7 +28,7 @@ module convertTetris_xy(
     
     wire [4:0] tetrisX, tetrisY;
     wire [8:0] xrangemax, yrangemax;
-    wire [15:0] oled_dataX, oled_dataY;
+    wire [`OLEDBIT:0] oled_dataX, oled_dataY;
     
     assign tetrisX = tetrisXY % `TRIS_WIDTH; 
     assign tetrisY = tetrisXY / `TRIS_WIDTH;

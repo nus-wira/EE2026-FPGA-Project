@@ -21,10 +21,10 @@
 `include "definitions.vh"
 
 module border(
-    input [15:0] bor_col, bg_col,
+    input [`COLBIT:0] bor_col, bg_col,
     input [1:0] bor_wid,
-    input [6:0] x, y,
-    output [15:0] oled_data
+    input [`PIXELXYBIT:0] x, y,
+    output [`OLEDBIT:0] oled_data
     );
     
     // If border on, assign border colour

@@ -20,10 +20,10 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module vol_bar(
-    input [15:0] bg_col, volCol_top, volCol_mid, volCol_bot,
+    input [`COLBIT:0] bg_col, volCol_top, volCol_mid, volCol_bot,
     input [3:0] num,
-    input [6:0] x, y,
-    output reg [15:0] oled_data
+    input [`PIXELXYBIT:0] x, y,
+    output reg [`OLEDBIT:0] oled_data
     );
 
     

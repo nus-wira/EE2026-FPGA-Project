@@ -29,7 +29,7 @@ module tetris_logic(E, clk,btnCLK,rst,mvD,mvDrop, mvL, mvR, mvRot, board, cur_bl
     // Each square of a block as a position on the board (pos = x+y*10)
     output [8:0] cur_blk1, cur_blk2, cur_blk3;
     // Block colour
-    output [15:0] blk_col;
+    output [`COLBIT:0] blk_col;
     
     // Current falling block type
     reg cur_blk = 0;
@@ -49,7 +49,7 @@ module tetris_logic(E, clk,btnCLK,rst,mvD,mvDrop, mvL, mvR, mvRot, board, cur_bl
     game_clock c0(btnCLK, gameCLK);
     
     // Keep track of whether initializing/playing/shifting rows
-    reg [1:0] mode = 0;
+    reg [1:0] mode = `MODE_INIT;
         
     // Using block type, rotation, position, calculate block locations + width/height
     calc_cur_blk calc_cur0 (cur_blk, cur_rot, cur_x, cur_y, cur_blk1, cur_blk2, cur_blk3, cur_width, cur_height);
@@ -100,17 +100,17 @@ module tetris_logic(E, clk,btnCLK,rst,mvD,mvDrop, mvL, mvR, mvRot, board, cur_bl
         if (rst || !E) mode <= 0;
         else
         case (mode)
-        0: begin // Initialize
+        `MODE_INIT: begin // Initialize
             board <= 0;
             cur_x <= `TRIS_WIDTH/2;
             cur_y <= `TRIS_HEIGHT - 1;
-            mode <= 1;
+            mode <= `MODE_PLAY;
         end 
-        1: begin // Play
+        `MODE_PLAY: begin // Play
             if (game_over) // check for game over first
-                mode <= 3;
+                mode <= `MODE_IDLE;
             else if (remove_en) begin // then check for row to remove first
-                mode <= 2;
+                mode <= `MODE_SHIFT;
                 shift_row <= remove_row;
             end else if (mvD && mvDrop) // If want to drop block
                 drop <= 1;
@@ -141,10 +141,10 @@ module tetris_logic(E, clk,btnCLK,rst,mvD,mvDrop, mvL, mvR, mvRot, board, cur_bl
                      cur_y >= test_height && !check_intersect) // Rotate
                 cur_rot <= cur_rot + 1;
         end
-        2: begin // Remove row
+        `MODE_SHIFT: begin // Remove row
             if (shift_row == `TRIS_HEIGHT - 1) begin // when shift_row reaches top
                 board[shift_row*`TRIS_WIDTH +: `TRIS_WIDTH] <= 0; // set top to 0
-                mode <= 1; // go back to Play mode
+                mode <= `MODE_PLAY; // go back to Play mode
             // When deleting full row must shift all above it down
             end else begin
                 // set shifting row to row above it
@@ -152,7 +152,7 @@ module tetris_logic(E, clk,btnCLK,rst,mvD,mvDrop, mvL, mvR, mvRot, board, cur_bl
                 shift_row <= shift_row + 1;
             end
         end
-        3: mode <= 0; // for now just restart when game_over
+        `MODE_IDLE: mode <= `MODE_INIT; // for now just restart when game_over
         endcase
         
     end

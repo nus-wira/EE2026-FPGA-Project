@@ -18,12 +18,12 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-
+`include "definitions.vh"
 
 module pt7seg(
     input clk,
     input [6:0] pt,
-    output reg [6:0] seg1, seg0
+    output reg [`SEGBIT:0] seg1, seg0
     );
     wire [3:0] n0,n1;
     assign n0 = pt % 10;
@@ -31,28 +31,28 @@ module pt7seg(
     
     always @ (posedge clk) begin
         case (n0)
-        4'd0: seg0 <= 7'b1000000;
-        4'd1: seg0 <= 7'b1111001;
-        4'd2: seg0 <= 7'b0100100;
-        4'd3: seg0 <= 7'b0110000;
-        4'd4: seg0 <= 7'b0011001;
-        4'd5: seg0 <= 7'b0010010;
-        4'd6: seg0 <= 7'b0000010;
-        4'd7: seg0 <= 7'b1111000;
-        4'd8: seg0 <= 7'b0;
-        4'd9: seg0 <= 7'b0010000;
+        4'd0: seg0 <= `DIG0;
+        4'd1: seg0 <= `DIG1;
+        4'd2: seg0 <= `DIG2;
+        4'd3: seg0 <= `DIG3;
+        4'd4: seg0 <= `DIG4;
+        4'd5: seg0 <= `DIG5;
+        4'd6: seg0 <= `DIG6;
+        4'd7: seg0 <= `DIG7;
+        4'd8: seg0 <= `DIG8;
+        4'd9: seg0 <= `DIG9;
         endcase
         case (n1)
-        4'd0: seg1 <= 7'b1000000;
-        4'd1: seg1 <= 7'b1111001;
-        4'd2: seg1 <= 7'b0100100;
-        4'd3: seg1 <= 7'b0110000;
-        4'd4: seg1 <= 7'b0011001;
-        4'd5: seg1 <= 7'b0010010;
-        4'd6: seg1 <= 7'b0000010;
-        4'd7: seg1 <= 7'b1111000;
-        4'd8: seg1 <= 7'b0;
-        4'd9: seg1 <= 7'b0010000;
+        4'd0: seg1 <= `DIG0;
+        4'd1: seg1 <= `DIG1;
+        4'd2: seg1 <= `DIG2;
+        4'd3: seg1 <= `DIG3;
+        4'd4: seg1 <= `DIG4;
+        4'd5: seg1 <= `DIG5;
+        4'd6: seg1 <= `DIG6;
+        4'd7: seg1 <= `DIG7;
+        4'd8: seg1 <= `DIG8;
+        4'd9: seg1 <= `DIG9;
         endcase
     end
     

@@ -17,13 +17,35 @@
 `define ORANGE 16'b11110_111100_00000
 
 // Bit numbers for various
-`define LEDBIT      15
+`define LDBIT       15
+`define OLEDBIT     15
 `define ANBIT       3
 `define SEGDPBIT    7 //with dp
 `define SEGBIT      6 //without dp
 `define COLBIT      15 //colour
 `define PIXELBIT    12 // Pixel_index from oled_display
 `define PIXELXYBIT  6
+// To clear AN/SEG
+`define CLR_AN  ~4'b0
+`define CLR_SEG ~8'b0
+
+// 7SEG DIGITS
+`define DIG0    7'b1000000
+`define DIG1    7'b1111001
+`define DIG2    7'b0100100
+`define DIG3    7'b0110000
+`define DIG4    7'b0011001
+`define DIG5    7'b0010010
+`define DIG6    7'b0000010
+`define DIG7    7'b1111000
+`define DIG8    7'b0
+`define DIG9    7'b0010000   
+// char
+`define CHAR_P  7'b0001100
+`define CHAR_O  7'b1000000
+`define CHAR_N  7'b0101011
+`define CHAR_G  7'b0010000
+
 
 ////////////////////////////////////////////////////
 ////////////////      VOL BAR      ////////////////
@@ -74,7 +96,7 @@
 ////////////////      TETRIS       ////////////////
 //////////////////////////////////////////////////
 
-//DIMENSIONS FOR TETRIS GAME
+// DIMENSIONS FOR TETRIS GAME
 // How many pixels wide/high each block is
 `define BLOCKSIZE 4
 //// How many blocks wide the game board is
@@ -109,8 +131,8 @@
 
 // Tetris block type
 `define NIL 2'b00
-`define I 2'b01
-`define L 2'b10
+`define I 0
+`define L 1
 //`define J 3'b011
 //`define O 3'b100
 //`define S 3'b101
@@ -121,10 +143,11 @@
 //`define ERR_BLK_POS 8'b11111111
 //// Modes
 //`define MODE_BITS 3
-//`define MODE_PLAY 0
-//`define MODE_DROP 1
+`define MODE_INIT 0
+`define MODE_PLAY 1
 //`define MODE_PAUSE 2
-//`define MODE_IDLE 3
-//`define MODE_SHIFT 4
+`define MODE_IDLE 3
+`define MODE_SHIFT 2
+
 //// The maximum value of the drop timer
 //`define DROP_TIMER_MAX 10000

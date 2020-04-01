@@ -23,19 +23,19 @@
 module pong(
     input clk, clkseg, btnU, btnD, btnR, flag,
     input [2:0] sw,
-    input [6:0] x, y,
+    input [`PIXELXYBIT:0] x, y,
     input [3:0] num,
-    output [15:0] oled_data,
-    output [3:0] an,
-    output [7:0] seg
+    output [`OLEDBIT:0] oled_data,
+    output [`ANBIT:0] an,
+    output [`SEGDPBIT:0] seg
     );
     // Paddle positions (centre)
-    wire [6:0] userPaddleX, userPaddleY, audioPaddleX, audioPaddleY;
+    wire [`PIXELXYBIT:0] userPaddleX, userPaddleY, audioPaddleX, audioPaddleY;
     // Paddle/ball appear booleans                    player point add
     wire userPaddleAppear, audioPaddleAppear, ball_on, p1_pt, p2_pt;
-    wire [15:0] userPaddle_col, audioPaddle_col;
-    wire [3:0] an_init, an_score;
-    wire [7:0] seg_init, seg_score;
+    wire [`COLBIT:0] userPaddle_col, audioPaddle_col;
+    wire [`ANBIT:0] an_init, an_score;
+    wire [`SEGDPBIT:0] seg_init, seg_score;
     wire E;
     
     // Only start when in correct mode

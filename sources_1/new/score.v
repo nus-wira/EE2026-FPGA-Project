@@ -18,17 +18,17 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-
+`include "definitions.vh"
 
 module score(
     input clk, clkseg, p1_pt, p2_pt, E, rst,
-    output reg [3:0] an = ~4'b0,
-    output reg [7:0] seg = ~8'b0
+    output reg [`ANBIT:0] an = `CLR_AN,
+    output reg [`SEGDPBIT:0] seg = `CLR_SEG
     );
     reg [6:0] p1 = 0, p2 = 0;
     reg [1:0] count = 0;
     
-    wire [6:0] seg0, seg1, seg2, seg3;
+    wire [`SEGBIT:0] seg0, seg1, seg2, seg3;
 
     
     always @ (posedge clk) begin

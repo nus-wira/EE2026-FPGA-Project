@@ -23,8 +23,8 @@
 module wave(
     input clk,
     input [11:0] mic_in,
-    input [6:0] x, y,
-    output [15:0] oled_data
+    input [`PIXELXYBIT:0] x, y,
+    output [`OLEDBIT:0] oled_data
     );
     
     reg [11:0] mic_data [`WIDTH-1:0];
@@ -36,7 +36,7 @@ module wave(
     end
     
     wire [5:0] num; // value from 0 to 63
-    reg [6:0] countx = 0; // 0 to 95
+    reg [`PIXELXYBIT:0] countx = 0; // 0 to 95
     
     
     always @ (posedge clk) begin
@@ -47,8 +47,8 @@ module wave(
     
     
     wire ygre, yyel, yred;
-    wire [6:0] yreflect;
-    parameter [6:0] barRange = 21;
+    wire [`PIXELXYBIT:0] yreflect;
+    parameter [`PIXELXYBIT:0] barRange = 21;
     
     assign num = mic_data[x][11] ? mic_data[x][10:5] : 0;
     assign yreflect = `HEIGHT - 1 - y;

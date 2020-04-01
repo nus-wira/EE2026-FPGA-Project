@@ -21,9 +21,9 @@
 `include "definitions.vh"
 
 module oled_mux(
-    input [6:0] x,y,
-    input [15:0] oled_border, oled_vol,
-    output [15:0] oled_data
+    input [`PIXELXYBIT:0] x,y,
+    input [`OLEDBIT:0] oled_border, oled_vol,
+    output [`OLEDBIT:0] oled_data
     );
     
     parameter [1:0] bor_wid = 3; // max border width

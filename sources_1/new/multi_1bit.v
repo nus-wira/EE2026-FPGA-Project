@@ -22,8 +22,8 @@
 
 module multi_1bit(
     input E,
-    input [15:0] mic_in, led_peak,
-    output [15:0] led
+    input [`LDBIT:0] mic_in, led_peak,
+    output [`LDBIT:0] led
     );
     assign led = E ? mic_in : led_peak;
 endmodule

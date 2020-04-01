@@ -23,7 +23,7 @@
 module ball(
     input clk, E, rst,
     input [1:0] diff, //difficulty, change x velocity of ball
-    input [6:0] x,y,ypad_left,ypad_right,
+    input [`PIXELXYBIT:0] x,y,ypad_left,ypad_right,
     output ball_on, p1_pt, p2_pt
     );
     
@@ -36,7 +36,7 @@ module ball(
     // Start state 0 - 4. 0:up+right, 1: down+right, 2: up+left, 3:down+left
     reg [1:0] st_state = 0;
     //  ball position
-    reg [6:0] x_ball = `WIDTH/2, y_ball = `HEIGHT/2;
+    reg [`PIXELXYBIT:0] x_ball = `WIDTH/2, y_ball = `HEIGHT/2;
     // ball velocity, start state
     wire [1:0] xvel;
     

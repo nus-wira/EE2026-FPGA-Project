@@ -22,15 +22,15 @@
 
 module airHockeyPaddles(
     input btnU, btnD, clkPaddle, sw, rst,
-    input [6:0] x, y,
+    input [`PIXELXYBIT:0] x, y,
     input [3:0] num,
     output userPaddleAppear, audioPaddleAppear,  
-    output reg [6:0] userPaddleX, userPaddleY, audioPaddleX, audioPaddleY,
-    output [15:0] userPaddle_col, audioPaddle_col
+    output reg [`PIXELXYBIT:0] userPaddleX, userPaddleY, audioPaddleX, audioPaddleY,
+    output [`COLBIT:0] userPaddle_col, audioPaddle_col
     );
      
     //assign initial position of audioPaddle
-    reg [6:0] audioPaddleInitial = `HEIGHT - `PADDLEHEIGHT/2;
+    reg [`PIXELXYBIT:0] audioPaddleInitial = `HEIGHT - `PADDLEHEIGHT/2;
     
     //Booleans
     wire [3:0] UP;
@@ -52,7 +52,7 @@ module airHockeyPaddles(
     end
     
     // Audio Paddle positioning
-    wire [6:0] nextAudioY;
+    wire [`PIXELXYBIT:0] nextAudioY;
     assign nextAudioY = audioPaddleInitial - `AUDIOMOVE * num;
     
     // User's Paddle

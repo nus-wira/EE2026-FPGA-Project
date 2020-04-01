@@ -18,21 +18,19 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-
+`include "definitions.vh"
 
 module full_row(
     input clk,
-    input [199:0] board,
+    input [`TRIS_SIZE:0] board,
     output reg [4:0] row = 0,
     output remove
     );
-    localparam Height = 20;
-    localparam Width = 10;
     
     // If all 1s in a row
-    assign remove = &board[row*Width +: Width];
+    assign remove = &board[row*`TRIS_WIDTH +: `TRIS_WIDTH];
     
     always @ (posedge clk) begin
-        row <= !remove ? row == Height - 1 ? 0 : row + 1 : row;
+        row <= !remove ? row == `TRIS_HEIGHT - 1 ? 0 : row + 1 : row;
     end
 endmodule

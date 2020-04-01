@@ -23,14 +23,14 @@ module vol_display (
     input [5:0] sw,
     input clk,
     input [3:0] num,
-    input [6:0] x,y,
-    output [15:0] oled_data
+    input [`PIXELXYBIT:0] x,y,
+    output [`OLEDBIT:0] oled_data
     );
     
     wire [1:0] bor_wid;
     wire [1:0] volDisp_col;
-    wire [15:0] oled_vol, oled_border;
-    wire [15:0] bor_col, bg_col, volCol_top, volCol_mid, volCol_bot;
+    wire [`OLEDBIT:0] oled_vol, oled_border;
+    wire [`COLBIT:0] bor_col, bg_col, volCol_top, volCol_mid, volCol_bot;
     reg [3:0] freezeNum = 0;
     
     // Border width using switches

@@ -22,7 +22,7 @@
 
 module colour_mux(
     input sw3, sw4,
-    output reg [15:0] bor_col, bg_col, volCol_top, volCol_mid, volCol_bot
+    output reg [`COLBIT:0] bor_col, bg_col, volCol_top, volCol_mid, volCol_bot
     );
     
     always @ (*) begin

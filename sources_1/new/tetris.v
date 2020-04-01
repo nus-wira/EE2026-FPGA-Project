@@ -22,15 +22,13 @@
 
 module tetris(
     input E, clk, btnCLK, rst, btnD, btnL, btnR, btnU, Edrop,
-    input [6:0] x,y,
-    output [15:0] oled_data
+    input [`PIXELXYBIT:0] x,y,
+    output [`OLEDBIT:0] oled_data
     );
     
     wire [`TRIS_SIZE-1:0] board;
     wire [8:0] cur_blk1, cur_blk2, cur_blk3;
-    wire [4:0] x1,y1,x2,y2,x3,y3;
-//    wire [15:0] oled_blk1, oled_blk2, oled_blk3, 
-    wire [15:0] oled_board, blk_col;
+    wire [`OLEDBIT:0] oled_board, blk_col;
     wire blk1_E, blk2_E, blk3_E;
     
     tetris_logic tet0(

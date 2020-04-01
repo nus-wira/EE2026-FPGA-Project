@@ -22,13 +22,13 @@
 
 module menuGUI(
     input clk, btnU, btnD, sw0,
-    input [6:0] x, y,
-    output reg [15:0] oled_data, 
+    input [`PIXELXYBIT:0] x, y,
+    output reg [`OLEDBIT:0] oled_data, 
     output reg [2:0] state
     );
     
     wire menuLength;
-    wire [6:0] menuX;
+    wire [`PIXELXYBIT:0] menuX;
     wire v, o, l, u, e, b, a, a1, r, w, Wa, Wa1, Wa2, Wv, We, E;
     wire p, p1, g, t, t1, Te, Te1, Tr, s, arrow1, arrow2, arrow3, arrow4;
     wire menu, volbar, pingpong, wave, tetris;
@@ -98,7 +98,6 @@ module menuGUI(
                 || ((l && x == 47) || (b && (y == 22 || y == 25 || y == 28)) || (x == 50 && (y == 23 || y == 24 || y == 26 || y == 27))) // b
                 || ((x == 56 && l) || (x == 52 && a) || (a1 && y == 26) || (x == 55 && y == 22) || (x == 54 && y == 23) || (x == 53 && y == 24)) // a
                 || ((x == 58 && l) || ((y == 25 || y == 22) && r) || ((y == 23 || y == 24) && x == 61) || (x == 60 && y == 26) || (x == 61 && y == 27) || (x == 62 && y == 28))); //r
-    
     // PING PONG
     assign pingpong = ((p && x == 12) || (p1 && (y == 32 || y == 35)) || ((y == 33 || y == 34) && x == 15) // P
                        || (x == 17 && p) // I

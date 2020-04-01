@@ -13,7 +13,7 @@
 //  STUDENT B MATRICULATION NUMBER: A0197788X
 //
 //////////////////////////////////////////////////////////////////////////////////
-
+`include "definitions.vh"
 
 module Top_Student (
     input  J_MIC3_Pin3,   // Connect from this signal to Audio_Capture.v
@@ -21,9 +21,9 @@ module Top_Student (
     output J_MIC3_Pin4,    // Connect to this signal from Audio_Capture.v
     input CLK100MHZ, btnC,
     input [15:0] sw,
-    output [15:0] led,
-    output [7:0] JB, seg,
-    output [3:0] an,
+    output [`LDBIT:0] led,
+    output [`SEGDPBIT:0] JB, seg,
+    output [`ANBIT:0] an,
     input btnU, btnD, btnR, btnL
     );
     // Clocks, buttons,states
@@ -39,14 +39,14 @@ module Top_Student (
     wire [3:0] num; // stores volume level (0-15)
     
     // Pixel_index from Oled_Display
-    wire [12:0] pixel_index;
-    wire [6:0] x,y;
+    wire [`PIXELBIT:0] pixel_index;
+    wire [`PIXELXYBIT:0] x,y;
     
     // Wires to store data from various modules
-    wire [15:0] oled_data, oled_menu, oled_pong, oled_wave, oled_vol, oled_tetris;
-    wire [15:0] led_peak, led_vol;
-    wire [3:0] an_vol, an_pong;
-    wire [7:0] seg_vol, seg_pong;
+    wire [`OLEDBIT:0] oled_data, oled_menu, oled_pong, oled_wave, oled_vol, oled_tetris;
+    wire [`LDBIT:0] led_peak, led_vol;
+    wire [`ANBIT:0] an_vol, an_pong;
+    wire [`SEGDPBIT:0] seg_vol, seg_pong;
     wire pw_flag;
     
     // Clocks
@@ -102,8 +102,10 @@ module Top_Student (
     // Passcode
     passcode pc0 (.E(pwE), .btnU(pulU), .btnD(pulD), .btnL(pulL), .btnR(pulR), .clk(clk50), .pw_flag(pw_flag));        
     
+    // Tetris
+    // orientation of screen and rotates so button is rotated to play the game more intuitively
     tetris t0(.E(tetrisE), .clk(CLK100MHZ), .btnCLK(clk50), .rst(pulC), 
-              .btnD(pulR), .btnL(pulD), .btnR(pulU), .btnU(pulL), .Edrop(sw[0]), //orientation of screen and rotates so button is rotated to play the game more intuitively
+              .btnD(pulR), .btnL(pulD), .btnR(pulU), .btnU(pulL), .Edrop(sw[0]),
               .x(x),.y(y), .oled_data(oled_tetris));       
     
     // Empty bit

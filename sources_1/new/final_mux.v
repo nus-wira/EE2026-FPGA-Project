@@ -23,20 +23,20 @@
 module final_mux(
     input clk,
     input [2:0] state,
-    input [3:0] an_vol, an_pong,
-    input [7:0] seg_vol, seg_pong,
-    input [15:0] oled_menu, oled_pong, oled_wave, oled_vol, oled_tetris, led_vol,
-    output reg [3:0] an,
-    output reg [7:0] seg,
-    output reg [15:0] oled_data, led
+    input [`ANBIT:0] an_vol, an_pong,
+    input [`SEGDPBIT:0] seg_vol, seg_pong,
+    input [`OLEDBIT:0] oled_menu, oled_pong, oled_wave, oled_vol, oled_tetris, led_vol,
+    output reg [`ANBIT:0] an,
+    output reg [`SEGDPBIT:0] seg,
+    output reg [`OLEDBIT:0] oled_data, led
     );
     always @ (posedge clk) begin
         case (state)
         // Menu
         0: begin
             led <= 0;
-            an <= ~4'b0;
-            seg <= ~8'b0;
+            an <= `CLR_AN;
+            seg <= `CLR_SEG;
             oled_data <= oled_menu;
         end
         // Peak detector
@@ -63,14 +63,15 @@ module final_mux(
         // Tetris
         4: begin
             led <= 0;
-            an <= ~4'b0;
-            seg <= ~8'b0;
+            an <= `CLR_AN;
+            seg <= `CLR_SEG;
             oled_data <= oled_tetris;
         end
-        5: begin // Passcode screen
+        // Passcode screen
+        5: begin
             led <= 0;
-            an <= ~4'b0;
-            seg <= ~8'b0;
+            an <= `CLR_AN;
+            seg <= `CLR_SEG;
             oled_data <= `BLACK;
         end
         endcase

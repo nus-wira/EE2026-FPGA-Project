@@ -21,9 +21,9 @@
 `include "definitions.vh"
 
 module boardXYconversion(
-    input [199:0] board,
-    input [6:0] x, y,
-    output [15:0] oled_data
+    input [`TRIS_SIZE-1:0] board,
+    input [`PIXELXYBIT:0] x, y,
+    output [`OLEDBIT:0] oled_data
     );
     
     wire [8:0] boardIndex;
