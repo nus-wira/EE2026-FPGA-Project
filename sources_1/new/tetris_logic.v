@@ -18,26 +18,27 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
+`include "definitions.vh"
 
-
-module tetris_logic(E, clk,btnCLK,rst,mvD,mvDrop, mvL, mvR, mvRot, board, cur_blk1, cur_blk2, cur_blk3);
-    localparam Width = 10;
-    localparam Height = 20;
-    
+module tetris_logic(E, clk,btnCLK,rst,mvD,mvDrop, mvL, mvR, mvRot, board, cur_blk1, cur_blk2, cur_blk3, blk_col);
     
     // Clock, movement buttons, rotation clockwise
     input E, clk, btnCLK, rst, mvD, mvDrop, mvL, mvR, mvRot;
     // Keeps track of board's fallen pieces
-    output reg [Width*Height-1:0] board = 0;
+    output reg [`TRIS_SIZE-1:0] board = 0;
     // Each square of a block as a position on the board (pos = x+y*10)
     output [8:0] cur_blk1, cur_blk2, cur_blk3;
+    // Block colour
+    output [15:0] blk_col;
     
     // Current falling block type
     reg cur_blk = 0;
+    wire rand_blk; // random new block to assign cur_blk to
+    
     // Rotation direction of block - 0: 0 deg, 1: 90 deg etc.
     reg [1:0] cur_rot = 0;
     // x,y coordinates of block
-    reg [4:0] cur_x = Width/2, cur_y = Height - 1;
+    reg [4:0] cur_x = `TRIS_WIDTH/2, cur_y = `TRIS_HEIGHT - 1;
     
     // Width and height of a cur_blk, to keep track of boundaries
     // based on type and rotation
@@ -52,6 +53,8 @@ module tetris_logic(E, clk,btnCLK,rst,mvD,mvDrop, mvL, mvR, mvRot, board, cur_bl
         
     // Using block type, rotation, position, calculate block locations + width/height
     calc_cur_blk calc_cur0 (cur_blk, cur_rot, cur_x, cur_y, cur_blk1, cur_blk2, cur_blk3, cur_width, cur_height);
+    // Assign block colour according to block type
+    assign blk_col = cur_blk ? `RED : `GREEN;
     
     // Wires to test a next state of block
     wire [1:0] test_rot;
@@ -78,68 +81,74 @@ module tetris_logic(E, clk,btnCLK,rst,mvD,mvDrop, mvL, mvR, mvRot, board, cur_bl
     full_row f0 (clk, board, remove_row, remove_en);
     reg [4:0] shift_row; // needed to remove row by row
     
-    reg [4:0] drop = 0;
+    // To make sure when pressing drop, it drops to the bottom
+    // Set drop to 1, then keep moving it down until
+    // check_intersect becomes true
+    reg drop = 0;
+    
+    // randE set to enable whenever new block is needed
+    reg randE = 0;
+    // new block in rand_blk
+    rng rng0(clk, randE, 2'd2, rand_blk);
     
     // game is over if new block intersects
     wire game_over;
-    assign game_over = cur_y == Height - 1 && (board[cur_blk1] || board[cur_blk2] || board[cur_blk3]);
-    
-    
-    
+    assign game_over = cur_y == `TRIS_HEIGHT - 1 && (board[cur_blk1] || board[cur_blk2] || board[cur_blk3]);
+
+ 
     always @ (posedge btnCLK) begin
         if (rst || !E) mode <= 0;
         else
         case (mode)
         0: begin // Initialize
             board <= 0;
-            cur_x <= Width/2;
-            cur_y <= Height - 1;
+            cur_x <= `TRIS_WIDTH/2;
+            cur_y <= `TRIS_HEIGHT - 1;
             mode <= 1;
         end 
         1: begin // Play
-            if (game_over)
+            if (game_over) // check for game over first
                 mode <= 3;
-            if (remove_en) begin // check for row to remove first
+            else if (remove_en) begin // then check for row to remove first
                 mode <= 2;
                 shift_row <= remove_row;
             end else if (mvD && mvDrop) // If want to drop block
-                drop <= Height;
+                drop <= 1;
             else if (mvD || gameCLK || drop) begin // Normal down movement at gameCLK
                 if (cur_y >= cur_height && !check_intersect) begin
+                    randE <= 0; // reset random block enable
                     // Move down
                     cur_y <= cur_y - 1;
-                    drop <= drop ? drop - 1 : drop; 
+                    // drop <= drop ? drop - 1 : drop;
                 end else begin
+                    randE <= 1; // set random block enable
                     // Intersects with next move so add to board
                     board[cur_blk1] <= 1;
                     board[cur_blk2] <= 1;
                     board[cur_blk3] <= 1;
                     // add next block
-                    cur_blk <= cur_blk + 1;
+                    cur_blk <= rand_blk;
                     cur_rot <= 0;
-                    cur_x <= Width/2;
-                    cur_y <= Height - 1;
-                    drop <= 0;
+                    cur_x <= `TRIS_WIDTH/2;
+                    cur_y <= `TRIS_HEIGHT - 1;
+                    drop <= 0; // reset drop used for mvDrop
                 end
-            end else if (mvL && cur_x > 0 && !check_intersect)
-                // Move left
+            end else if (mvL && cur_x > 0 && !check_intersect) // Move left
                 cur_x <= cur_x - 1;
-            else if (mvR && cur_x + cur_width < Width && !check_intersect)
-                // Move right
+            else if (mvR && cur_x + cur_width < `TRIS_WIDTH && !check_intersect) // Move right
                 cur_x <= cur_x + 1;
-            else if (mvRot && cur_x + test_width <= Width &&
-                     cur_y >= test_height && !check_intersect)
-                // Rotate
+            else if (mvRot && cur_x + test_width <= `TRIS_WIDTH &&
+                     cur_y >= test_height && !check_intersect) // Rotate
                 cur_rot <= cur_rot + 1;
-
         end
         2: begin // Remove row
-            if (shift_row == Height - 1) begin
-                board[shift_row*Width +: Width] <= 0;
-                mode <= 1;
+            if (shift_row == `TRIS_HEIGHT - 1) begin // when shift_row reaches top
+                board[shift_row*`TRIS_WIDTH +: `TRIS_WIDTH] <= 0; // set top to 0
+                mode <= 1; // go back to Play mode
             // When deleting full row must shift all above it down
             end else begin
-                board[shift_row*Width +: Width] <= board[(shift_row+1)*Width +: Width];
+                // set shifting row to row above it
+                board[shift_row*`TRIS_WIDTH +: `TRIS_WIDTH] <= board[(shift_row+1)*`TRIS_WIDTH +: `TRIS_WIDTH];
                 shift_row <= shift_row + 1;
             end
         end

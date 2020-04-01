@@ -28,7 +28,7 @@ module Top_Student (
     );
     // Clocks, buttons,states
     wire clk20k, clk6p25m, clk50, clk381;
-    wire pulU,pulD, pulR, pulC, pulL, reset, pongE, tetrisE; 
+    wire pulU,pulD, pulR, pulC, pulL, reset, pongE, tetrisE, pwE; 
     wire [2:0] state, menu_flag;
     // Unused Oled_Display wires
     wire frame_begin, sending_pixels, sample_pixel;
@@ -100,7 +100,7 @@ module Top_Student (
     
     
     // Passcode
-    passcode pc0 (.E(!state), .btnU(pulU), .btnD(pulD), .btnL(pulL), .btnR(pulR), .clk(clk50), .pw_flag(pw_flag));        
+    passcode pc0 (.E(pwE), .btnU(pulU), .btnD(pulD), .btnL(pulL), .btnR(pulR), .clk(clk50), .pw_flag(pw_flag));        
     
     tetris t0(.E(tetrisE), .clk(CLK100MHZ), .btnCLK(clk50), .rst(pulC), 
               .btnD(pulR), .btnL(pulD), .btnR(pulU), .btnU(pulL), .Edrop(sw[0]),
@@ -111,6 +111,7 @@ module Top_Student (
     // Enable pong if in correct state
     assign pongE = state == 2;
     assign tetrisE = state == 4;
+    assign pwE = !state;
     // for testing state changes
 //    assign state = sw[14:12];
     // Final change state for when menu_state change is setup

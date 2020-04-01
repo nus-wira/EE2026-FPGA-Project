@@ -18,15 +18,14 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-
+`include "definitions.vh"
 
 module convertXY(
-//    input clk,
-    input [12:0] pixel_index,
-    output [6:0] x, y
+    input [`PIXELBIT:0] pixel_index,
+    output [`PIXELXYBIT:0] x, y
     );
     
-    assign x = pixel_index % 96;
-    assign y = pixel_index / 96;
+    assign x = pixel_index % `WIDTH;
+    assign y = pixel_index / `WIDTH;
     
 endmodule

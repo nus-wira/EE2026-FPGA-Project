@@ -30,8 +30,8 @@ module passcode(
     always @ (clk) begin
         if (E) begin
         case (state)
-        0: state <= btnL ? 1 : state;
-        1: state <= btnR ? 2 : (btnU || btnL || btnR) ? 0 : state;
+        0: state <= btnU ? 1 : state;
+        1: state <= btnD ? 2 : (btnU || btnL || btnR) ? 0 : state;
         2: state <= btnL ? 3 : (btnU || btnD || btnR) ? 0 : state;
         3: state <= btnR ? 4 : (btnU || btnL || btnD) ? 0 : state;
         endcase

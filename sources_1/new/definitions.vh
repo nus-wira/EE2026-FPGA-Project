@@ -16,7 +16,14 @@
 `define BLUE 16'b00000_000000_11111
 `define ORANGE 16'b11110_111100_00000
 
-
+// Bit numbers for various
+`define LEDBIT      15
+`define ANBIT       3
+`define SEGDPBIT    7 //with dp
+`define SEGBIT      6 //without dp
+`define COLBIT      15 //colour
+`define PIXELBIT    12 // Pixel_index from oled_display
+`define PIXELXYBIT  6
 
 ////////////////////////////////////////////////////
 ////////////////      VOL BAR      ////////////////
@@ -71,18 +78,21 @@
 `define BLOCKSIZE 4
 
 //// How many blocks wide the game board is
-//`define BLOCKS_WIDE 10
+`define TRIS_WIDTH 10
 
 //// How many blocks high the game board is
-//`define BLOCKS_HIGH 22
+`define TRIS_HEIGHT 20
+
+//// Total board size
+`define TRIS_SIZE (`TRIS_WIDTH * `TRIS_HEIGHT)
 
 //// Width of the game board in pixels
-//`define BOARD_WIDTH (`BLOCKS_WIDE * `BLOCK_SIZE)
+`define BOARD_WIDTH (`TRIS_WIDTH * `BLOCKSIZE)
 //// Starting x pixel for the game board
 //`define BOARD_X (((`PIXEL_WIDTH - `BOARD_WIDTH) / 2) - 1)
 
 //// Height of the game board in pixels
-//`define BOARD_HEIGHT (`BLOCKS_HIGH * `BLOCK_SIZE)
+`define BOARD_HEIGHT (`TRIS_HEIGHT * `BLOCKSIZE)
 //// Starting y pixel for the game board
 //`define BOARD_Y (((`PIXEL_HEIGHT - `BOARD_HEIGHT) / 2) - 1)
 
