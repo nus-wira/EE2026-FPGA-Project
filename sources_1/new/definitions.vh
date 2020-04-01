@@ -74,25 +74,21 @@
 ////////////////      TETRIS       ////////////////
 //////////////////////////////////////////////////
 
+//DIMENSIONS FOR TETRIS GAME
 // How many pixels wide/high each block is
 `define BLOCKSIZE 4
-
 //// How many blocks wide the game board is
 `define TRIS_WIDTH 10
-
 //// How many blocks high the game board is
 `define TRIS_HEIGHT 20
-
-//// Total board size
+//// Total board size (area)
 `define TRIS_SIZE (`TRIS_WIDTH * `TRIS_HEIGHT)
-
 //// Width of the game board in pixels
 `define BOARD_WIDTH (`TRIS_WIDTH * `BLOCKSIZE)
-//// Starting x pixel for the game board
-//`define BOARD_X (((`PIXEL_WIDTH - `BOARD_WIDTH) / 2) - 1)
-
 //// Height of the game board in pixels
 `define BOARD_HEIGHT (`TRIS_HEIGHT * `BLOCKSIZE)
+//// Starting x pixel for the game board
+//`define BOARD_X (((`PIXEL_WIDTH - `BOARD_WIDTH) / 2) - 1)
 //// Starting y pixel for the game board
 //`define BOARD_Y (((`PIXEL_HEIGHT - `BOARD_HEIGHT) / 2) - 1)
 
@@ -111,7 +107,7 @@
 //// The number of bits used to store each block
 //`define BITS_PER_BLOCK 3
 
-// The type of each block
+// Tetris block type
 `define NIL 2'b00
 `define I 2'b01
 `define L 2'b10
@@ -123,7 +119,6 @@
 
 //// Error value
 //`define ERR_BLK_POS 8'b11111111
-
 //// Modes
 //`define MODE_BITS 3
 //`define MODE_PLAY 0
@@ -131,6 +126,5 @@
 //`define MODE_PAUSE 2
 //`define MODE_IDLE 3
 //`define MODE_SHIFT 4
-
 //// The maximum value of the drop timer
 //`define DROP_TIMER_MAX 10000

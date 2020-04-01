@@ -67,7 +67,7 @@ module final_mux(
             seg <= ~8'b0;
             oled_data <= oled_tetris;
         end
-        5: begin
+        5: begin // Passcode screen
             led <= 0;
             an <= ~4'b0;
             seg <= ~8'b0;

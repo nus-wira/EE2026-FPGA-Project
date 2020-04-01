@@ -25,8 +25,10 @@ module boardXYconversion(
     input [6:0] x, y,
     output [15:0] oled_data
     );
+    
     wire [8:0] boardIndex;
     wire inRange;
+    
     assign inRange = x >= `WIDTH - `BOARD_HEIGHT && y >= `HEIGHT - `BOARD_WIDTH;
     // Conversion of x and y values into board index
     assign boardIndex = (((`WIDTH - 1 - x)/`BLOCKSIZE) * `TRIS_WIDTH) + ((`HEIGHT - 1 - y)/`BLOCKSIZE);

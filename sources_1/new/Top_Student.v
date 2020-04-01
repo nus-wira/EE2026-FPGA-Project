@@ -103,7 +103,7 @@ module Top_Student (
     passcode pc0 (.E(pwE), .btnU(pulU), .btnD(pulD), .btnL(pulL), .btnR(pulR), .clk(clk50), .pw_flag(pw_flag));        
     
     tetris t0(.E(tetrisE), .clk(CLK100MHZ), .btnCLK(clk50), .rst(pulC), 
-              .btnD(pulR), .btnL(pulD), .btnR(pulU), .btnU(pulL), .Edrop(sw[0]),
+              .btnD(pulR), .btnL(pulD), .btnR(pulU), .btnU(pulL), .Edrop(sw[0]), //orientation of screen and rotates so button is rotated to play the game more intuitively
               .x(x),.y(y), .oled_data(oled_tetris));       
     
     // Empty bit
@@ -117,7 +117,7 @@ module Top_Student (
     // Final change state for when menu_state change is setup
      changestate cs0(.clk(clk50), .btnC(pulC), .pw_flag(pw_flag), .menu_flag(menu_flag), .state(state));
     
-    // 0: menu, 1: peak detector, 2: pong, 3: wave
+    // 0: menu, 1: peak detector, 2: pong, 3: wave, 4: tetris
     final_mux mux00(.clk(CLK100MHZ), .state(state), .an_vol(an_vol), .an_pong(an_pong), .seg_vol(seg_vol), .seg_pong(seg_pong),
                     .oled_menu(oled_menu), .oled_pong(oled_pong), .oled_wave(oled_wave), 
                     .oled_vol(oled_vol), .oled_tetris(oled_tetris),
