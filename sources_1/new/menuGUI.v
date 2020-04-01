@@ -87,7 +87,8 @@ module menuGUI(
             || (E && (y == 3 || y == 4 || y == 9 || y == 10 || y == 15 || y == 16)) // E
             || ((x == 53 && (y == 6 || y == 7)) || (x == 54 && (y == 7 || y == 8)) || (x == 55 && (y == 8 || y == 9)) || (x == 56 && (y == 9 || y == 10)) || (x == 57 && (y == 10 || y == 11)) || (x == 58 && (y == 11 || y == 12))) // N
             || ((menuX[6:5] && (y >= 3 && y <= 14)) || ((x >= 66 && x <= 69) && (y == 15 || y == 16)))); // U 
-    // volume bar
+    
+    // VOLUME BAR
     assign volbar = ((v && (x == 12 || x == 16)) || (x == 13 && y == 27) || (x == 14 && y == 28) || (x == 15 && y == 27) //v
                 || (o && (x == 18 || x == 22) || ((y == 22 || y == 28) && (x == 19 || x == 20 || x == 21))) // o
                 || ((l && x == 24) || ((x == 25 || x == 26 || x == 27) && y == 28)) // l
@@ -97,6 +98,7 @@ module menuGUI(
                 || ((l && x == 47) || (b && (y == 22 || y == 25 || y == 28)) || (x == 50 && (y == 23 || y == 24 || y == 26 || y == 27))) // b
                 || ((x == 56 && l) || (x == 52 && a) || (a1 && y == 26) || (x == 55 && y == 22) || (x == 54 && y == 23) || (x == 53 && y == 24)) // a
                 || ((x == 58 && l) || ((y == 25 || y == 22) && r) || ((y == 23 || y == 24) && x == 61) || (x == 60 && y == 26) || (x == 61 && y == 27) || (x == 62 && y == 28))); //r
+    
     // PING PONG
     assign pingpong = ((p && x == 12) || (p1 && (y == 32 || y == 35)) || ((y == 33 || y == 34) && x == 15) // P
                        || (x == 17 && p) // I
@@ -133,7 +135,7 @@ module menuGUI(
     assign menudisp[1] = (menu || pingpong || wave || tetris || box1);
     assign menudisp[2] = (menu || volbar || wave || tetris || box2); 
     assign menudisp[3] = (menu || volbar || pingpong || tetris || box3); 
-    assign menudisp[4] = (menu || pingpong || wave || box4); 
+    assign menudisp[4] = (menu || volbar || pingpong || wave || box4); 
 
     always @ (posedge clk) begin
         state <= btnU && state != 0 ? state - 1 : btnD && state != 4 ? state + 1 : state;
