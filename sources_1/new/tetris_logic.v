@@ -22,7 +22,7 @@
 
 module tetris_logic(
     // Clock, movement buttons, rotation clockwise
-    input E, clk, btnCLK, rst, mvD, mvDrop, mvL, mvR, mvRot,
+    input E, clk, btnCLK, rst, mvD, mvDrop, mvL, mvR, mvRot, micD,
     // Keeps track of board's fallen pieces
     output reg [`TRIS_SIZE-1:0] board = 0,
     // Each square of a block as a position on the board (pos = x+y*10)
@@ -125,12 +125,11 @@ module tetris_logic(
                 shift_row <= remove_row;
             end else if (mvD && mvDrop) // If want to drop block
                 drop <= 1;
-            else if (mvD || gameCLK || drop) begin // Normal down movement at gameCLK
+            else if (mvD || micD || gameCLK || drop) begin // Normal down movement at gameCLK
                 if (cur_y >= cur_height && !check_intersect) begin
                     randE <= 1; // reset random block enable
                     // Move down
                     cur_y <= cur_y - 1;
-                    // drop <= drop ? drop - 1 : drop;
                 end else begin
                     randE <= 0; // set random block enable
                     // Intersects with next move so add to board

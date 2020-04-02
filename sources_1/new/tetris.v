@@ -21,7 +21,7 @@
 `include "definitions.vh"
 
 module tetris(
-    input E, clk, btnCLK, rst, btnD, btnL, btnR, btnU, Edrop,
+    input E, clk, btnCLK, rst, btnD, btnL, btnR, btnU, Edrop, micD,
     input [`PIXELXYBIT:0] x,y,
     output [`OLEDBIT:0] oled_data
     );
@@ -34,7 +34,7 @@ module tetris(
     
     tetris_logic tet0(
         .E(E), .clk(clk),.btnCLK(btnCLK),.rst(rst),
-        .mvD(btnD),.mvDrop(Edrop), .mvL(btnL), .mvR(btnR), .mvRot(btnU), 
+        .mvD(btnD),.mvDrop(Edrop), .mvL(btnL), .mvR(btnR), .mvRot(btnU), .micD(micD),
         .board(board), .cur_blk1(cur_blk1), .cur_blk2(cur_blk2), 
         .cur_blk3(cur_blk3), .cur_blk4(cur_blk4), .blk_col(blk_col), .rand_blk(next_blk));
 
