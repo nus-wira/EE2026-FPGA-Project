@@ -29,7 +29,7 @@ module tetrisPause_Screen(
     
     wire gameOver, gamePause, resume, restart, yes, no, arrow1, arrow2, boxwidth, box1, box2;
     wire g, l, a, a1, a2, e, p, p1, u, s, d, d1;
-    wire r;
+    wire l2, r, Re, Ru, Rs;
     wire [15:0] menudisp [5:0];
     
     //assign Booleans for GAME PAUSED
@@ -46,10 +46,11 @@ module tetrisPause_Screen(
     assign d1 = (y >= 18 && y <= 22);
     
     //assign Booleans for RESUME
-    assign r = (x == 58 || x == 59 || x == 60);
-    assign Re = (x >= 22 && x <= 24);
-    assign Ru = (y >= 17 && y <= 22);
-    assign Rs = (x >= 44 && x <= 47);
+    assign l2 = (x >= 41 && x <= 47);
+    assign r = (x == 13 || x == 14 || x == 15);
+    assign Re = (x >= 19 && x <= 21);
+    assign Ru = (y >= 41 && y <= 46);
+    assign Rs = (x >= 23 && x <= 26);
     
     //assign Booleans for YES
     
@@ -78,12 +79,12 @@ module tetrisPause_Screen(
                        || (((l && x == 49) || (e && (y == 17 || y == 20 || y == 23))))   // e
                        || ((l && (x == 54)) || (d && (y == 17 || y == 23)) || (d1 && (x == 57))); //d
     // RESUME                  
-    assign = (((x == 58 && l) || ((y == 25 || y == 22) && r) || ((y == 23 || y == 24) && x == 61) || (x == 60 && y == 26) || (x == 61 && y == 27) || (x == 62 && y == 28))) //r;
+    assign = ((((x == 13 && l2) || ((y == 41 || y == 44) && r) || ((y == 42 || y == 43) && x == 15) || (x == 14 && y == 45) || (x == 15 && y == 46) || (x == 16 && y == 47)) //r;
              || (((l && x == 49) || (e && (y == 17 || y == 20 || y == 23)))) // e
              || (((y == 17 || y == 20 || y == 23) && s) || ((y == 18 || y == 19) && x == 44)) || ((y == 21 || y == 22) && x == 47)) // s
              || ((u && (x == 39 || x == 42)) || ((x == 40 || x == 41) && y == 23)) // u
              || ((l && (x == 15 || x == 19)) || (y == 18 && (x == 16 || x == 18)) || (y == 19 && x == 17)) // m
-             || ((l && x == 21) || (e && (y == 17 || y == 20 || y == 23))) // e
+             || ((l && x == 21) || (e && (y == 17 || y == 20 || y == 23)))) // e
              
     
     //MENU display for respective states
