@@ -29,8 +29,8 @@ module tetris_game_title(
     
     // ASSIGN BOOLEANS
     assign t = (x >= 17 && x <= 21);
-    assign t1 = (x >= 5 && x <= 11);
-    assign e = (x >= 23 && x <= 26);
+    assign t1 = (y >= 5 && y <= 11);
+    assign e = (y >= 23 && y <= 26);
     assign e1 = (x >= 23 && x <= 27);
     assign r = (x == 34 || x == 35 || x == 36);
     assign s = (x >= 41 && x <= 44);
