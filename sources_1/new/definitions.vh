@@ -147,4 +147,5 @@
 `define MODE_INIT 0
 `define MODE_PLAY 1
 `define MODE_SHIFT 2
-`define MODE_IDLE 3
+`define MODE_OVER 3
+`define MODE_IDLE 4

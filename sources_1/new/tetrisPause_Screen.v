@@ -21,17 +21,18 @@
 
 
 module tetrisPause_Screen(
-    input clk, btnL, btnR, sw1,
+    input clk, btnL, btnR, pause,
+    input [2:0] game_state,
     input [`PIXELXYBIT:0] x, y,
-    output reg [`OLEDBIT:0] oled_data,
-    output reg [2:0] state
+    output [`OLEDBIT:0] oled_data,
+    output reg [2:0] state = 3
     );
     
     wire gameOver, gamePause, resume, restart, yes, no, arrow1, arrow2, boxwidth, box1, box2;
     wire g, l, a, a1, a2, e, p, p1, u, s, d, d1;
     wire a3, e2, o1, v, e3, r1, excl;
     wire t, t1, t2, q2, r2, r3, a4, a5, Re2, Rs1;
-    wire l2, r, Re, Re1, Ru, Rs, q1;
+    wire l2, r, Re, Re1, Ru, Rs, q1, q2;
     wire l3, Y, Y1, Y2, Ye, Ys;
     wire l4, n, o;
     wire [15:0] menudisp [5:0];
@@ -74,7 +75,7 @@ module tetrisPause_Screen(
     assign t = (y >= 41 && y <= 47);
     assign t1 = (x >= 25 && x <= 29);
     assign t2 = (x >= 41 && x <= 45);
-    assign q1 = ((x == 46 && (y == 41 || y == 42 || y == 44 || y == 45)) || ((x >= 47 && x <= 49) && (y == 44 || y == 41)) || ((y == 42 || y == 43) && x == 49));
+    assign q2 = ((x == 46 && (y == 41 || y == 42 || y == 44 || y == 45)) || ((x >= 47 && x <= 49) && (y == 44 || y == 41)) || ((y == 42 || y == 43) && x == 49));
     //assign Booleans for YES
     assign l3 = (y >= 57 && y <= 63);
     assign Y = ((x >= 27 && x <= 31) && y == 59);
@@ -169,8 +170,10 @@ module tetrisPause_Screen(
     assign menudisp[4] = (gameOver || restart || box1 || no);
     assign menudisp[5] = (gameOver || restart || yes || box2); 
     
+    assign oled_data = pause ? (gamePause ? `WHITE : `BLACK) : menudisp[state] ? `WHITE : `BLACK;
+    
     always @ (posedge clk) begin
-        state <= btnL && state != 0 ? state - 1 : btnR && state != 5 ? state + 1 : state;
+        state <= btnL && state != 3 ? state - 1 : btnR && state != 5 ? state + 1 : state;
     end
         
 endmodule

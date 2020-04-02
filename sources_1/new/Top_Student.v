@@ -104,7 +104,7 @@ module Top_Student (
     
     // Tetris
     // orientation of screen and rotates so button is rotated to play the game more intuitively
-    tetris t0(.E(tetrisE), .clk(CLK100MHZ), .btnCLK(clk50), .rst(pulC), 
+    tetris t0(.E(tetrisE), .clk(CLK100MHZ), .btnCLK(clk50), .rst(pulC), .pause(sw[1]),
               .btnD(pulR), .btnL(pulD), .btnR(pulU), .btnU(pulL), .Edrop(sw[0]), .micD(num == 15),
               .x(x),.y(y), .oled_data(oled_tetris));       
     

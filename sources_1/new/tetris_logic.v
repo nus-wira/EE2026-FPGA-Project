@@ -22,7 +22,8 @@
 
 module tetris_logic(
     // Clock, movement buttons, rotation clockwise
-    input E, clk, btnCLK, rst, mvD, mvDrop, mvL, mvR, mvRot, micD,
+    input E, clk, btnCLK, rst, pause, mvD, mvDrop, mvL, mvR, mvRot, micD,
+    input [2:0] tris_menu,
     // Keeps track of board's fallen pieces
     output reg [`TRIS_SIZE-1:0] board = 0,
     // Each square of a block as a position on the board (pos = x+y*10)
@@ -30,7 +31,9 @@ module tetris_logic(
     // Next (random) block to assign cur_blk to
     output [2:0] rand_blk,
     // Block colour
-    output reg [`COLBIT:0] blk_col
+    output reg [`COLBIT:0] blk_col,
+    // Keep track of whether initializing/playing/shifting rows
+    output reg [2:0] mode = `MODE_INIT
     );
     
     // Current falling block type
@@ -50,7 +53,7 @@ module tetris_logic(
     game_clock c0(btnCLK, gameCLK);
     
     // Keep track of whether initializing/playing/shifting rows
-    reg [1:0] mode = `MODE_INIT;
+//    reg [1:0] mode = `MODE_INIT;
         
     // Using block type, rotation, position, calculate block locations + width/height
     calc_cur_blk calc_cur0 (cur_blkType, cur_rot, cur_x, cur_y, cur_blk1, cur_blk2, cur_blk3, cur_blk4, cur_width, cur_height);
@@ -106,10 +109,18 @@ module tetris_logic(
     wire game_over;
     assign game_over = cur_y == `TRIS_HEIGHT - 1 && (board[cur_blk1] || board[cur_blk2] || board[cur_blk3] || board[cur_blk4]);
 
- 
+    reg [2:0] oldmode = 0;
+    
     always @ (posedge btnCLK) begin
-        if (rst || !E) mode <= 0;
+        if (rst || !E) mode <= `MODE_INIT;
+        else if (mode == `MODE_OVER) begin
+            mode <= micD && tris_menu == 4 ? `MODE_INIT : mode;
+        end else if (pause) begin
+            mode <= `MODE_IDLE;
+        end else if (!pause && mode == `MODE_IDLE)
+            mode <= oldmode;
         else
+            oldmode <= mode;
         case (mode)
         `MODE_INIT: begin // Initialize
             board <= 0;
@@ -118,9 +129,9 @@ module tetris_logic(
             mode <= `MODE_PLAY;
         end 
         `MODE_PLAY: begin // Play
-            if (game_over) // check for game over first
-                mode <= `MODE_IDLE;
-            else if (remove_en) begin // then check for row to remove first
+            if (game_over) begin // check for game over first
+                mode <= `MODE_OVER;
+            end else if (remove_en) begin // then check for row to remove first
                 mode <= `MODE_SHIFT;
                 shift_row <= remove_row;
             end else if (mvD && mvDrop) // If want to drop block
@@ -165,7 +176,7 @@ module tetris_logic(
                 shift_row <= shift_row + 1;
             end
         end
-        `MODE_IDLE: mode <= `MODE_INIT; // for now just restart when game_over
+//        `MODE_OVER: mode <= `MODE_INIT; // for now just restart when game_over
         endcase
         
     end
