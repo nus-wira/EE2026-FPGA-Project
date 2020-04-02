@@ -99,7 +99,7 @@ module tetris_logic(
     // randE set to enable whenever new block is needed
     reg randE = 0;
     // new block in rand_blk
-    rng rng0(clk, randE, 2'd2, rand_blk);
+    rng rng0(clk, randE, 3'd6, rand_blk);
     
     // game is over if new block intersects
     wire game_over;
