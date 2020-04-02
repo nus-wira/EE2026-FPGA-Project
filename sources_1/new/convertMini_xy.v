@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 30.03.2020 14:58:14
+// Create Date: 04/02/2020 02:09:11 PM
 // Design Name: 
-// Module Name: convertTetris_xy
+// Module Name: convertMini_xy
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -18,22 +18,24 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-`include "definitions.vh"
 
-module convertTetris_xy(
-    input [8:0] tetrisXY,
+
+module convertMini_xy(
+    input [3:0] miniXY,
     input [`PIXELXYBIT:0] x, y,
     output block_en
     );
+    localparam x_max = 54;
+    localparam y_max = 18;
     
-    wire [4:0] tetrisX, tetrisY;
+    wire [2:0] miniX, miniY;
     wire [8:0] xrangemax, yrangemax;
     wire [`OLEDBIT:0] oled_dataX, oled_dataY;
     
-    assign tetrisX = tetrisXY % `TRIS_WIDTH; 
-    assign tetrisY = tetrisXY / `TRIS_WIDTH;
-    assign xrangemax = `WIDTH - tetrisY * `BLOCKSIZE;
-    assign yrangemax = `HEIGHT - tetrisX * `BLOCKSIZE;
+    assign miniX = miniXY % `MINI_WIDTH; 
+    assign miniY = miniXY / `MINI_WIDTH;
+    assign xrangemax = x_max - miniY * `BLOCKSIZE;
+    assign yrangemax = y_max - miniX * `BLOCKSIZE;
     
     assign oled_dataX = x >= xrangemax - `BLOCKSIZE && x < xrangemax;
     assign oled_dataY = y >= yrangemax - `BLOCKSIZE && y < yrangemax;

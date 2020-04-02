@@ -27,13 +27,14 @@ module tetris_logic(
     output reg [`TRIS_SIZE-1:0] board = 0,
     // Each square of a block as a position on the board (pos = x+y*10)
     output [8:0] cur_blk1, cur_blk2, cur_blk3, cur_blk4,
+    // Next (random) block to assign cur_blk to
+    output [2:0] rand_blk,
     // Block colour
     output reg [`COLBIT:0] blk_col
     );
     
     // Current falling block type
     reg [2:0] cur_blkType = 0;
-    wire [2:0] rand_blk; // random new block to assign cur_blk to
     
     // Rotation direction of block - 0: 0 deg, 1: 90 deg etc.
     reg [1:0] cur_rot = 0;
@@ -126,12 +127,12 @@ module tetris_logic(
                 drop <= 1;
             else if (mvD || gameCLK || drop) begin // Normal down movement at gameCLK
                 if (cur_y >= cur_height && !check_intersect) begin
-                    randE <= 0; // reset random block enable
+                    randE <= 1; // reset random block enable
                     // Move down
                     cur_y <= cur_y - 1;
                     // drop <= drop ? drop - 1 : drop;
                 end else begin
-                    randE <= 1; // set random block enable
+                    randE <= 0; // set random block enable
                     // Intersects with next move so add to board
                     board[cur_blk1] <= 1;
                     board[cur_blk2] <= 1;
@@ -151,6 +152,8 @@ module tetris_logic(
             else if (mvRot && cur_x + test_width <= `TRIS_WIDTH &&
                      cur_y >= test_height && !check_intersect) // Rotate
                 cur_rot <= cur_rot + 1;
+            else
+                randE <= 1;
         end
         `MODE_SHIFT: begin // Remove row
             if (shift_row == `TRIS_HEIGHT - 1) begin // when shift_row reaches top

@@ -115,6 +115,10 @@
 //// Starting y pixel for the game board
 //`define BOARD_Y (((`PIXEL_HEIGHT - `BOARD_HEIGHT) / 2) - 1)
 
+// DIMENSIONS FOR NEXT BLOCK
+`define MINI_WIDTH  3
+`define MINI_SIZE   12
+
 //// The number of bits used to store a block position
 //`define BITS_BLK_POS 8
 //// The number of bits used to store an X position

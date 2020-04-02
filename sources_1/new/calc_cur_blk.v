@@ -86,123 +86,123 @@ module calc_cur_blk(
                 blk4 = cur_pos - `TRIS_WIDTH;
             end
             endcase
-         end
-            
-            `J: begin // J block
-                case (cur_rot)
-                0: begin // J
-                    blk_width = 2;
-                    blk_height = 3;
-                    blk1 = cur_pos + 1;
-                    blk2 = cur_pos + 1 - `TRIS_WIDTH;
-                    blk3 = cur_pos + 1 - `TRIS_WIDTH*2;
-                    blk4 = cur_pos - `TRIS_WIDTH*2;
-                end
-                1: begin // J clockwise 90
-                    blk_width = 3;
-                    blk_height = 2;
-                    blk1 = cur_pos;
-                    blk2 = cur_pos - `TRIS_WIDTH;
-                    blk3 = cur_pos + 1 - `TRIS_WIDTH;
-                    blk4 = cur_pos + 2 - `TRIS_WIDTH;
-                end
-                2: begin // J clockwise 180
-                    blk_width = 2;
-                    blk_height = 3;
-                    blk1 = cur_pos;
-                    blk2 = cur_pos + 1;
-                    blk3 = cur_pos - `TRIS_WIDTH;
-                    blk4 = cur_pos - `TRIS_WIDTH*2;
-                end
-                3: begin // J clockwise 270
-                    blk_width = 3;
-                    blk_height = 2;
-                    blk1 = cur_pos;
-                    blk2 = cur_pos + 1;
-                    blk3 = cur_pos + 2;
-                    blk4 = cur_pos + 2 - `TRIS_WIDTH;
-                end
-                endcase
+        end
+         
+        `J: begin // J block
+            case (cur_rot)
+            0: begin // J
+                blk_width = 2;
+                blk_height = 3;
+                blk1 = cur_pos + 1;
+                blk2 = cur_pos + 1 - `TRIS_WIDTH;
+                blk3 = cur_pos + 1 - `TRIS_WIDTH*2;
+                blk4 = cur_pos - `TRIS_WIDTH*2;
             end
-                
-            `S: begin // S block
-                case (cur_rot)
-                0: begin // S
-                    blk_width = 3;
-                    blk_height = 2;
-                    blk1 = cur_pos + 1;
-                    blk2 = cur_pos + 2;
-                    blk3 = cur_pos - `TRIS_WIDTH;
-                    blk4 = cur_pos + 1 - `TRIS_WIDTH;
+            1: begin // J clockwise 90
+                blk_width = 3;
+                blk_height = 2;
+                blk1 = cur_pos;
+                blk2 = cur_pos - `TRIS_WIDTH;
+                blk3 = cur_pos + 1 - `TRIS_WIDTH;
+                blk4 = cur_pos + 2 - `TRIS_WIDTH;
+            end
+            2: begin // J clockwise 180
+                blk_width = 2;
+                blk_height = 3;
+                blk1 = cur_pos;
+                blk2 = cur_pos + 1;
+                blk3 = cur_pos - `TRIS_WIDTH;
+                blk4 = cur_pos - `TRIS_WIDTH*2;
+            end
+            3: begin // J clockwise 270
+                blk_width = 3;
+                blk_height = 2;
+                blk1 = cur_pos;
+                blk2 = cur_pos + 1;
+                blk3 = cur_pos + 2;
+                blk4 = cur_pos + 2 - `TRIS_WIDTH;
+            end
+            endcase
+        end
+        
+        `S: begin // S block
+            case (cur_rot)
+            0: begin // S
+                blk_width = 3;
+                blk_height = 2;
+                blk1 = cur_pos + 1;
+                blk2 = cur_pos + 2;
+                blk3 = cur_pos - `TRIS_WIDTH;
+                blk4 = cur_pos + 1 - `TRIS_WIDTH;
+            end
+            1: begin // S Verticle
+                blk_width = 2;
+                blk_height = 3;
+                blk1 = cur_pos;
+                blk2 = cur_pos - `TRIS_WIDTH;
+                blk3 = cur_pos + 1 - `TRIS_WIDTH;
+                blk4 = cur_pos + 1 - `TRIS_WIDTH*2;
+            end
+            endcase
+        end
+        
+        `Z: begin // Z block
+            case (cur_rot)
+                0: begin // Z
+                blk_width = 3;
+                blk_height = 2;
+                blk1 = cur_pos;
+                blk2 = cur_pos + 1;
+                blk3 = cur_pos + 1 - `TRIS_WIDTH;
+                blk4 = cur_pos + 2 - `TRIS_WIDTH;
                 end
-                1: begin // S Verticle
-                    blk_width = 2;
-                    blk_height = 3;
-                    blk1 = cur_pos;
-                    blk2 = cur_pos - `TRIS_WIDTH;
-                    blk3 = cur_pos + 1 - `TRIS_WIDTH;
-                    blk4 = cur_pos + 1 - `TRIS_WIDTH*2;
+                1: begin // Z Verticle
+                blk_width = 2;
+                blk_height = 3;
+                blk1 = cur_pos + 1;
+                blk2 = cur_pos + 1 - `TRIS_WIDTH;
+                blk3 = cur_pos - `TRIS_WIDTH;
+                blk4 = cur_pos - `TRIS_WIDTH*2;
                 end
-                endcase
-              end
-                
-                `Z: begin // Z block
-                    case (cur_rot)
-                    0: begin // Z
-                    blk_width = 3;
-                    blk_height = 2;
-                    blk1 = cur_pos;
-                    blk2 = cur_pos + 1;
-                    blk3 = cur_pos + 1 - `TRIS_WIDTH;
-                    blk4 = cur_pos + 2 - `TRIS_WIDTH;
-                    end
-                    1: begin // Z Verticle
-                    blk_width = 2;
-                    blk_height = 3;
-                    blk1 = cur_pos + 1;
-                    blk2 = cur_pos + 1 - `TRIS_WIDTH;
-                    blk3 = cur_pos - `TRIS_WIDTH;
-                    blk4 = cur_pos - `TRIS_WIDTH*2;
-                    end
-                   endcase
-                  end
-                
-                `T: begin // T block
-                    case (cur_rot)
-                    0: begin // T
-                    blk_width = 3;
-                    blk_height = 2;
-                    blk1 = cur_pos + 1;
-                    blk2 = cur_pos - `TRIS_WIDTH;
-                    blk3 = cur_pos + 1 - `TRIS_WIDTH;
-                    blk4 = cur_pos + 2 - `TRIS_WIDTH;
-                    end
-                    1: begin // T clockwise 90
-                    blk_width = 2;
-                    blk_height = 3;
-                    blk1 = cur_pos;
-                    blk2 = cur_pos - `TRIS_WIDTH;
-                    blk3 = cur_pos - `TRIS_WIDTH*2;
-                    blk4 = cur_pos + 1 - `TRIS_WIDTH;
-                    end
-                    2: begin // T clockwise 180
-                    blk_width = 3;
-                    blk_height = 2;
-                    blk1 = cur_pos;
-                    blk2 = cur_pos + 1;
-                    blk3 = cur_pos + 2;
-                    blk4 = cur_pos + 1 - `TRIS_WIDTH;
-                    end
-                    3: begin // T clockwise 270
-                    blk_width = 2;
-                    blk_height = 3;
-                    blk1 = cur_pos + 1;
-                    blk2 = cur_pos + 1 - `TRIS_WIDTH;
-                    blk3 = cur_pos + 1 - `TRIS_WIDTH*2;
-                    blk4 = cur_pos - `TRIS_WIDTH;
-                    end
-                    endcase
-                 end
-             endcase
-         end
+            endcase
+        end
+        
+        `T: begin // T block
+            case (cur_rot)
+                0: begin // T
+                blk_width = 3;
+                blk_height = 2;
+                blk1 = cur_pos + 1;
+                blk2 = cur_pos - `TRIS_WIDTH;
+                blk3 = cur_pos + 1 - `TRIS_WIDTH;
+                blk4 = cur_pos + 2 - `TRIS_WIDTH;
+                end
+                1: begin // T clockwise 90
+                blk_width = 2;
+                blk_height = 3;
+                blk1 = cur_pos;
+                blk2 = cur_pos - `TRIS_WIDTH;
+                blk3 = cur_pos - `TRIS_WIDTH*2;
+                blk4 = cur_pos + 1 - `TRIS_WIDTH;
+                end
+                2: begin // T clockwise 180
+                blk_width = 3;
+                blk_height = 2;
+                blk1 = cur_pos;
+                blk2 = cur_pos + 1;
+                blk3 = cur_pos + 2;
+                blk4 = cur_pos + 1 - `TRIS_WIDTH;
+                end
+                3: begin // T clockwise 270
+                blk_width = 2;
+                blk_height = 3;
+                blk1 = cur_pos + 1;
+                blk2 = cur_pos + 1 - `TRIS_WIDTH;
+                blk3 = cur_pos + 1 - `TRIS_WIDTH*2;
+                blk4 = cur_pos - `TRIS_WIDTH;
+                end
+            endcase
+        end
+        endcase
+    end
 endmodule
