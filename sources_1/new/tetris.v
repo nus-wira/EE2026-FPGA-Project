@@ -29,7 +29,7 @@ module tetris(
     wire [`TRIS_SIZE-1:0] board;
     wire [8:0] cur_blk1, cur_blk2, cur_blk3, cur_blk4;
     wire [`OLEDBIT:0] oled_board, blk_col, next_blk_col;
-    wire blk1_E, blk2_E, blk3_E, blk4_E, next_blk_E;
+    wire blk1_E, blk2_E, blk3_E, blk4_E, next_blk_E, title_E;
     wire [2:0] next_blk;
     
     tetris_logic tet0(
@@ -44,8 +44,9 @@ module tetris(
     convertTetris_xy xy4(cur_blk4, x, y, blk4_E);
     boardXYconversion b0(board, x, y,oled_board);
     show_next_blk n0(next_blk, x, y, next_blk_col, next_blk_E);
+    tetris_game_title t0(x,y, title_E);
     
-    assign oled_data = oled_board ? oled_board : 
+    assign oled_data = title_E ? `WHITE : oled_board ? oled_board : 
                        blk1_E || blk2_E || blk3_E || blk4_E ? blk_col : 
                        next_blk_E ? next_blk_col :
                        (x < `WIDTH - `BOARD_HEIGHT || y < `HEIGHT - `BOARD_WIDTH) ? `GREY : `BLACK;

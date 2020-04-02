@@ -21,11 +21,14 @@
 
 
 module tetris_game_title(
-    input [`PIXELXYBIT:0] x, y,
-    output reg [`OLEDBIT:0] oled_data
+    input [`PIXELXYBIT:0] old_x, old_y,
+    output tetris
     );
+    wire [`PIXELXYBIT:0] x, y;
+    wire t, t1, e, e1, r, s;
     
-    wire t, t1, e, e1, r, s, tetris;
+    assign x = 63 - old_y;
+    assign y = old_x;
     
     // ASSIGN BOOLEANS
     assign t = (x >= 17 && x <= 21);
