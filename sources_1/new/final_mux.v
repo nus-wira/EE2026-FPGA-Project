@@ -25,7 +25,7 @@ module final_mux(
     input [2:0] state,
     input [`ANBIT:0] an_vol, an_pong,
     input [`SEGDPBIT:0] seg_vol, seg_pong,
-    input [`OLEDBIT:0] oled_menu, oled_pong, oled_wave, oled_vol, oled_tetris, led_vol,
+    input [`OLEDBIT:0] oled_menu, oled_pong, oled_wave, oled_vol, oled_tetris, oled_pass, led_vol,
     output reg [`ANBIT:0] an,
     output reg [`SEGDPBIT:0] seg,
     output reg [`OLEDBIT:0] oled_data, led
@@ -72,7 +72,7 @@ module final_mux(
             led <= 0;
             an <= `CLR_AN;
             seg <= `CLR_SEG;
-            oled_data <= `BLACK;
+            oled_data <= oled_pass;
         end
         endcase
     end

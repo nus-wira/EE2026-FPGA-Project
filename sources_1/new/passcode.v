@@ -40,4 +40,5 @@ module passcode(
     end
     
     assign pw_flag = (state == 4) ? 1 : 0;
+    
 endmodule

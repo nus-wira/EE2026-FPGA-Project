@@ -43,7 +43,7 @@ module Top_Student (
     wire [`PIXELXYBIT:0] x,y;
     
     // Wires to store data from various modules
-    wire [`OLEDBIT:0] oled_data, oled_menu, oled_pong, oled_wave, oled_vol, oled_tetris;
+    wire [`OLEDBIT:0] oled_data, oled_menu, oled_pong, oled_wave, oled_vol, oled_tetris, oled_pass;
     wire [`LDBIT:0] led_peak, led_vol;
     wire [`ANBIT:0] an_vol, an_pong;
     wire [`SEGDPBIT:0] seg_vol, seg_pong;
@@ -99,8 +99,10 @@ module Top_Student (
                    .sw0(sw[0]), .oled_data(oled_menu), .state(menu_flag));
     
     
-    // Passcode
+    // Passcode Logic
     passcode pc0 (.E(pwE), .btnU(pulU), .btnD(pulD), .btnL(pulL), .btnR(pulR), .clk(clk50), .pw_flag(pw_flag));        
+    // Passcode Display
+    passcode_display pd0 (.x(x), .y(y), .micD(num == 15), .oled_data(oled_pass));
     
     // Tetris
     // orientation of screen and rotates so button is rotated to play the game more intuitively
@@ -117,13 +119,13 @@ module Top_Student (
     // for testing state changes
 //    assign state = sw[14:12];
     // Final change state for when menu_state change is setup
-     changestate cs0(.clk(clk50), .btnC(pulC), .pw_flag(pw_flag), .menu_flag(menu_flag), .state(state));
+    changestate cs0(.clk(clk50), .btnC(pulC), .pw_flag(pw_flag), .menu_flag(menu_flag), .state(state));
     
-    // 0: menu, 1: peak detector, 2: pong, 3: wave, 4: tetris
+    // 0: menu, 1: peak detector, 2: pong, 3: wave, 4: tetris 5: passcode
     final_mux mux00(.clk(CLK100MHZ), .state(state), .an_vol(an_vol), .an_pong(an_pong), .seg_vol(seg_vol), .seg_pong(seg_pong),
                     .oled_menu(oled_menu), .oled_pong(oled_pong), .oled_wave(oled_wave), 
-                    .oled_vol(oled_vol), .oled_tetris(oled_tetris),
-                    .led_vol(led_vol), .an(an), .seg(seg),.oled_data(oled_data), .led(led));
+                    .oled_vol(oled_vol), .oled_tetris(oled_tetris), .oled_pass(oled_pass),
+                    .led_vol(led_vol), .an(an), .seg(seg), .oled_data(oled_data), .led(led));
     
 
 endmodule
