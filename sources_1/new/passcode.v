@@ -27,13 +27,14 @@ module passcode(
     
     reg [2:0] state = 0;
  
-    always @ (clk) begin
+    always @ (posedge clk) begin
         if (E) begin
         case (state)
-        0: state <= btnU ? 1 : state;
+        0: state <= btnU ? 1 : (btnD || btnL || btnR) ? 0 : state;
         1: state <= btnD ? 2 : (btnU || btnL || btnR) ? 0 : state;
         2: state <= btnL ? 3 : (btnU || btnD || btnR) ? 0 : state;
         3: state <= btnR ? 4 : (btnU || btnL || btnD) ? 0 : state;
+        default: state <= 0;
         endcase
         end
     end
