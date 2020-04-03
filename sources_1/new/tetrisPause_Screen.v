@@ -35,35 +35,39 @@ module tetrisPause_Screen(
     
     wire gameOver, gamePause, resume, restart, yes, no, arrow1, arrow2, boxwidth, box1, box2;
     wire g, l, a, a1, a2, e, p, p1, u, s, e4, d, d1;
+    wire lP, gP, aP;
     wire a3, e2, o1, v, e3, r1, excl;
-    wire t, t1, t2, q2, r2, r3, a4, a5, Re2, Rs1;
-    wire l2, r, Re, Re1, Ru, Rs, q1;
+    wire t, t1, t2, q2, r2, r3, a4, a5, Re2, Rs1, l2, Re;
+//    wire l2, r, Re, Re1, Ru, Rs, q1;
     wire l3, Y, Y1, Y2, Ye, Ys;
     wire l4, n, o;
-    wire [15:0] menudisp [5:0];
+    wire [15:0] menudisp [3:0];
     
     //assign Booleans for GAME PAUSED
-    assign l = (y >= 17 && y <= 23);
-    assign g = (y == 17 || y == 23);
-    assign a = (y >= 20 && y <= 23);
+    assign lP = (y >= 45 && y <= 51);
+    assign gP = (y == 45 || y == 51);
+    assign aP = (y >= 48 && y <= 51);
     assign a1 = (x >= 10 && x <= 14);
     assign a2 = (x >= 33 && x <= 37);
     assign e = (x >= 22 && x <= 24);
     assign p1 = (x == 13 || x == 14);
-    assign u = (y >= 17 && y <= 22);
+    assign u = (y >= 45 && y <= 50);
     assign s = (x >= 44 && x <= 47);
     assign e4 = (x >= 50 && x <= 52);
     assign d = (x == 55 || x == 56);
-    assign d1 = (y >= 18 && y <= 22);
+    assign d1 = (y >= 46 && y <= 50);
     //assign Booleans for RESUME
-    assign l2 = (y >= 41 && y <= 47);
-    assign r = (x == 13 || x == 14 || x == 15);
-    assign Re = (x >= 19 && x <= 21);
-    assign Re1 = (x >= 40 && x <= 42);
-    assign Ru = (y >= 41 && y <= 46);
-    assign Rs = (x >= 23 && x <= 26);
-    assign q1 = ((x == 47 && (y == 41 || y == 42 || y == 44 || y == 45)) || ((x >= 48 && x <= 50) && (y == 44 || y == 41)) || ((y == 42 || y == 43) && x == 50));
+//    assign l2 = (y >= 41 && y <= 47);
+//    assign r = (x == 13 || x == 14 || x == 15);
+//    assign Re = (x >= 19 && x <= 21);
+//    assign Re1 = (x >= 40 && x <= 42);
+//    assign Ru = (y >= 41 && y <= 46);
+//    assign Rs = (x >= 23 && x <= 26);
+//    assign q1 = ((x == 47 && (y == 41 || y == 42 || y == 44 || y == 45)) || ((x >= 48 && x <= 50) && (y == 44 || y == 41)) || ((y == 42 || y == 43) && x == 50));
     //assign Booleans for GAME OVER
+    assign l = (y >= 17 && y <= 23);
+    assign g = (y == 17 || y == 23);
+    assign a = (y >= 20 && y <= 23);
     assign a3 = (x >= 13 && x <= 17);
     assign e2 = (x >= 25 && x <= 27);
     assign o1 = (y >= 18 && y <= 22);
@@ -108,25 +112,25 @@ module tetrisPause_Screen(
     ////////////////////////////////////////////////////////////////
         
    //GAME PAUSED
-    assign gamePause = (((x == 4 && (y >= 18 && y <= 23)) || (g && (x == 5 || x == 6)) || ((y == 18 || y == 22) && x == 7) || (x == 8 && (y == 22 || y == 23))) // G
-                       || ((x == 13 && l) || (x == 9 && a) || (a1 && y == 20) || (x == 12 && y == 17) || (x == 11 && y == 18) || (x == 10 && y == 19)) //a
-                       || ((l && (x == 15 || x == 19)) || (y == 18 && (x == 16 || x == 18)) || (y == 19 && x == 17)) // m
-                       || ((l && x == 21) || (e && (y == 17 || y == 20 || y == 23))) // e
+    assign gamePause = (((x == 4 && (y >= 46 && y <= 51)) || (gP && (x == 5 || x == 6)) || ((y == 46 || y == 50) && x == 7) || (x == 8 && (y == 50 || y == 51))) // G
+                       || ((x == 13 && lP) || (x == 9 && aP) || (a1 && y == 48) || (x == 12 && y == 45) || (x == 11 && y == 46) || (x == 10 && y == 47)) //a
+                       || ((lP && (x == 15 || x == 19)) || (y == 46 && (x == 16 || x == 18)) || (y == 47 && x == 17)) // m
+                       || ((lP && x == 21) || (e && (y == 45 || y == 48 || y == 51))) // e
                        
-                       || ((x == 28 && l) || ((x == 30 || x == 29) && (y == 17 || y == 20)) || ((y == 18 || y == 19) && x == 31)) // P
-                       || ((x == 37 && l) || (x == 33 && a) || (a2 && y == 20) || (x == 36 && y == 17) || (x == 35 && y == 18) || (x == 34 && y == 19)) //a
-                       || ((u && (x == 39 || x == 42)) || ((x == 40 || x == 41) && y == 23)) // u
-                       || (((y == 17 || y == 20 || y == 23) && s) || ((y == 18 || y == 19) && x == 44)) || ((y == 21 || y == 22) && x == 47)) // s
-                       || (((l && x == 49) || (e4 && (y == 17 || y == 20 || y == 23))))   // e
-                       || ((l && (x == 54)) || (d && (y == 17 || y == 23)) || (d1 && (x == 57))); //d
+                       || ((x == 28 && lP) || ((x == 30 || x == 29) && (y == 45 || y == 48)) || ((y == 46 || y == 47) && x == 31)) // P
+                       || ((x == 37 && lP) || (x == 33 && aP) || (a2 && y == 48) || (x == 36 && y == 45) || (x == 35 && y == 46) || (x == 34 && y == 47)) //a
+                       || ((u && (x == 39 || x == 42)) || ((x == 40 || x == 41) && y == 51)) // u
+                       || (((y == 45 || y == 48 || y == 51) && s) || ((y == 46 || y == 47) && x == 44)) || ((y == 49 || y == 50) && x == 47)) // s
+                       || (((lP && x == 49) || (e4 && (y == 45 || y == 48 || y == 51))))   // e
+                       || ((lP && (x == 54)) || (d && (y == 45 || y == 51)) || (d1 && (x == 57))); //d
     // RESUME                  
-    assign resume = ((((x == 13 && l2) || ((y == 41 || y == 44) && r) || ((y == 42 || y == 43) && x == 15) || (x == 14 && y == 45) || (x == 15 && y == 46) || (x == 16 && y == 47)) //r;
-             || (((l2 && x == 18) || (Re && (y == 41 || y == 44 || y == 47)))) // e
-             || (((y == 41 || y == 44 || y == 47) && Rs) || ((y == 42 || y == 43) && x == 23) || ((y == 45 || y == 46) && x == 26)) // s
-             || ((Ru && (x == 28 || x == 31)) || ((x == 29 || x == 30) && y == 47)) // u
-             || ((l2 && (x == 33 || x == 37)) || (y == 42 && (x == 34 || x == 36)) || (y == 43 && x == 35)) // m
-             || ((l2 && x == 39) || (Re1 && (y == 41 || y == 44 || y == 47)))) // e
-             || q1); // ?
+//    assign resume = ((((x == 13 && l2) || ((y == 41 || y == 44) && r) || ((y == 42 || y == 43) && x == 15) || (x == 14 && y == 45) || (x == 15 && y == 46) || (x == 16 && y == 47)) //r;
+//             || (((l2 && x == 18) || (Re && (y == 41 || y == 44 || y == 47)))) // e
+//             || (((y == 41 || y == 44 || y == 47) && Rs) || ((y == 42 || y == 43) && x == 23) || ((y == 45 || y == 46) && x == 26)) // s
+//             || ((Ru && (x == 28 || x == 31)) || ((x == 29 || x == 30) && y == 47)) // u
+//             || ((l2 && (x == 33 || x == 37)) || (y == 42 && (x == 34 || x == 36)) || (y == 43 && x == 35)) // m
+//             || ((l2 && x == 39) || (Re1 && (y == 41 || y == 44 || y == 47)))) // e
+//             || q1); // ?
     
      //////////////////////////////////////////////////////////////////
     /////////////////         RESTART SCREEN         /////////////////
@@ -169,17 +173,17 @@ module tetrisPause_Screen(
                 || (o && (x == 33 || x == 37) || ((y == 72 || y == 78) && (x == 34 || x == 35 || x == 36)))); // o
     
     //MENU display for respective states
-    assign menudisp[0] = (gamePause || resume || yes || no);
-    assign menudisp[1] = (gamePause || resume || box1 || no);
-    assign menudisp[2] = (gamePause || resume || yes || box2); 
-    assign menudisp[3] = (gameOver || restart || yes || no);
-    assign menudisp[4] = (gameOver || restart || box1 || no);
-    assign menudisp[5] = (gameOver || restart || yes || box2); 
+    assign menudisp[0] = (gamePause);
+//    assign menudisp[1] = (gamePause || resume || box1 || no);
+//    assign menudisp[2] = (gamePause || resume || yes || box2); 
+    assign menudisp[1] = (gameOver || restart || yes || no);
+    assign menudisp[2] = (gameOver || restart || box1 || no);
+    assign menudisp[3] = (gameOver || restart || yes || box2); 
     
     assign oled_data = pause ? (gamePause ? `WHITE : `BLACK) : menudisp[state] ? `WHITE : `BLACK;
     
     always @ (posedge clk) begin
-        state <= btnL && state != 3 ? state - 1 : btnR && state != 5 ? state + 1 : state;
+        state <= btnL && state != 0 ? state - 1 : btnR && state != 3 ? state + 1 : state;
     end
         
 endmodule
