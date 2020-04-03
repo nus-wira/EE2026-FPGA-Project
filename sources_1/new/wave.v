@@ -21,6 +21,7 @@
 `include "definitions.vh"
 
 module wave(
+    input sw,
     input clk,
     input [11:0] mic_in,
     input [`PIXELXYBIT:0] x, y,
@@ -45,19 +46,6 @@ module wave(
         mic_data[countx] <= countx < `WIDTH - 1 ? mic_data[countx+1] : mic_in;
     end
     
-    
-    wire ygre, yyel, yred;
-    wire [`PIXELXYBIT:0] yreflect;
-    parameter [`PIXELXYBIT:0] barRange = 21;
-    
-    assign num = mic_data[x][11] ? mic_data[x][10:5] : 0;
-    assign yreflect = `HEIGHT - 1 - y;
-    assign ygre = (yreflect < num && num >= 1 && num <= barRange);
-    assign yyel = (yreflect < num && num >= 1+barRange && num <= 2*barRange);
-    assign yred = (yreflect < num && num >= 1+2*barRange);
-    
-    assign oled_data = ygre ? `GREEN : yyel ? `YELLOW : yred ? `RED :
-                       !num && !yreflect ? `WHITE : `BLACK;
-    
+    wave_pos w0(sw, mic_data[x], y, oled_data);
     
 endmodule

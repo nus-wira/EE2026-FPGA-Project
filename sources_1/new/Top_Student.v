@@ -92,7 +92,7 @@ module Top_Student (
             .x(x), .y(y), .num(num), .oled_data(oled_pong),.an(an_pong),.seg(seg_pong));
     
     // Wave
-    wave w0 (.clk(clk20k), .mic_in(mic_in),.x(x), .y(y),.oled_data(oled_wave));
+    wave w0 (.sw(sw[0]), .clk(clk20k), .mic_in(mic_in),.x(x), .y(y),.oled_data(oled_wave));
     
     // Menu
     menuGUI menu0 (.x(x), .y(y), .clk(clk50), .btnU(pulU), .btnD(pulD), 
