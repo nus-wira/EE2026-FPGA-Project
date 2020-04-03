@@ -38,7 +38,6 @@ module tetrisPause_Screen(
     wire lP, gP, aP;
     wire a3, e2, o1, v, e3, r1, excl;
     wire t, t1, t2, q2, r2, r3, a4, a5, Re2, Rs1, l2, Re;
-//    wire l2, r, Re, Re1, Ru, Rs, q1;
     wire l3, Y, Y1, Y2, Ye, Ys;
     wire l4, n, o;
     wire [15:0] menudisp [3:0];
@@ -56,14 +55,6 @@ module tetrisPause_Screen(
     assign e4 = (x >= 50 && x <= 52);
     assign d = (x == 55 || x == 56);
     assign d1 = (y >= 46 && y <= 50);
-    //assign Booleans for RESUME
-//    assign l2 = (y >= 41 && y <= 47);
-//    assign r = (x == 13 || x == 14 || x == 15);
-//    assign Re = (x >= 19 && x <= 21);
-//    assign Re1 = (x >= 40 && x <= 42);
-//    assign Ru = (y >= 41 && y <= 46);
-//    assign Rs = (x >= 23 && x <= 26);
-//    assign q1 = ((x == 47 && (y == 41 || y == 42 || y == 44 || y == 45)) || ((x >= 48 && x <= 50) && (y == 44 || y == 41)) || ((y == 42 || y == 43) && x == 50));
     //assign Booleans for GAME OVER
     assign l = (y >= 17 && y <= 23);
     assign g = (y == 17 || y == 23);
@@ -76,6 +67,7 @@ module tetrisPause_Screen(
     assign r1 = (x == 49 || x == 51 || x == 50);
     assign excl = (x == 55 && (y == 23 || (y >= 17 && y <= 21)));
     //assign Booleans for RESTART
+    assign l2 = (y >= 41 && y <= 47);
     assign a4 = (x >= 31 && x <= 35);
     assign a5 = (y >= 44 && y <= 47);
     assign r2 = (x == 10 || x == 11 || x == 12);
@@ -123,15 +115,7 @@ module tetrisPause_Screen(
                        || (((y == 45 || y == 48 || y == 51) && s) || ((y == 46 || y == 47) && x == 44)) || ((y == 49 || y == 50) && x == 47)) // s
                        || (((lP && x == 49) || (e4 && (y == 45 || y == 48 || y == 51))))   // e
                        || ((lP && (x == 54)) || (d && (y == 45 || y == 51)) || (d1 && (x == 57))); //d
-    // RESUME                  
-//    assign resume = ((((x == 13 && l2) || ((y == 41 || y == 44) && r) || ((y == 42 || y == 43) && x == 15) || (x == 14 && y == 45) || (x == 15 && y == 46) || (x == 16 && y == 47)) //r;
-//             || (((l2 && x == 18) || (Re && (y == 41 || y == 44 || y == 47)))) // e
-//             || (((y == 41 || y == 44 || y == 47) && Rs) || ((y == 42 || y == 43) && x == 23) || ((y == 45 || y == 46) && x == 26)) // s
-//             || ((Ru && (x == 28 || x == 31)) || ((x == 29 || x == 30) && y == 47)) // u
-//             || ((l2 && (x == 33 || x == 37)) || (y == 42 && (x == 34 || x == 36)) || (y == 43 && x == 35)) // m
-//             || ((l2 && x == 39) || (Re1 && (y == 41 || y == 44 || y == 47)))) // e
-//             || q1); // ?
-    
+                       
      //////////////////////////////////////////////////////////////////
     /////////////////         RESTART SCREEN         /////////////////
    //////////////////////////////////////////////////////////////////
@@ -155,27 +139,20 @@ module tetrisPause_Screen(
            || ((t1 && y == 41) || (t && x == 27)) // t
            || (x == 35 && l2) || (x == 31 && a5) || (a4 && y == 44) || (x == 34 && y == 41) || (x == 33 && y == 42) || (x == 32 && y == 43)) // a
            || ((((x == 37 && l2) || ((y == 41 || y == 44) && r3) || ((y == 42 || y == 43) && x == 39) || (x == 38 && y == 45) || (x == 39 && y == 46) || (x == 40 && y == 47))) // r
-           || ((t2 && y == 41) || (t && x == 43)) // t
+           || ((t2 && y == 41) || (t && x == 44)) // t
            || q2); // ?
 
-   
-   //////////////////////////////////////////////////////////////////
-  /////////////////         YES/NO  SCREEN         /////////////////
- //////////////////////////////////////////////////////////////////
-             
     // YES
     assign yes = ((Y2 || Y1 || Y) // y
                  || ((l3 && x == 33) || (Ye && (y == 57 || y == 60 || y == 63))) // e
                  || (((y == 57 || y == 60 || y == 63) && Ys) || ((y == 58 || y == 59) && x == 38) || ((y == 61 || y == 62) && x == 41))); //s
     
     // NO        
-    assign no = (((l4 && (x == 27 || x == 31)) && n) // n
+    assign no = (((l4 && (x == 27 || x == 31)) || n) // n
                 || (o && (x == 33 || x == 37) || ((y == 72 || y == 78) && (x == 34 || x == 35 || x == 36)))); // o
     
     //MENU display for respective states
     assign menudisp[0] = (gamePause);
-//    assign menudisp[1] = (gamePause || resume || box1 || no);
-//    assign menudisp[2] = (gamePause || resume || yes || box2); 
     assign menudisp[1] = (gameOver || restart || yes || no);
     assign menudisp[2] = (gameOver || restart || box1 || no);
     assign menudisp[3] = (gameOver || restart || yes || box2); 
