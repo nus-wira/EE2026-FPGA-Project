@@ -183,7 +183,7 @@ module tetrisPause_Screen(
     assign oled_data = pause ? (gamePause ? `WHITE : `BLACK) : menudisp[state] ? `WHITE : `BLACK;
     
     always @ (posedge clk) begin
-        state <= btnL && state != 0 ? state - 1 : btnR && state != 3 ? state + 1 : state;
+        state <= btnL && state != 1 ? state - 1 : btnR && state != 3 ? state + 1 : state;
     end
         
 endmodule

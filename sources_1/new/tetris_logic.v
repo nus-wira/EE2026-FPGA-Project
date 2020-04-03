@@ -114,7 +114,7 @@ module tetris_logic(
     always @ (posedge btnCLK) begin
         if (rst || !E) mode <= `MODE_INIT;
         else if (mode == `MODE_OVER) begin
-            mode <= micD && tris_menu == 4 ? `MODE_INIT : mode;
+            mode <= micD && tris_menu == 2 ? `MODE_INIT : mode;
         end else if (pause) begin
             mode <= `MODE_IDLE;
         end else if (!pause && mode == `MODE_IDLE)

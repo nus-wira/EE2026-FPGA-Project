@@ -46,7 +46,7 @@ module tetris(
     show_next_blk n0(next_blk, x, y, next_blk_col, next_blk_E);
     tetris_game_title t0(x,y, title_E);
     tetrisPause_Screen p0(.clk(btnCLK), .btnL(btnU), .btnR(btnD), .pause(pause),
-        .x(x), .y(y), .oled_data(oled_pause), .state(tris_menu));
+        .old_x(x), .old_y(y), .oled_data(oled_pause), .state(tris_menu));
     
     assign oled_data = pause || mode == `MODE_OVER ? oled_pause : 
                        title_E ? `WHITE : oled_board ? oled_board : 
