@@ -21,7 +21,8 @@
 
 
 module passcode_display(
-    input x, y, micD,
+    input [`PIXELXYBIT:0] x, y, 
+    input micD,
     output reg [`OLEDBIT:0] oled_data
     );
     
@@ -36,7 +37,7 @@ module passcode_display(
     assign ZERO = (x >= 48 && x <= 61);
     assign TWO2 = (x >= 64 && x <= 76);
     assign SIX = (x >= 79 && x <= 92);
-    assign SIX1 = ((x == 91 || x == 92) && (y >= 34 || y <= 50));
+    assign SIX1 = ((x == 91 || x == 92) && (y >= 34 && y <= 50));
     
     assign code =  (((LENGTH && (x == 3 || x == 4)) || (E1 && (y == 11 || y == 12 || y == 31 || y == 32 || y == 33 || y == 51 || y == 52))) // E
                     || ((LENGTH && (x == 18 || x == 19)) || (E2 && (y == 11 || y == 12 || y == 31 || y == 32 || y == 33 || y == 51 || y == 52))) // E
