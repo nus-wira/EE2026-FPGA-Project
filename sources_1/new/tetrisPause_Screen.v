@@ -33,11 +33,11 @@ module tetrisPause_Screen(
     assign x = 63 - old_y;
     assign y = old_x;
     
-    wire gameOver, gamePause, resume, restart, yes, no, arrow1, arrow2, boxwidth, box1, box2;
+    wire gameOver, gamePause, restart, yes, no, arrow1, arrow2, boxwidth, box1, box2;
     wire g, l, a, a1, a2, e, p, p1, u, s, e4, d, d1;
     wire lP, gP, aP;
     wire a3, e2, o1, v, e3, r1, excl;
-    wire t, t1, t2, q2, r2, r3, a4, a5, Re2, Rs1, l2, Re;
+    wire t, t1, t2, q2, r2, r3, a4, a5, Re2, Rs1, l2;
     wire l3, Y, Y1, Y2, Ye, Ys;
     wire l4, n, o;
     wire [15:0] menudisp [3:0];
@@ -134,7 +134,7 @@ module tetrisPause_Screen(
                          
    // RESTART                 
   assign restart = (((x == 10 && l2) || ((y == 41 || y == 44) && r2) || ((y == 42 || y == 43) && x == 12) || (x == 11 && y == 45) || (x == 12 && y == 46) || (x == 13 && y == 47)) //r;
-           || (((l2 && x == 15) || (Re && (y == 41 || y == 44 || y == 47)))) // e
+           || (((l2 && x == 15) || (Re2 && (y == 41 || y == 44 || y == 47)))) // e
            || (((y == 41 || y == 44 || y == 47) && Rs1) || ((y == 42 || y == 43) && x == 20) || ((y == 45 || y == 46) && x == 23)) // s
            || ((t1 && y == 41) || (t && x == 27)) // t
            || (x == 35 && l2) || (x == 31 && a5) || (a4 && y == 44) || (x == 34 && y == 41) || (x == 33 && y == 42) || (x == 32 && y == 43)) // a
