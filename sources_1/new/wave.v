@@ -21,7 +21,7 @@
 `include "definitions.vh"
 
 module wave(
-    input sw,
+    input sw, freeze,
     input clk,
     input [11:0] mic_in,
     input [`PIXELXYBIT:0] x, y,
@@ -43,7 +43,7 @@ module wave(
     always @ (posedge clk) begin
         countx <= countx == `WIDTH - 1 ? 0 : countx + 1;
         // get new mic_in value
-        mic_data[countx] <= countx < `WIDTH - 1 ? mic_data[countx+1] : mic_in;
+        mic_data[countx] <= freeze ? mic_data[countx] : countx < `WIDTH - 1 ? mic_data[countx+1] : mic_in;
     end
     
     wave_pos w0(sw, mic_data[x], y, oled_data);
