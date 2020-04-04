@@ -95,14 +95,14 @@ module Top_Student (
     wave w0 (.sw(sw[0]), .clk(clk20k), .mic_in(mic_in),.x(x), .y(y),.oled_data(oled_wave));
     
     // Menu
-    menuGUI menu0 (.x(x), .y(y), .clk(clk50), .btnU(pulU), .btnD(pulD), 
+    menuGUI menu0 (.x(x), .y(y), .clk(clk50), .btnU(pulU), .btnD(pulD), .btnL(pulL),
                    .sw0(sw[0]), .oled_data(oled_menu), .state(menu_flag));
     
     
     // Passcode Logic
     passcode pc0 (.E(pwE), .btnU(pulU), .btnD(pulD), .btnL(pulL), .btnR(pulR), .clk(clk50), .pw_flag(pw_flag));        
     // Passcode Display
-    passcode_display pd0 (.x(x), .y(y), .micD(num >= 13), .oled_data(oled_pass));
+    passcode_display pd0 (.x(x), .y(y), .micD(num >= 13), .oled_data(oled_pass), .sw0(sw[0]));
     
     // Tetris
     // orientation of screen and rotates so button is rotated to play the game more intuitively
@@ -115,7 +115,7 @@ module Top_Student (
     // Enable pong if in correct state
     assign pongE = state == 2;
     assign tetrisE = state == 4;
-    assign pwE = !state;
+    assign pwE = state == 5;
     // for testing state changes
 //    assign state = sw[14:12];
     // Final change state for when menu_state change is setup

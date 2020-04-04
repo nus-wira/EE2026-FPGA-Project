@@ -22,7 +22,7 @@
 
 module passcode_display(
     input [`PIXELXYBIT:0] x, y, 
-    input micD,
+    input micD, sw0,
     output reg [`OLEDBIT:0] oled_data
     );
     
@@ -47,7 +47,11 @@ module passcode_display(
                     || ((LENGTH && (x == 79 || x == 80)) || (SIX && (y == 11 || y == 12 || y == 31 || y == 32 || y == 33 || y == 51 || y == 52)) || SIX1)); // 6
      
     always @ (*) begin
-        if (micD)
-           oled_data = code ? `WHITE : `BLACK;
+        if (micD) begin
+           if (sw0)
+               oled_data = code ? `BLACK : `WHITE;
+           else 
+               oled_data = code ? `WHITE : `BLACK;
+        end
     end
 endmodule
