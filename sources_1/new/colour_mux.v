@@ -26,20 +26,23 @@ module colour_mux(
     );
     
     always @ (*) begin
+        // COLOUR SCHEME 1
         if(sw3 && !sw4) begin
             bor_col = `BLUE;
-            bg_col = `BLACK;
+            bg_col = `GREY;
             volCol_top = `RED;
             volCol_mid = `GREEN;
             volCol_bot = `WHITE;
         end
+        // COLOUR SCHEME 2
         else if(sw3 && sw4) begin
             bor_col = `RED;
             bg_col = `WHITE;
             volCol_top = `MAGENTA;
             volCol_mid = `YELLOW;
             volCol_bot = `CYAN;
-        end        
+        end
+        // ORIGINAL COLOUR        
         else if (!sw3 && !sw4) begin
             bor_col = `WHITE;
             bg_col = `BLACK;

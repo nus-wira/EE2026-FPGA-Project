@@ -95,7 +95,7 @@ module Top_Student (
     wave w0 (.sw(sw[0]), .clk(clk20k), .mic_in(mic_in),.x(x), .y(y),.oled_data(oled_wave));
     
     // Menu
-    menuGUI menu0 (.x(x), .y(y), .clk(clk50), .btnU(pulU), .btnD(pulD), .btnL(pulL),
+    menuGUI menu0 (.x(x), .y(y), .clk(clk50), .btnU(pulU), .btnD(pulD),
                    .sw0(sw[0]), .oled_data(oled_menu), .state(menu_flag));
     
     
@@ -119,7 +119,7 @@ module Top_Student (
     // for testing state changes
 //    assign state = sw[14:12];
     // Final change state for when menu_state change is setup
-    changestate cs0(.clk(clk50), .btnC(pulC), .micD(num >= 13), .pw_flag(pw_flag), .menu_flag(menu_flag), .state(state));
+    changestate cs0(.clk(clk50), .btnC(pulC), .btnL(pulL), .micD(num >= 13), .pw_flag(pw_flag), .menu_flag(menu_flag), .state(state));
     
     // 0: menu, 1: peak detector, 2: pong, 3: wave, 4: tetris 5: passcode
     final_mux mux00(.clk(CLK100MHZ), .state(state), .an_vol(an_vol), .an_pong(an_pong), .seg_vol(seg_vol), .seg_pong(seg_pong),

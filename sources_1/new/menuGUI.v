@@ -21,7 +21,7 @@
 `include "definitions.vh"
 
 module menuGUI(
-    input clk, btnU, btnD, btnL, sw0,
+    input clk, btnU, btnD, sw0,
     input [`PIXELXYBIT:0] x, y,
     output reg [`OLEDBIT:0] oled_data, 
     output reg [2:0] state
@@ -137,10 +137,7 @@ module menuGUI(
     assign menudisp[4] = (menu || volbar || pingpong || wave || box4); 
 
     always @ (posedge clk) begin
-        if (btnL)
-            state <= 5;
-        else
-            state <= btnU && state != 0 ? state - 1 : btnD && state != 4 ? state + 1 : state;
+       state <= btnU && state != 0 ? state - 1 : btnD && state != 4 ? state + 1 : state;
     end
     
     always @ (*) begin
