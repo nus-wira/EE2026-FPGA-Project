@@ -3,7 +3,7 @@
 Sound & Entertainment System built using Verilog, Digilent Basys 3 Board, Pmod OLEDrgb 96 x 64 RGB OLED Display, Pmod MIC3. 
 The table below illustrates the features available. This can be viewed with images in the *User_Guide.pdf*.
 
-**| Features | Description | Inputs |**
+| Features | Description | Inputs |
 | :---: | --- | --- |
 | Password Lock | Acts as a lock screen. It is the initial display. Anytime the mic records a volume of >= 13, it will display a secret text (EE2026). To lock the “device”, just press *BtnL* on the main menu screen. | Need to input the password in the correct order (**BtnU → BtnD → BtnL → BtnR**) and *while pressing BtnR if mic_in records* something at a **level of >=13** it will unlock and display the menu screen, otherwise will stay locked. |
 | Main Menu | Acts as a home screen to switch between the various applications. | **BTNU/BTND** to hover between the options and **BTNC** to select the option. **SW0** will invert the colour scheme. |
