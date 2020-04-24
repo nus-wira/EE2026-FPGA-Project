@@ -3,6 +3,53 @@
 Sound & Entertainment System built using Verilog, Digilent Basys 3 Board, Pmod OLEDrgb 96 x 64 RGB OLED Display, Pmod MIC3. 
 The table below illustrates the features available. This can be viewed with images in the *User_Guide.pdf*.
 
+## Structure
+    
+    Top_Student.v
+    ├── clk_divider.v
+    ├── debounce_single_pulse.v
+        └── dff.v
+    ├── Audio_Capture.v
+    ├── Oled_Display.v
+    ├── convertXY.v
+    ├── intensity.v
+        ├── clk_divider.v
+        ├── show_digit.v
+        ├── show_led.v
+        └── multi_1bit.v
+    ├── vol_display.v
+        ├── color_mux.v
+        ├── border.v
+        ├── vol_bar.v
+        └── oled_mux.v
+    ├── pong.v
+        ├── airHockeyPaddles.v
+        ├── balls.v
+        ├── score.v
+            └── pt7seg.v
+        └── initpong.v
+    ├── wave.v
+        └── wave_pos.v
+    ├── menuGUI.v
+    ├── passcode.v
+    ├── passcode_display.v
+    ├── tetris.v
+        ├── tetris_logic.v
+            ├── game_clock.v
+            ├── calc_cur_blk.v
+            ├── calc_test_blk.v
+            ├── fullrow.v
+            └── rng.v
+        ├── convertTetris_xy.v
+        ├── boardXYconversion.v
+        ├── show_next_blk.v
+            └── convertMini_xy.v
+        ├── tetris_game_title.v
+        └── tetrisPause_screen.v
+    ├── changestate.v
+    └── final_mux.v
+
+## Feature List
 | Features | Description | Inputs |
 | :---: | --- | --- |
 | Password Lock | Acts as a lock screen. It is the initial display. Anytime the mic records a volume of >= 13, it will display a secret text (EE2026). To lock the “device”, just press *BtnL* on the main menu screen. | Need to input the password in the correct order (**BtnU → BtnD → BtnL → BtnR**) and *while pressing BtnR if mic_in records* something at a **level of >=13** it will unlock and display the menu screen, otherwise will stay locked. |
