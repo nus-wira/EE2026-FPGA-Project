@@ -1,7 +1,15 @@
 # EE2026-FPGA-Project
 
-Sound & Entertainment System built using Verilog, Digilent Basys 3 Board, Pmod OLEDrgb 96 x 64 RGB OLED Display, Pmod MIC3. 
-The table below illustrates the features available. This can be viewed with images in the *User_Guide.pdf*.
+<img src="fpga.jpg" width="500" />
+
+The EE2026 Module Project was a Sound & Entertainment System built using Verilog, Digilent Basys 3 Board, Pmod OLEDrgb 96 x 64 RGB OLED Display, Pmod MIC3. 
+The [Feature List table](#feature-list) below illustrates the features available. This can be viewed with images in the [*User_Guide.pdf*](User_Guide.pdf).
+The notable features include Tetris, Pong, and responsiveness to audio which make for an entertaining and interactive experience.
+
+Click the image below for a short informal demo.
+
+[![Project Video](https://img.youtube.com/vi/CGnjNMMosfY/0.jpg)](https://www.youtube.com/watch?v=CGnjNMMosfY)
+
 
 ## Structure
     
